@@ -80,13 +80,13 @@ class UserController extends Controller
             if($checkmobile>0)
             {
                 Session::flash('alert-danger', 'หมายเลขนี้ถูกใช้งานแล้ว');
-                return redirect('register')->withErrors()->withinput();
+                return redirect('register')->withinput();
             }
             $checkemail = $this->checkEmail($regis_email);
             if($checkemail>0)
             {
                 Session::flash('alert-danger', 'อีเมล์นี้ถูกใช้งานแล้ว');
-                return redirect('register')->withErrors()->withInput();
+                return redirect('register')->withInput();
             }
 
             Db::table('mercury_user')->insert(
