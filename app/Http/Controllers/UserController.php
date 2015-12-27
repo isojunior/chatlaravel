@@ -85,44 +85,44 @@ class UserController extends Controller
     public function processRegister(Request $request)
     {
         $rules = array(
-            'regis_name' =>'required',
-            'regis_surname' =>'required',
-            'regis_position' =>'required',
-            'regis_mobile'=>'required',
-            'regis_email'=>'required|email',
-            'regis_password'=>'required|confirmed',
-            'regis_password_confirmation'=>'required'
+            'regisName' =>'required',
+            'regisSurname' =>'required',
+            'regisPosition' =>'required',
+            'regisMobile'=>'required',
+            'regisEmail'=>'required|email',
+            'regisPassword'=>'required|confirmed',
+            'regisPassword_confirmation'=>'required'
         );
         $message = [
-            'regis_name.required'=>'กรุณาระบุชื่อ',
-            'regis_surname.required'=>'กรุณาระบุนามสกุล',
-            'regis_position.required'=>'กรุณาระบุตำแหน่ง',
-            'regis_mobile.required'=>'กรุณาระบุหมายเลขโทรศัพท์',
-            'regis_email.required'=>'กรุณาระบุอีเมล์',
-            'regis_email.email'=>'กรุณาระบุอีเมล์ให้ถูกต้อง',
-            'regis_password.required'=>'กรุณาระบุรหัสผ่าน',
-            'regis_password.confirmed'=>'รหัสผ่านไม่ตรง',
-            'regis_password_confirmation.required'=>'กรุณาระบุรหัสผ่าน'
+            'regisName.required'=>'กรุณาระบุชื่อ',
+            'regisSurname.required'=>'กรุณาระบุนามสกุล',
+            'regisPosition.required'=>'กรุณาระบุตำแหน่ง',
+            'regisMobile.required'=>'กรุณาระบุหมายเลขโทรศัพท์',
+            'regisEmail.required'=>'กรุณาระบุอีเมล์',
+            'regisEmail.email'=>'กรุณาระบุอีเมล์ให้ถูกต้อง',
+            'regisPassword.required'=>'กรุณาระบุรหัสผ่าน',
+            'regisPassword.confirmed'=>'รหัสผ่านไม่ตรง',
+            'regisPassword_confirmation.required'=>'กรุณาระบุรหัสผ่าน'
         ];
         $validator = Validator::make($request->all(),$rules,$message);
         if($validator->fails())
         {
             return redirect('register')->withErrors($validator)->withInput();
         }else{
-            $regis_name = $request->input('regis_name');
-            $regis_sur = $request->input('regis_surname');
-            $regis_pos = $request->input('regis_position');
-            $regis_mobile = $request->input('regis_mobile');
-            $regis_email = $request->input('regis_email');
-            $regis_pass = $request->input('regis_password');
+            $regisName = $request->input('regisName');
+            $regisSur = $request->input('regisSurname');
+            $regisPos = $request->input('regisPosition');
+            $regisMobile = $request->input('regisMobile');
+            $regisEmail = $request->input('regisEmail');
+            $regisPass = $request->input('regisPassword');
 
-            $checkmobile = $this->checkMobile($regis_mobile);
+            $checkmobile = $this->checkMobile($regisMobile);
             if($checkmobile>0)
             {
                 Session::flash('alert-danger', 'หมายเลขนี้ถูกใช้งานแล้ว');
                 return redirect('register')->withinput();
             }
-            $checkemail = $this->checkEmail($regis_email);
+            $checkemail = $this->checkEmail($regisEmail);
             if($checkemail>0)
             {
                 Session::flash('alert-danger', 'อีเมล์นี้ถูกใช้งานแล้ว');
@@ -131,12 +131,12 @@ class UserController extends Controller
 
             Db::table('mercury_user')->insert(
                 [
-                    'FIRST_NAME'=>$regis_name,
-                    'LAST_NAME'=>$regis_sur,
-                    'TELEPHONE'=>$regis_mobile,
-                    'EMAIL'=>$regis_email,
-                    'PASSWORD'=>$regis_pass,
-                    'POSITION'=>$regis_pos
+                    'FIRST_NAME'=>$regisName,
+                    'LAST_NAME'=>$regisSur,
+                    'TELEPHONE'=>$regisMobile,
+                    'EMAIL'=>$regisEmail,
+                    'PASSWORD'=>$regisPass,
+                    'POSITION'=>$regisPos
                 ]
             );
             Session::flash('alert-success', 'สมัครสมาชิกเรียบร้อยแล้ว');
