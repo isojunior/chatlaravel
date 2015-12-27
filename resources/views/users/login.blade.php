@@ -3,16 +3,17 @@
 <div class="container-fluid" style="margin-top:60px">
     <div class="row">
         <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+            @include('partials.flashmessage')
             <div class="panel panel-primary loginPanel">
                 <div class="loginPanel loginPanelHeader panel-heading">Login</div>
                 <div class="panel-body">
                     <form class="form-horizontal" role="form" method="post" action="login">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <div class="form-group @if ($errors->has('username')) has-error @endif">
+                        <div class="form-group @if ($errors->has('email')) has-error @endif">
                             <label class="col-sm-4 control-label">Username</label>
                             <div class="col-sm-5">
-                                <input type="text" class="form-control" name="username" maxlength="20" value="{{ old('username') }}">
-                                @if($errors->has('username')) <p class="help-block">{{$errors->first('username')}}</p>@endif
+                                <input type="text" class="form-control" name="email" maxlength="20" value="{{ old('email') }}">
+                                @if($errors->has('email')) <p class="help-block">{{$errors->first('email')}}</p>@endif
                             </div>
                         </div>
                         <div class="form-group @if ($errors->has('password')) has-error @endif">
@@ -25,7 +26,7 @@
                         <div class="form-group">
                             <div class="col-sm-5 col-sm-offset-4">
                                 <button type="submit" class="btn btn-primary btnKhcycle">
-                                    Sign in
+                                Sign in
                                 </button>
                             </div>
                         </div>

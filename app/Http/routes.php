@@ -13,6 +13,7 @@
 //get
 Route::get('/', 'UserController@getLoginView');
 Route::get('register', 'UserController@getRegisterView');
+Route::get('chats', 'ChatController@getChatView');
 
 //post
 Route::post('login', 'UserController@processLogin');

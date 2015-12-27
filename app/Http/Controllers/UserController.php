@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -12,6 +13,31 @@ use Symfony\Component\Console\Input\Input;
 
 class UserController extends Controller
 {
+    private function getUserLogin($email,$password)
+    {
+        $query = DB::table('MERCURY_USER')
+            ->where('EMAIL','=',$email)
+            ->where('PASSWORD','=',$password)
+            ->first();
+        return $query;
+    }
+
+    private function checkMobile($mobile)
+    {
+        $query = Db::table('MERCURY_USER')
+            ->where('TELEPHONE','=',$mobile)
+            ->count();
+        return $query;
+    }
+
+    private function checkEmail($email)
+    {
+        $query = Db::table('MERCURY_USER')
+            ->where('EMAIL','=',$email)
+            ->count();
+        return $query;
+    }
+
     public function getRegisterView()
     {
         return view('users.register');
@@ -22,28 +48,42 @@ class UserController extends Controller
         return view('users.login');
     }
 
-    public function processLogin()
+    public function processLogin(Request $request)
     {
+        $rules=[
+            'email' =>'required',
+            'password'=>'required',
+        ];
+        
+        $messages = [
+            'email.required'=>'Email is required',
+            'password.required'=>'Password is required'
+        ];
 
+        $validator =  Validator::make($request->all(),$rules,$messages);
+        if($validator->fails()) {
+            return redirect('/')->withErrors($validator)->withInput();
+        }else{
+            $email = $request->input('email');
+            $password = $request->input('password');
+
+            $auth = DB::table('MERCURY_USER')->where('EMAIL', '=', $email)
+                        ->where('PASSWORD', '=', $password)
+                        ->first();
+            
+            if($auth){
+                Session::put('user',$auth);
+                return redirect('chats');
+            }
+            else{
+                Session::flash('alert-danger', 'Email or Password is incorrect.');
+                return redirect('/');
+            }
+        }
     }
 
-    public function checkMobile($mobile)
-    {
-        $query = Db::table('MERCURY_USER')
-            ->where('TELEPHONE','=',$mobile)
-            ->count();
-        return $query;
-    }
-    public function checkEmail($email)
-    {
-        $query = Db::table('MERCURY_USER')
-            ->where('EMAIL','=',$email)
-            ->count();
-        return $query;
-    }
     public function processRegister(Request $request)
     {
-        //
         $rules = array(
             'regis_name' =>'required',
             'regis_surname' =>'required',
