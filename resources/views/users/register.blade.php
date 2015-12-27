@@ -20,59 +20,59 @@
                                                 @include('partials.flashmessage')
                                                 <form class="form-horizontal" role="form" method="post" action="register">
                                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                        <div class="form-group @if ($errors->has('regis_name')) has-error @endif">
-                                                                <label class="col-sm-4 control-label">ชื่อ</label>
+                                                        <div class="form-group @if ($errors->has('regisName')) has-error @endif">
+                                                                <label class="col-sm-4 control-label">Name</label>
                                                                 <div class="col-sm-5">
-                                                                        <input type="text" class="form-control" name="regis_name" maxlength="20" placeholder="ชื่อ" value="{{ old('regis_name') }}">
-                                                                        @if($errors->has('regis_name')) <p class="help-block">{{$errors->first('regis_name')}}</p>@endif
+                                                                        <input type="text" class="form-control" name="regisName" maxlength="20" placeholder="Name" value="{{ old('regisName') }}">
+                                                                        @if($errors->has('regisName')) <p class="help-block">{{$errors->first('regisName')}}</p>@endif
                                                                 </div>
                                                         </div>
-                                                        <div class="form-group @if ($errors->has('regis_surname')) has-error @endif">
-                                                                <label class="col-sm-4 control-label">นามสกุล</label>
+                                                        <div class="form-group @if ($errors->has('regisSurname')) has-error @endif">
+                                                                <label class="col-sm-4 control-label">SureName</label>
                                                                 <div class="col-sm-5">
-                                                                        <input type="text" class="form-control" name="regis_surname" maxlength="20" placeholder="นามสกุล" value="{{ old('regis_surname') }}">
-                                                                        @if($errors->has('regis_surname')) <p class="help-block">{{$errors->first('regis_surname')}}</p>@endif
+                                                                        <input type="text" class="form-control" name="regisSurname" maxlength="20" placeholder="SureName" value="{{ old('regisSurname') }}">
+                                                                        @if($errors->has('regisSurname')) <p class="help-block">{{$errors->first('regisSurname')}}</p>@endif
                                                                 </div>
                                                         </div>
-                                                        <div class="form-group @if ($errors->has('regis_position')) has-error @endif">
-                                                                <label class="col-sm-4 control-label">ตำแหน่ง</label>
+                                                        <div class="form-group @if ($errors->has('regisPosition')) has-error @endif">
+                                                                <label class="col-sm-4 control-label">Position</label>
                                                                 <div class="col-sm-5">
-                                                                        <input type="text" class="form-control" name="regis_position" maxlength="20" placeholder="ตำแหน่ง" value="{{ old('regis_position') }}">
-                                                                        @if($errors->has('regis_position')) <p class="help-block">{{$errors->first('regis_position')}}</p>@endif
+                                                                        <input type="text" class="form-control" name="regisPosition" maxlength="20" placeholder="Position" value="{{ old('regisPosition') }}">
+                                                                        @if($errors->has('regisPosition')) <p class="help-block">{{$errors->first('regisPosition')}}</p>@endif
                                                                 </div>
                                                         </div>
-                                                        <div class="form-group @if ($errors->has('regis_mobile')) has-error @endif">
-                                                                <label class="col-sm-4 control-label">หมายเลขโทรศัพท์มือถือ</label>
+                                                        <div class="form-group @if ($errors->has('regisMobile')) has-error @endif">
+                                                                <label class="col-sm-4 control-label">MobilePhone</label>
                                                                 <div class="col-sm-5">
-                                                                        <input type="text" class="form-control" name="regis_mobile" onkeypress="validate(event)" maxlength="15" placeholder="หมายเลขโทรศัพท์มือถือ" value="{{ old('regis_mobile') }}">
-                                                                        @if($errors->has('regis_mobile')) <p class="help-block">{{$errors->first('regis_mobile')}}</p>@endif
+                                                                        <input type="text" class="form-control" name="regisMobile" onkeypress="validate(event)" maxlength="15" placeholder="MobilePhone" value="{{ old('regisMobile') }}">
+                                                                        @if($errors->has('regisMobile')) <p class="help-block">{{$errors->first('regisMobile')}}</p>@endif
                                                                 </div>
                                                         </div>
-                                                        <div class="form-group @if ($errors->has('regis_email')) has-error @endif">
-                                                                <label class="col-sm-4 control-label">อีเมล์</label>
+                                                        <div class="form-group @if ($errors->has('regisEmail')) has-error @endif">
+                                                                <label class="col-sm-4 control-label">Email</label>
                                                                 <div class="col-sm-5">
-                                                                        <input type="email" class="form-control" name="regis_email" maxlength="20" placeholder="อีเมล์" value="{{ old('regis_email') }}">
-                                                                        @if($errors->has('regis_email')) <p class="help-block">{{$errors->first('regis_email')}}</p>@endif
+                                                                        <input type="email" class="form-control" name="regisEmail" maxlength="20" placeholder="Email" value="{{ old('regisEmail') }}">
+                                                                        @if($errors->has('regisEmail')) <p class="help-block">{{$errors->first('regisEmail')}}</p>@endif
                                                                 </div>
                                                         </div>
-                                                        <div class="form-group @if ($errors->has('regis_password')) has-error @endif">
-                                                                <label class="col-sm-4 control-label">รหัสผ่าน</label>
+                                                        <div class="form-group @if ($errors->has('regisPassword')) has-error @endif">
+                                                                <label class="col-sm-4 control-label">Password</label>
                                                                 <div class="col-sm-5">
-                                                                        <input type="password" class="form-control" name="regis_password" maxlength="20" placeholder="รหัสผ่าน" value="{{ old('regis_password') }}">
-                                                                        @if($errors->has('regis_password')) <p class="help-block">{{$errors->first('regis_password')}}</p>@endif
+                                                                        <input type="password" class="form-control" name="regisPassword" maxlength="20" placeholder="Password" value="{{ old('regisPassword') }}">
+                                                                        @if($errors->has('regisPassword')) <p class="help-block">{{$errors->first('regisPassword')}}</p>@endif
                                                                 </div>
                                                         </div>
-                                                        <div class="form-group @if ($errors->has('regis_password_confirmation')) has-error @endif">
-                                                                <label class="col-sm-4 control-label">ยืนยันรหัสผ่าน</label>
+                                                        <div class="form-group @if ($errors->has('regisPassword_confirmation')) has-error @endif">
+                                                                <label class="col-sm-4 control-label">Confirm Password</label>
                                                                 <div class="col-sm-5">
-                                                                        <input type="password" class="form-control" name="regis_password_confirmation" maxlength="20" placeholder="ยืนยันรหัสผ่าน" value="{{ old('regis_password_confirmation') }}">
-                                                                        @if($errors->has('regis_password_confirmation')) <p class="help-block">{{$errors->first('regis_password_confirmation')}}</p>@endif
+                                                                        <input type="password" class="form-control" name="regisPassword_confirmation" maxlength="20" placeholder="Confirm Password" value="{{ old('regisPassword_confirmation') }}">
+                                                                        @if($errors->has('regisPassword_confirmation')) <p class="help-block">{{$errors->first('regisPassword_confirmation')}}</p>@endif
                                                                 </div>
                                                         </div>
                                                         <div class="form-group">
                                                                 <div class="col-sm-5 col-sm-offset-4">
                                                                         <button type="submit" class="btn btn-primary">
-                                                                                ลงทะเบียน
+                                                                                Register
                                                                         </button>
                                                                 </div>
                                                         </div>
