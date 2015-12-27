@@ -10,11 +10,10 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+//get
+Route::get('/', 'UserController@getLoginView');
+Route::get('register', 'UserController@getRegisterView');
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('register',function(){
-    return 'kuy';
-});
+//post
+Route::post('login', 'UserController@processLogin');
+Route::post('register', 'UserController@processRegister');
