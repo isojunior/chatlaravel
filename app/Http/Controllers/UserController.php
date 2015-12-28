@@ -10,11 +10,24 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Symfony\Component\Console\Input\Input;
+use GuzzleHttp\Client;
 
 class UserController extends Controller
 {
-    private function getUserLogin($email,$password)
-    {
+    const WEB_SERVICE_URI = "http://apps.jobtopgun.com/Mercury/1.3/iServ.php";
+    private $client; 
+
+    private function getWebServiceClient(){
+        if($this->client==null){
+            $this->client = new Client([
+                'base_uri' => self::WEB_SERVICE_URI,
+                'timeout'  => 2.0,
+            ]);
+        }
+        return $this->client;
+    }
+
+    private function getUserLogin($email,$password){
         $query = DB::table('MERCURY_USER')
             ->where('EMAIL','=',$email)
             ->where('PASSWORD','=',$password)
@@ -22,20 +35,28 @@ class UserController extends Controller
         return $query;
     }
 
-    private function checkMobile($mobile)
-    {
+    private function checkMobile($mobile){
         $query = Db::table('MERCURY_USER')
             ->where('TELEPHONE','=',$mobile)
             ->count();
         return $query;
     }
 
-    private function checkEmail($email)
-    {
+    private function checkEmail($email){
         $query = Db::table('MERCURY_USER')
             ->where('EMAIL','=',$email)
             ->count();
         return $query;
+    }
+
+    public function testJTGService(){
+        $webServiceClient = $this->getWebServiceClient();
+        $response = $webServiceClient->get(self::WEB_SERVICE_URI, [
+            'query' => [
+                'service' => 'getAllUniversity'
+            ]
+        ]);
+        dd($response->getBody()->getContents());
     }
 
     public function getRegisterView()

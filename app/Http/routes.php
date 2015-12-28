@@ -13,6 +13,7 @@
 
 //get
 Route::get('/', 'UserController@getLoginView');
+Route::get('/testJa', 'UserController@testJTGService');
 Route::get('register', 'UserController@getRegisterView');
 Route::get('chats', 'ChatController@getChatView');
 Route::get('contacts','ContactController@getContactView');
