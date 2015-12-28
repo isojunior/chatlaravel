@@ -10,10 +10,14 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+
 //get
 Route::get('/', 'UserController@getLoginView');
 Route::get('register', 'UserController@getRegisterView');
 Route::get('chats', 'ChatController@getChatView');
+Route::get('contacts','ContactController@getContactView');
+Route::get('profile', 'UserController@getProfileView');
+Route::get('profile/edit', 'UserController@getProfileView');
 
 //post
 Route::post('login', 'UserController@processLogin');

@@ -105,8 +105,7 @@ class UserController extends Controller
             'regisPassword_confirmation.required'=>'กรุณาระบุรหัสผ่าน'
         ];
         $validator = Validator::make($request->all(),$rules,$message);
-        if($validator->fails())
-        {
+        if($validator->fails()){
             return redirect('register')->withErrors($validator)->withInput();
         }else{
             $regisName = $request->input('regisName');
@@ -117,14 +116,12 @@ class UserController extends Controller
             $regisPass = $request->input('regisPassword');
 
             $checkmobile = $this->checkMobile($regisMobile);
-            if($checkmobile>0)
-            {
+            if($checkmobile>0){
                 Session::flash('alert-danger', 'หมายเลขนี้ถูกใช้งานแล้ว');
                 return redirect('register')->withinput();
             }
             $checkemail = $this->checkEmail($regisEmail);
-            if($checkemail>0)
-            {
+            if($checkemail>0){
                 Session::flash('alert-danger', 'อีเมล์นี้ถูกใช้งานแล้ว');
                 return redirect('register')->withInput();
             }
