@@ -56,7 +56,10 @@ class UserController extends Controller
                 'service' => 'getAllUniversity'
             ]
         ]);
-        dd($response->getBody()->getContents());
+        //object
+        //dd(json_decode($response->getBody()->getContents()));
+        //array
+        dd(json_decode($response->getBody()->getContents(),true));
     }
 
     public function getRegisterView()
