@@ -20,53 +20,53 @@
                                                 @include('partials.flashmessage')
                                                 <form class="form-horizontal" role="form" method="post" action="register">
                                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                        <div class="form-group @if ($errors->has('regisName')) has-error @endif">
+                                                        <div class="form-group @if ($errors->has('Name')) has-error @endif">
                                                                 <label class="col-sm-4 control-label">Name</label>
                                                                 <div class="col-sm-5">
-                                                                        <input type="text" class="form-control" name="regisName" maxlength="20" placeholder="Name" value="{{ old('regisName') }}">
-                                                                        @if($errors->has('regisName')) <p class="help-block">{{$errors->first('regisName')}}</p>@endif
+                                                                        <input type="text" class="form-control" name="Name" maxlength="20" placeholder="Name" value="{{ old('Name') }}">
+                                                                        @if($errors->has('Name')) <p class="help-block">{{$errors->first('Name')}}</p>@endif
                                                                 </div>
                                                         </div>
-                                                        <div class="form-group @if ($errors->has('regisSurname')) has-error @endif">
+                                                        <div class="form-group @if ($errors->has('Surname')) has-error @endif">
                                                                 <label class="col-sm-4 control-label">SureName</label>
                                                                 <div class="col-sm-5">
-                                                                        <input type="text" class="form-control" name="regisSurname" maxlength="20" placeholder="SureName" value="{{ old('regisSurname') }}">
-                                                                        @if($errors->has('regisSurname')) <p class="help-block">{{$errors->first('regisSurname')}}</p>@endif
+                                                                        <input type="text" class="form-control" name="Surname" maxlength="20" placeholder="SureName" value="{{ old('Surname') }}">
+                                                                        @if($errors->has('Surname')) <p class="help-block">{{$errors->first('Surname')}}</p>@endif
                                                                 </div>
                                                         </div>
-                                                        <div class="form-group @if ($errors->has('regisPosition')) has-error @endif">
+                                                        <div class="form-group @if ($errors->has('Position')) has-error @endif">
                                                                 <label class="col-sm-4 control-label">Position</label>
                                                                 <div class="col-sm-5">
-                                                                        <input type="text" class="form-control" name="regisPosition" maxlength="20" placeholder="Position" value="{{ old('regisPosition') }}">
-                                                                        @if($errors->has('regisPosition')) <p class="help-block">{{$errors->first('regisPosition')}}</p>@endif
+                                                                        <input type="text" class="form-control" name="Position" maxlength="20" placeholder="Position" value="{{ old('Position') }}">
+                                                                        @if($errors->has('Position')) <p class="help-block">{{$errors->first('Position')}}</p>@endif
                                                                 </div>
                                                         </div>
-                                                        <div class="form-group @if ($errors->has('regisMobile')) has-error @endif">
+                                                        <div class="form-group @if ($errors->has('Mobile')) has-error @endif">
                                                                 <label class="col-sm-4 control-label">MobilePhone</label>
                                                                 <div class="col-sm-5">
-                                                                        <input type="text" class="form-control" name="regisMobile" onkeypress="validate(event)" maxlength="15" placeholder="MobilePhone" value="{{ old('regisMobile') }}">
-                                                                        @if($errors->has('regisMobile')) <p class="help-block">{{$errors->first('regisMobile')}}</p>@endif
+                                                                        <input type="text" class="form-control" name="Mobile" onkeypress="validate(event)" maxlength="15" placeholder="MobilePhone" value="{{ old('Mobile') }}">
+                                                                        @if($errors->has('Mobile')) <p class="help-block">{{$errors->first('Mobile')}}</p>@endif
                                                                 </div>
                                                         </div>
-                                                        <div class="form-group @if ($errors->has('regisEmail')) has-error @endif">
+                                                        <div class="form-group @if ($errors->has('Email')) has-error @endif">
                                                                 <label class="col-sm-4 control-label">Email</label>
                                                                 <div class="col-sm-5">
-                                                                        <input type="email" class="form-control" name="regisEmail" maxlength="20" placeholder="Email" value="{{ old('regisEmail') }}">
-                                                                        @if($errors->has('regisEmail')) <p class="help-block">{{$errors->first('regisEmail')}}</p>@endif
+                                                                        <input type="email" class="form-control" name="Email" maxlength="20" placeholder="Email" value="{{ old('Email') }}">
+                                                                        @if($errors->has('Email')) <p class="help-block">{{$errors->first('Email')}}</p>@endif
                                                                 </div>
                                                         </div>
-                                                        <div class="form-group @if ($errors->has('regisPassword')) has-error @endif">
+                                                        <div class="form-group @if ($errors->has('Password')) has-error @endif">
                                                                 <label class="col-sm-4 control-label">Password</label>
                                                                 <div class="col-sm-5">
-                                                                        <input type="password" class="form-control" name="regisPassword" maxlength="20" placeholder="Password" value="{{ old('regisPassword') }}">
-                                                                        @if($errors->has('regisPassword')) <p class="help-block">{{$errors->first('regisPassword')}}</p>@endif
+                                                                        <input type="password" class="form-control" name="Password" maxlength="20" placeholder="Password" value="{{ old('Password') }}">
+                                                                        @if($errors->has('Password')) <p class="help-block">{{$errors->first('Password')}}</p>@endif
                                                                 </div>
                                                         </div>
-                                                        <div class="form-group @if ($errors->has('regisPassword_confirmation')) has-error @endif">
+                                                        <div class="form-group @if ($errors->has('Password_confirmation')) has-error @endif">
                                                                 <label class="col-sm-4 control-label">Confirm Password</label>
                                                                 <div class="col-sm-5">
-                                                                        <input type="password" class="form-control" name="regisPassword_confirmation" maxlength="20" placeholder="Confirm Password" value="{{ old('regisPassword_confirmation') }}">
-                                                                        @if($errors->has('regisPassword_confirmation')) <p class="help-block">{{$errors->first('regisPassword_confirmation')}}</p>@endif
+                                                                        <input type="password" class="form-control" name="Password_confirmation" maxlength="20" placeholder="Confirm Password" value="{{ old('Password_confirmation') }}">
+                                                                        @if($errors->has('Password_confirmation')) <p class="help-block">{{$errors->first('Password_confirmation')}}</p>@endif
                                                                 </div>
                                                         </div>
                                                         <div class="form-group">

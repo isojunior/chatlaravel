@@ -109,55 +109,55 @@ class UserController extends Controller
     public function processRegister(Request $request)
     {
         $rules = array(
-            'regisName' =>'required',
-            'regisSurname' =>'required',
-            'regisPosition' =>'required',
-            'regisMobile'=>'required',
-            'regisEmail'=>'required|email',
-            'regisPassword'=>'required|confirmed',
-            'regisPassword_confirmation'=>'required'
+            'Name' =>'required',
+            'Surname' =>'required',
+            'Position' =>'required',
+            'Mobile'=>'required',
+            'Email'=>'required|email',
+            'Password'=>'required|confirmed',
+            'Password_confirmation'=>'required'
         );
         $message = [
-            'regisName.required'=>'กรุณาระบุชื่อ',
-            'regisSurname.required'=>'กรุณาระบุนามสกุล',
-            'regisPosition.required'=>'กรุณาระบุตำแหน่ง',
-            'regisMobile.required'=>'กรุณาระบุหมายเลขโทรศัพท์',
-            'regisEmail.required'=>'กรุณาระบุอีเมล์',
-            'regisEmail.email'=>'กรุณาระบุอีเมล์ให้ถูกต้อง',
-            'regisPassword.required'=>'กรุณาระบุรหัสผ่าน',
-            'regisPassword.confirmed'=>'รหัสผ่านไม่ตรง',
-            'regisPassword_confirmation.required'=>'กรุณาระบุรหัสผ่าน'
+            'Name.required'=>'กรุณาระบุชื่อ',
+            'Surname.required'=>'กรุณาระบุนามสกุล',
+            'Position.required'=>'กรุณาระบุตำแหน่ง',
+            'Mobile.required'=>'กรุณาระบุหมายเลขโทรศัพท์',
+            'Email.required'=>'กรุณาระบุอีเมล์',
+            'Email.email'=>'กรุณาระบุอีเมล์ให้ถูกต้อง',
+            'Password.required'=>'กรุณาระบุรหัสผ่าน',
+            'Password.confirmed'=>'รหัสผ่านไม่ตรง',
+            'Password_confirmation.required'=>'กรุณาระบุรหัสผ่าน'
         ];
         $validator = Validator::make($request->all(),$rules,$message);
         if($validator->fails()){
             return redirect('register')->withErrors($validator)->withInput();
         }else{
-            $regisName = $request->input('regisName');
-            $regisSur = $request->input('regisSurname');
-            $regisPos = $request->input('regisPosition');
-            $regisMobile = $request->input('regisMobile');
-            $regisEmail = $request->input('regisEmail');
-            $regisPass = $request->input('regisPassword');
+            $Name = $request->input('Name');
+            $SurName = $request->input('Surname');
+            $Position = $request->input('Position');
+            $Mobile = $request->input('Mobile');
+            $Email = $request->input('Email');
+            $Pass = $request->input('Password');
 
-            $checkmobile = $this->checkMobile($regisMobile);
-            if($checkmobile>0){
+            $checkMobile = $this->checkMobile($Mobile);
+            if($checkMobile>0){
                 Session::flash('alert-danger', 'หมายเลขนี้ถูกใช้งานแล้ว');
                 return redirect('register')->withinput();
             }
-            $checkemail = $this->checkEmail($regisEmail);
-            if($checkemail>0){
+            $checkEmail = $this->checkEmail($Email);
+            if($checkEmail>0){
                 Session::flash('alert-danger', 'อีเมล์นี้ถูกใช้งานแล้ว');
                 return redirect('register')->withInput();
             }
 
             Db::table('mercury_user')->insert(
                 [
-                    'FIRST_NAME'=>$regisName,
-                    'LAST_NAME'=>$regisSur,
-                    'TELEPHONE'=>$regisMobile,
-                    'EMAIL'=>$regisEmail,
-                    'PASSWORD'=>$regisPass,
-                    'POSITION'=>$regisPos
+                    'FIRST_NAME'=>$Name,
+                    'LAST_NAME'=>$SurName,
+                    'TELEPHONE'=>$Mobile,
+                    'EMAIL'=>$Email,
+                    'PASSWORD'=>$Pass,
+                    'POSITION'=>$Position
                 ]
             );
             Session::flash('alert-success', 'สมัครสมาชิกเรียบร้อยแล้ว');
