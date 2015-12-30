@@ -62,6 +62,19 @@ class UserController extends Controller
         dd(json_decode($response->getBody()->getContents(),true));
     }
 
+    public function editProfileView($id)
+    {
+        return "Fuck you";
+    }
+
+    public function getProfileView()
+    {
+        $session = Session::get('user');
+        $profile = Db::table('MERCURY_USER')->where('ID_USER','=',$session['ID_USER'])
+            ->get();
+        return view('users.profile')->with('profile',$profile);
+    }
+
     public function getRegisterView()
     {
         return view('users.register');

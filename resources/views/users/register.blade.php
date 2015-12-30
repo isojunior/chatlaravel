@@ -4,16 +4,16 @@
                 <div class="row">
                         <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
                                 <div class="panel panel-primary loginPanel">
-                                        <div class="loginPanel loginPanelHeader panel-heading">ลงทะเบียน</div>
+                                        <div class="loginPanel loginPanelHeader panel-heading">Register</div>
                                         <div class="panel-body">
                                                 @if (count($errors) > 0)
                                                         <div class="alert alert-danger">
-                                                                เกิดข้อผิดพลาด กรุณาตรวจสอบ.<br><br>
-                                                                <ul>
-                                                                        @foreach ($errors->all() as $error)
+                                                                Error Please Check.<br><br>
+                                                                {{--<ul>--}}
+                                                                        {{--@foreach ($errors->all() as $error)--}}
                                                                                 {{--<li>{{ $error }}</li>--}}
-                                                                        @endforeach
-                                                                </ul>
+                                                                        {{--@endforeach--}}
+                                                                {{--</ul>--}}
                                                         </div>
                                                 @endif
 
