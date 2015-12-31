@@ -18,40 +18,41 @@
                             </div>
                         @endif
                         @include('partials.flashmessage')
-                        <form class="form-horizontal" role="form" method="post" action="editProfile">
+                            @foreach($profile as $data)
+                        <form class="form-horizontal" role="form" method="post" action="editProfile/{{$data['ID_USER']}}">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <div class="form-group @if ($errors->has('Name')) has-error @endif">
                                 <label class="col-sm-4 control-label">Name</label>
                                 <div class="col-sm-5">
-                                    <input type="text" class="form-control" name="Name" maxlength="20" placeholder="Name" value="{{ old('Name') }}">
+                                    <input type="text" class="form-control" name="Name" maxlength="20" placeholder="Name" value="{{ $data['FIRST_NAME'] }}">
                                     @if($errors->has('Name')) <p class="help-block">{{$errors->first('Name')}}</p>@endif
                                 </div>
                             </div>
                             <div class="form-group @if ($errors->has('Surname')) has-error @endif">
                                 <label class="col-sm-4 control-label">SureName</label>
                                 <div class="col-sm-5">
-                                    <input type="text" class="form-control" name="Surname" maxlength="20" placeholder="SureName" value="{{ old('Surname') }}">
+                                    <input type="text" class="form-control" name="Surname" maxlength="20" placeholder="SureName" value="{{ $data['LAST_NAME'] }}">
                                     @if($errors->has('Surname')) <p class="help-block">{{$errors->first('Surname')}}</p>@endif
                                 </div>
                             </div>
                             <div class="form-group @if ($errors->has('Mobile')) has-error @endif">
                                 <label class="col-sm-4 control-label">MobilePhone</label>
                                 <div class="col-sm-5">
-                                    <input type="text" class="form-control" name="Mobile" onkeypress="validate(event)" maxlength="15" placeholder="MobilePhone" value="{{ old('Mobile') }}">
+                                    <input type="text" class="form-control" name="Mobile" onkeypress="validate(event)" maxlength="15" placeholder="MobilePhone" value="{{ $data['TELEPHONE'] }}">
                                     @if($errors->has('Mobile')) <p class="help-block">{{$errors->first('Mobile')}}</p>@endif
                                 </div>
                             </div>
                             <div class="form-group @if ($errors->has('Email')) has-error @endif">
                                 <label class="col-sm-4 control-label">Email</label>
                                 <div class="col-sm-5">
-                                    <input type="email" class="form-control" name="Email" maxlength="20" placeholder="Email" value="{{ old('Email') }}">
+                                    <input type="email" class="form-control" name="Email" maxlength="20" placeholder="Email" value="{{ $data['EMAIL'] }}">
                                     @if($errors->has('Email')) <p class="help-block">{{$errors->first('Email')}}</p>@endif
                                 </div>
                             </div>
                             <div class="form-group @if ($errors->has('Position')) has-error @endif">
                                 <label class="col-sm-4 control-label">Position</label>
                                 <div class="col-sm-5">
-                                    <input type="text" class="form-control" name="Position" maxlength="20" placeholder="Position" value="{{ old('Position') }}">
+                                    <input type="text" class="form-control" name="Position" maxlength="20" placeholder="Position" value="{{ $data['POSITION'] }}">
                                     @if($errors->has('Position')) <p class="help-block">{{$errors->first('Position')}}</p>@endif
                                 </div>
                             </div>
@@ -63,6 +64,7 @@
                                 </div>
                             </div>
                         </form>
+                            @endforeach
                     </div>
                 </div>
             </div>

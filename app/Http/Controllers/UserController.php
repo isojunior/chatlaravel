@@ -49,6 +49,22 @@ class UserController extends Controller
         return $query;
     }
 
+    private function checkMobileEdit($mobile,$id){
+        $query = Db::table('MERCURY_USER')
+            ->where('TELEPHONE','=',$mobile)
+            ->where('ID_USER','<>',$id)
+            ->count();
+        return $query;
+    }
+
+    private function checkEmailEdit($email,$id){
+        $query = Db::table('MERCURY_USER')
+            ->where('EMAIL','=',$email)
+            ->where('ID_USER','<>',$id)
+            ->count();
+        return $query;
+    }
+
     public function testJTGService(){
         $webServiceClient = $this->getWebServiceClient();
         $response = $webServiceClient->get(self::WEB_SERVICE_URI, [
@@ -64,7 +80,10 @@ class UserController extends Controller
 
     public function editProfileView($id)
     {
-        return "Fuck you";
+        $profile = Db::table('MERCURY_USER')
+            ->where('ID_USER','=',$id)
+            ->get();
+        return view('users.editProfile')->with('profile',$profile);
     }
 
     public function getProfileView()
@@ -119,6 +138,59 @@ class UserController extends Controller
         }
     }
 
+    public function processEditProfile(Request $request,$id)
+    {
+        $rules = array(
+            'Name' =>'required',
+            'Surname' =>'required',
+            'Position' =>'required',
+            'Mobile'=>'required',
+            'Email'=>'required|email'
+        );
+        $message = [
+            'Name.required'=>'Name is Required',
+            'Surname.required'=>'SurName is Required',
+            'Position.required'=>'Position is Required',
+            'Mobile.required'=>'Mobile is Required',
+            'Email.required'=>'Email is Required',
+            'Email.email'=>'Email format not correct'
+        ];
+        $validator = Validator::make($request->all(),$rules,$message);
+        if($validator->fails()){
+            return redirect('profile/'.$id)->withErrors($validator)->withInput();
+        }else{
+            $Name = $request->input('Name');
+            $SurName = $request->input('Surname');
+            $Position = $request->input('Position');
+            $Mobile = $request->input('Mobile');
+            $Email = $request->input('Email');
+
+            $checkMobile = $this->checkMobileEdit($Mobile,$id);
+            if($checkMobile>0){
+                Session::flash('alert-danger', 'Mobile already to use');
+                return redirect('register')->withinput();
+            }
+            $checkEmail = $this->checkEmailEdit($Email,$id);
+            if($checkEmail>0){
+                Session::flash('alert-danger', 'Email already to use');
+                return redirect('register')->withInput();
+            }
+
+            Db::table('mercury_user')->where('ID_USER','=',$id)
+                ->update(
+                [
+                    'FIRST_NAME'=>$Name,
+                    'LAST_NAME'=>$SurName,
+                    'TELEPHONE'=>$Mobile,
+                    'EMAIL'=>$Email,
+                    'POSITION'=>$Position
+                ]
+            );
+            Session::flash('alert-success', 'Update Successful');
+            return redirect('profile');
+        }
+    }
+
     public function processRegister(Request $request)
     {
         $rules = array(
@@ -131,15 +203,15 @@ class UserController extends Controller
             'Password_confirmation'=>'required'
         );
         $message = [
-            'Name.required'=>'กรุณาระบุชื่อ',
-            'Surname.required'=>'กรุณาระบุนามสกุล',
-            'Position.required'=>'กรุณาระบุตำแหน่ง',
-            'Mobile.required'=>'กรุณาระบุหมายเลขโทรศัพท์',
-            'Email.required'=>'กรุณาระบุอีเมล์',
-            'Email.email'=>'กรุณาระบุอีเมล์ให้ถูกต้อง',
-            'Password.required'=>'กรุณาระบุรหัสผ่าน',
-            'Password.confirmed'=>'รหัสผ่านไม่ตรง',
-            'Password_confirmation.required'=>'กรุณาระบุรหัสผ่าน'
+            'Name.required'=>'Name is Required',
+            'Surname.required'=>'SurName is Required',
+            'Position.required'=>'Position is Required',
+            'Mobile.required'=>'Mobile is Required',
+            'Email.required'=>'Email is Required',
+            'Email.email'=>'Email format not correct',
+            'Password.required'=>'Password is Required',
+            'Password.confirmed'=>'Password not match',
+            'Password_confirmation.required'=>'Password Confirm is Required'
         ];
         $validator = Validator::make($request->all(),$rules,$message);
         if($validator->fails()){
@@ -154,12 +226,12 @@ class UserController extends Controller
 
             $checkMobile = $this->checkMobile($Mobile);
             if($checkMobile>0){
-                Session::flash('alert-danger', 'หมายเลขนี้ถูกใช้งานแล้ว');
+                Session::flash('alert-danger', 'Mobile already to use');
                 return redirect('register')->withinput();
             }
             $checkEmail = $this->checkEmail($Email);
             if($checkEmail>0){
-                Session::flash('alert-danger', 'อีเมล์นี้ถูกใช้งานแล้ว');
+                Session::flash('alert-danger', 'Email already to use');
                 return redirect('register')->withInput();
             }
 
@@ -173,7 +245,7 @@ class UserController extends Controller
                     'POSITION'=>$Position
                 ]
             );
-            Session::flash('alert-success', 'สมัครสมาชิกเรียบร้อยแล้ว');
+            Session::flash('alert-success', 'Register Successful');
             return redirect('register');
         }
     }

@@ -7,6 +7,7 @@
                 <div class="panel panel-primary loginPanel">
                     <div class="loginPanel loginPanelHeader panel-heading">Account</div>
                     <div class="panel-body">
+                        @include('partials.flashmessage')
                         @foreach($profile as $data)
                             <div class="row">
                                 <div class="form-group">

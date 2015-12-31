@@ -23,3 +23,4 @@ Route::get('profile/edit/{id}', 'UserController@editProfileView');
 //post
 Route::post('login', 'UserController@processLogin');
 Route::post('register', 'UserController@processRegister');
+Route::post('editProfile/{id}','UserController@processEditProfile');
