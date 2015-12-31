@@ -19,7 +19,7 @@ Route::get('chats', 'ChatController@getChatView');
 Route::get('contacts','ContactController@getContactView');
 Route::get('profile', 'UserController@getProfileView');
 Route::get('profile/edit/{id}', 'UserController@editProfileView');
-
+Route::get('logout','UserController@processLogout');
 //post
 Route::post('login', 'UserController@processLogin');
 Route::post('register', 'UserController@processRegister');

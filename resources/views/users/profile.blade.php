@@ -36,6 +36,7 @@
             </div>
         </div>
     </div>
+    <a href="logout">Logout</a>
 @endsection
 @section('script')
 @endsection

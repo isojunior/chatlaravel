@@ -104,6 +104,13 @@ class UserController extends Controller
         return view('users.login');
     }
 
+    public function processLogout()
+    {
+        Auth::logout();
+        Session::forget('user');
+        return redirect('/');
+    }
+
     public function processLogin(Request $request)
     {
         $rules=[
