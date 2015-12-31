@@ -10,6 +10,9 @@
                         @include('partials.flashmessage')
                         @foreach($profile as $data)
                             <div class="row">
+                                <img class="avatar" src="img/avatar.png" alt="avatar" />
+                            </div>
+                            <div class="row">
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label">{{ $data['FIRST_NAME'] }}</label>
                                 </div>
