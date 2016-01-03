@@ -4,7 +4,6 @@
     @if( Session::get('user')['AUTHORIZE_BY'] =='1')
         APPROVE
     @else
-
         This Application only specified for eduction with advice and useful for students <br>
         therefore wait admin institution's approved
     @endif

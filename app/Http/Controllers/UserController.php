@@ -75,7 +75,9 @@ class UserController extends Controller
         //object
         //dd(json_decode($response->getBody()->getContents()));
         //array
-        dd(json_decode($response->getBody()->getContents(),true));
+//        dd(json_decode($response->getBody()->getContents(),true));
+        $university =  json_decode($response->getBody()->getContents(),true);
+        return view('users.university')->with('university',$university);
     }
 
     public function editProfileView($id)
