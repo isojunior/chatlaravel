@@ -1,3 +1,7 @@
+.navbar{
+    border:0px;
+}
+
 .navbar-custom {
     background-color:#00b0eb;
     color:#ffffff;
@@ -7,10 +11,12 @@
 .navbar-custom .navbar-nav > li > a {
     color:#fff;
 }
+
 .navbar-custom .navbar-nav > .active > a, .navbar-nav > .active > a:hover, .navbar-nav > .active > a:focus {
     color: #ffffff;
-    background-color:transparent;
+    background-color:#127EA2;
 }
+
 .navbar-custom .navbar-brand {
     color:#eeeeee;
 }

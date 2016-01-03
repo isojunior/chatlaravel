@@ -122,7 +122,6 @@ class UserController extends Controller
 
     public function processLogout()
     {
-        Auth::logout();
         Session::forget('user');
         return redirect('/');
     }
