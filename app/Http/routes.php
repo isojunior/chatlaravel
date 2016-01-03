@@ -19,9 +19,9 @@ Route::get('register', 'UserController@getRegisterView');
 Route::get('chats', 'ChatController@getChatView');
 Route::get('contacts','ContactController@getContactView');
 Route::get('profile', 'UserController@getProfileView');
-Route::get('profile/edit/{id}', 'UserController@editProfileView');
+Route::get('profile/edit', 'UserController@editProfileView');
 Route::get('logout','UserController@processLogout');
 //post
 Route::post('login', 'UserController@processLogin');
 Route::post('register', 'UserController@processRegister');
-Route::post('editProfile/{id}','UserController@processEditProfile');
+Route::post('profile/edit','UserController@processEditProfile');

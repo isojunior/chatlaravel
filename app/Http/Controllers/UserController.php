@@ -17,6 +17,14 @@ class UserController extends Controller
     const WEB_SERVICE_URI = "http://apps.jobtopgun.com/Mercury/1.3/iServ.php";
     private $client; 
 
+    private function getAuthenSession(){
+        $session = Session::get('user');
+        if(!isset($session)){
+            $this->processLogout();
+        }
+        return $session;
+    }
+
     private function getWebServiceClient(){
         if($this->client==null){
             $this->client = new Client([
@@ -81,25 +89,22 @@ class UserController extends Controller
                 'service' => 'getAllUniversity'
             ]
         ]);
-        //object
-        //dd(json_decode($response->getBody()->getContents()));
-        //array
-//        dd(json_decode($response->getBody()->getContents(),true));
         $university =  json_decode($response->getBody()->getContents(),true);
         return view('users.university')->with('university',$university);
     }
 
-    public function editProfileView($id)
+    public function editProfileView()
     {
+        $session = $this->getAuthenSession();
         $profile = Db::table('MERCURY_USER')
-            ->where('ID_USER','=',$id)
+            ->where('ID_USER','=',$session['ID_USER'])
             ->get();
         return view('users.editProfile')->with('profile',$profile);
     }
 
     public function getProfileView()
     {
-        $session = Session::get('user');
+        $session = $this->getAuthenSession();
         $profile = Db::table('MERCURY_USER')->where('ID_USER','=',$session['ID_USER'])
             ->get();
         return view('users.profile')->with('profile',$profile);
@@ -156,8 +161,9 @@ class UserController extends Controller
         }
     }
 
-    public function processEditProfile(Request $request,$id)
+    public function processEditProfile(Request $request)
     {
+        $session = $this->getAuthenSession();
         $rules = array(
             'Name' =>'required',
             'Surname' =>'required',
@@ -183,18 +189,18 @@ class UserController extends Controller
             $Mobile = $request->input('Mobile');
             $Email = $request->input('Email');
 
-            $checkMobile = $this->checkMobileEdit($Mobile,$id);
+            $checkMobile = $this->checkMobileEdit($Mobile,$session['ID_USER']);
             if($checkMobile>0){
                 Session::flash('alert-danger', 'Mobile already to use');
                 return redirect('register')->withinput();
             }
-            $checkEmail = $this->checkEmailEdit($Email,$id);
+            $checkEmail = $this->checkEmailEdit($Email,$session['ID_USER']);
             if($checkEmail>0){
                 Session::flash('alert-danger', 'Email already to use');
                 return redirect('register')->withInput();
             }
 
-            Db::table('mercury_user')->where('ID_USER','=',$id)
+            Db::table('mercury_user')->where('ID_USER','=',$session['ID_USER'])
                 ->update(
                 [
                     'FIRST_NAME'=>$Name,
