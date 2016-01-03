@@ -19,7 +19,7 @@
                         @endif
                         @include('partials.flashmessage')
                             @foreach($profile as $data)
-                        <form class="form-horizontal" role="form" method="post" action="editProfile/{{$data['ID_USER']}}">
+                        <form class="form-horizontal" role="form" method="post" action="profile/edit">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <div class="form-group @if ($errors->has('Name')) has-error @endif">
                                 <label class="col-sm-4 control-label">Name</label>
