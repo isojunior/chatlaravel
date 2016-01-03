@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
     <title>Mercury</title>
+    <base href="/ChatApplication/public/" target="_top">
     <link rel="stylesheet" type="text/css" href="{{ asset("css/bootstrap.css")  }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset("css/style.css") }}"/>
     <link href="css/font-awesome.css" rel="stylesheet">
@@ -23,5 +24,6 @@
   </body>
   <script src="js/jquery-1.11.3.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
+  <script src="js/angular.min.js"></script>
   @yield('scripts')
 </html>
