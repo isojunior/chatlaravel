@@ -164,19 +164,24 @@ class UserController extends Controller
     {
         $session = $this->getAuthenSession();
         $rules = array(
-            'Name' =>'required',
-            'Surname' =>'required',
-            'Position' =>'required',
-            'Mobile'=>'required',
-            'Email'=>'required|email'
+            'Name' =>'required|max:100',
+            'Surname' =>'required|max:100',
+            'Position' =>'required|max:100',
+            'Mobile'=>'required|max:100',
+            'Email'=>'required|email|max:100'
         );
         $message = [
             'Name.required'=>'Name is Required',
+            'Name.max'=>'Name length must me less then or equals 100 character.',
             'Surname.required'=>'SurName is Required',
+            'Surname.max'=>'SurName length must me less then or equals 100 character.',
             'Position.required'=>'Position is Required',
+            'Position.max'=>'Position length must me less then or equals 100 character.',
             'Mobile.required'=>'Mobile is Required',
+            'Mobile.max'=>'Mobile length must me less then or equals 100 character.',
             'Email.required'=>'Email is Required',
-            'Email.email'=>'Email format not correct'
+            'Email.email'=>'Email format not correct',
+            'Email.max'=>'Email length must me less then or equals 100 character.'
         ];
         $validator = Validator::make($request->all(),$rules,$message);
         if($validator->fails()){
@@ -217,24 +222,30 @@ class UserController extends Controller
     public function processRegister(Request $request)
     {
         $rules = array(
-            'Name' =>'required',
-            'Surname' =>'required',
-            'Position' =>'required',
-            'Mobile'=>'required',
-            'Email'=>'required|email',
-            'Password'=>'required|confirmed',
+            'Name' =>'required|max:100',
+            'Surname' =>'required|max:100',
+            'Position' =>'required|max:100',
+            'Mobile'=>'required|max:100',
+            'Email'=>'required|email|max:100',
+            'Password'=>'required|confirmed|max:100',
             'Password_confirmation'=>'required'
         );
         $message = [
-            'Name.required'=>'Name is Required',
-            'Surname.required'=>'SurName is Required',
-            'Position.required'=>'Position is Required',
-            'Mobile.required'=>'Mobile is Required',
-            'Email.required'=>'Email is Required',
-            'Email.email'=>'Email format not correct',
-            'Password.required'=>'Password is Required',
-            'Password.confirmed'=>'Password not match',
-            'Password_confirmation.required'=>'Password Confirm is Required'
+            'Name.required'=>'Name is Required.',
+            'Name.max'=>'Name length must me less then or equals 100 character.',
+            'Surname.required'=>'SurName is Required.',
+            'Surname.max'=>'SurName length must me less then or equals 100 character.',
+            'Position.required'=>'Position is Required.',
+            'Position.max'=>'Position length must me less then or equals 100 character.',
+            'Mobile.required'=>'Mobile is Required.',
+            'Mobile.max'=>'Mobile length must me less then or equals 100 character.',
+            'Email.required'=>'Email is Required.',
+            'Email.email'=>'Email format not correct.',
+            'Email.max'=>'Email length must me less then or equals 100 character.',
+            'Password.required'=>'Password is Required.',
+            'Password.confirmed'=>'Password not match.',
+            'Password_confirmation.required'=>'Password Confirm is Required.',
+            'Password.max'=>'Password length must me less then or equals 100 character.'
         ];
         $validator = Validator::make($request->all(),$rules,$message);
         if($validator->fails()){
@@ -271,31 +282,5 @@ class UserController extends Controller
             Session::flash('alert-success', 'Register Successful');
             return redirect('register');
         }
-    }
-
-    public function store(Request $request)
-    {
-        //
-    }
-
-
-    public function show($id)
-    {
-        //
-    }
-
-    public function edit($id)
-    {
-        //
-    }
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    public function destroy($id)
-    {
-        //
     }
 }
