@@ -64,7 +64,16 @@ class UserController extends Controller
             ->count();
         return $query;
     }
-
+    public function getFaculty(){
+        $webServiceClient = $this->getWebServiceClient();
+        $response = $webServiceClient->get(self::WEB_SERVICE_URI, [
+            'query' => [
+                'service' => 'getAllFaculty',
+                'idUniversity'=>'9027'
+            ]
+        ]);
+        dd( json_decode($response->getBody()->getContents(),true));
+    }
     public function testJTGService(){
         $webServiceClient = $this->getWebServiceClient();
         $response = $webServiceClient->get(self::WEB_SERVICE_URI, [
