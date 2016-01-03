@@ -2,6 +2,11 @@
     border:0px;
 }
 
+.panel-primary > .panel-heading {
+    background-color:#127EA2;
+    border-color:#127EA2;
+}
+
 .navbar-custom {
     background-color:#00b0eb;
     color:#ffffff;
