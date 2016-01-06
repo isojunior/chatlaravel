@@ -5,11 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
     <title>Mercury</title>
-<<<<<<< HEAD
-    <base href="/ChatApplication/public/" target="_top">
-=======
     <base href="/chatlaravel/public/" target="_top">
->>>>>>> origin/master
     <link rel="stylesheet" type="text/css" href="{{ asset("css/bootstrap.css")  }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset("css/style.css") }}"/>
     <link href="css/font-awesome.css" rel="stylesheet">

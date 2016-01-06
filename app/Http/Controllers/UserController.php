@@ -10,12 +10,16 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Symfony\Component\Console\Input\Input;
-use GuzzleHttp\Client;
+use App\Constrants;
+use App\Http\webServiceClient;
 
 class UserController extends Controller
 {
-    const WEB_SERVICE_URI = "http://apps.jobtopgun.com/Mercury/1.3/iServ.php";
-    private $client; 
+    private static $factory;
+
+    public function __construct() {
+        self::$factory = new WebserviceClient();
+    }
 
     private function getAuthenSession(){
         $session = Session::get('user');
@@ -23,16 +27,6 @@ class UserController extends Controller
             $this->processLogout();
         }
         return $session;
-    }
-
-    private function getWebServiceClient(){
-        if($this->client==null){
-            $this->client = new Client([
-                'base_uri' => self::WEB_SERVICE_URI,
-                'timeout'  => 2.0,
-            ]);
-        }
-        return $this->client;
     }
 
     private function getUserLogin($email,$password){
@@ -73,8 +67,9 @@ class UserController extends Controller
         return $query;
     }
     public function getFaculty(){
-        $webServiceClient = $this->getWebServiceClient();
-        $response = $webServiceClient->get(self::WEB_SERVICE_URI, [
+        $webServiceClient = self::$factory->getWebServiceClient();
+        //currently use same uri with base uri bcuz webservice no specify pathURI
+        $response = $webServiceClient->get(Constrants::WEB_SERVICE_URI, [
             'query' => [
                 'service' => 'getAllFaculty',
                 'idUniversity'=>'9027'
@@ -83,9 +78,8 @@ class UserController extends Controller
         dd( json_decode($response->getBody()->getContents(),true));
     }
     public function testJTGService(){
-        $webServiceClient = $this->getWebServiceClient();
-        $response = $webServiceClient->get(self::WEB_SERVICE_URI, [
-            'query' => [
+        $response = self::$factory->callWebservice([
+                'query' => [
                 'service' => 'getAllUniversity'
             ]
         ]);
@@ -148,9 +142,19 @@ class UserController extends Controller
             $auth = DB::table('MERCURY_USER')->where('EMAIL', '=', $email)
                         ->where('PASSWORD', '=', $password)
                         ->first();
-            
-            if($auth){
-                Session::put('user',$auth);
+            $response = self::$factory->callWebservice([
+                'query' => [
+                    'service' => 'login',
+                    'email' => base64_encode(urlencode($email)),
+                    'password' => base64_encode(urlencode($password))
+                ]
+            ]);
+
+            $loginResult =  json_decode($response->getBody()->getContents(),true);
+            //dd($loginResult);
+
+            if(count($loginResult["data"])==1){
+                Session::put('user',$loginResult["data"][0]);
                 return redirect('chats');
             }
             else{

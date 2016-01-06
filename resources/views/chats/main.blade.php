@@ -1,7 +1,7 @@
 @extends('app')
 @section('content')
 <br><br><br>
-    @if( Session::get('user')['AUTHORIZE_BY'] =='1')
+    @if( Session::get('user')['AUTHORIZE'] =='1')
         APPROVE
     @else
         This Application only specified for eduction with advice and useful for students <br>
