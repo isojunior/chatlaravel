@@ -26,6 +26,14 @@
     color:#eeeeee;
 }
 
+.navbar-custom .icon-bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    border-radius: 1px;
+    background-color: white;
+}
+
 .avatar {
     float: left;
     margin-top: 1em;
