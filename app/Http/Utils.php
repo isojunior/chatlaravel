@@ -7,6 +7,14 @@ class Utils
         	|| \Request::is($route) 
         	||(\Request::is('/')&&$route=="chats")) ? "active" : '';
     }
+
+    public static function encodeParameter($e){
+    	return base64_encode(urlencode($e));
+    }
+
+    public static function decodeParameter($d){
+    	return urlencode(base64_encode($d));
+    }
 }
 
 ?>

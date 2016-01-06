@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Symfony\Component\Console\Input\Input;
 use App\Constrants;
-use App\Http\webServiceClient;
+use App\Http\WebServiceClient;
+use App\Http\Utils;
 
 class UserController extends Controller
 {
@@ -145,8 +146,8 @@ class UserController extends Controller
             $response = self::$factory->callWebservice([
                 'query' => [
                     'service' => 'login',
-                    'email' => base64_encode(urlencode($email)),
-                    'password' => base64_encode(urlencode($password))
+                    'email' => Utils::encodeParameter($email),
+                    'password' => Utils::encodeParameter($password)
                 ]
             ]);
 
