@@ -1,7 +1,8 @@
 <?php
 namespace App\Http;
 use GuzzleHttp\Client;
-class WebserviceClient
+use App\Constrants;
+class WebServiceClient
 {
 	private static $client; 
 
@@ -17,7 +18,8 @@ class WebserviceClient
 
     public function callWebservice($param){
         $webServiceClient = $this->getWebServiceClient();
-        return $webServiceClient->get(Constrants::WEB_SERVICE_URI, $param);
+        $response = $webServiceClient->get(Constrants::WEB_SERVICE_URI, $param);
+        return json_decode($response->getBody()->getContents(),true);
     }
 }
 ?>
