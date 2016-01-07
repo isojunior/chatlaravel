@@ -12,11 +12,14 @@
 
         @if(Session::has('user'))
         <div id="navbarCollapse" class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav ">
                 <li class="{{ \App\Http\Utils::setActive('chats') }}"><a href="chats"><span class="glyphicon glyphicon-comment"></span> Chat</a></li>
                 <li class="{{ \App\Http\Utils::setActive('contacts') }}"><a href="contact"><span class="glyphicon glyphicon-user"></span> Contacts</a></li>
                 <li class="{{ \App\Http\Utils::setActive('profile') }}"><a href="profile"><span class="glyphicon glyphicon-home"></span> Account</a></li>
             </ul>
+			<ul class="nav navbar-pill navbar-right">
+				<li><a href="logout" class="logout nav nav-pills btn btn-danger"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+			</ul>
         </div>
         @endif
     </div>

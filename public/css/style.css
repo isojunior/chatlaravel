@@ -64,3 +64,7 @@
 .autocompletedemoCustomTemplate .autocomplete-custom-template .item-title md-icon {
     height: 18px;
     width: 18px; }
+	
+a.logout {
+	margin: 3px 0px 3px 0px;
+}

@@ -7,7 +7,4 @@
         This Application only specified for eduction with advice and useful for students <br>
         therefore wait admin institution's approved
     @endif
-
-<a href="profile">Link Profile</a>
-    <a href="logout">Logout</a>
 @endsection
