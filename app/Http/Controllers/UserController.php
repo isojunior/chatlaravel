@@ -84,8 +84,9 @@ class UserController extends Controller
                 'service' => 'getAllUniversity'
             ]
         ]);
-        $university =  json_decode($response->getBody()->getContents(),true);
-        return view('users.registerUniversity')->with('university',$university);
+        dd(json_decode($response->getBody()->getContents(),true));
+        //$university =  json_decode($response->getBody()->getContents(),true);
+//        return view('users.registerUniversity')->with('university',$university);
     }
 
     public function editProfileView()

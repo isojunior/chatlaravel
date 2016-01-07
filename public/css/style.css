@@ -65,17 +65,17 @@
     height: 18px;
     width: 18px; }
 
-.project-label {
+#project-label {
     display: block;
     font-weight: bold;
     margin-bottom: 1em;
 }
-.project-icon {
+#project-icon {
     float: left;
     height: 32px;
     width: 32px;
 }
-.project-description {
+#project-description {
     margin: 0;
     padding: 0;
 }
