@@ -22,8 +22,9 @@
     @yield('content')
     </div>
   </body>
-  <script src="js/jquery-1.11.3.min.js"></script>
-  <script src="js/bootstrap.min.js"></script>
-  <script src="js/angular.min.js"></script>
+  <script src="{{ asset("js/jquery-1.11.3.min.js") }}"></script>
+  <script src="{{ asset("js/bootstrap.min.js")}}"></script>
+  <script src="{{ asset("js/angular.min.js") }}"></script>
+  <script src="{{ asset("js/jquery-ui.min.js")}}"></script>
   @yield('scripts')
 </html>

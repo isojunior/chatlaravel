@@ -79,14 +79,12 @@ class UserController extends Controller
         dd( json_decode($response->getBody()->getContents(),true));
     }
     public function testJTGService(){
-        $response = self::$factory->callWebservice([
+        $university = self::$factory->callWebservice([
                 'query' => [
                 'service' => 'getAllUniversity'
             ]
         ]);
-        dd(json_decode($response->getBody()->getContents(),true));
-        //$university =  json_decode($response->getBody()->getContents(),true);
-//        return view('users.registerUniversity')->with('university',$university);
+        return view('users.registerUniversity')->with('university',$university);
     }
 
     public function editProfileView()

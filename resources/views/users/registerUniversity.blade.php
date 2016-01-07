@@ -20,8 +20,11 @@
         {{--<img id="project-icon" src="images/transparent_1x1.png" class="ui-state-default" alt="">--}}
         <input id="project">
         <input type="hidden" id="project-id">
+        <p id="project-description"></p>
+
+    </div>
 @endsection
-@section('script')
+@section('scripts')
     <script>
         $(function() {
             var projects = [
@@ -56,7 +59,7 @@
                             $( "#project" ).val( ui.item.label );
                             $( "#project-id" ).val( ui.item.value );
                             $( "#project-description" ).html( ui.item.desc );
-//                            $( "#project-icon" ).attr( "src", "images/" + ui.item.icon );
+                            $( "#project-icon" ).attr( "src", "images/" + ui.item.icon );
 
                             return false;
                         }
@@ -68,5 +71,4 @@
             };
         });
     </script>
-
 @endsection
