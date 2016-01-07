@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Symfony\Component\Console\Input\Input;
 use App\Constrants;
-use App\Http\WebServiceClient;
+use App\Http\WebserviceClient;
 use App\Http\Utils;
 
 class UserController extends Controller
@@ -85,7 +85,7 @@ class UserController extends Controller
             ]
         ]);
         $university =  json_decode($response->getBody()->getContents(),true);
-        return view('users.university')->with('university',$university);
+        return view('users.registerUniversity')->with('university',$university);
     }
 
     public function editProfileView()

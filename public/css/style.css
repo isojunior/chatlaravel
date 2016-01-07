@@ -64,3 +64,18 @@
 .autocompletedemoCustomTemplate .autocomplete-custom-template .item-title md-icon {
     height: 18px;
     width: 18px; }
+
+.project-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 1em;
+}
+.project-icon {
+    float: left;
+    height: 32px;
+    width: 32px;
+}
+.project-description {
+    margin: 0;
+    padding: 0;
+}
