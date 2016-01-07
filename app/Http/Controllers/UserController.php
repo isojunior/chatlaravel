@@ -23,11 +23,11 @@ class UserController extends Controller
     }
 
     private function getAuthenSession(){
-        $session = Session::get('user');
-        if(!isset($session)){
+        $auth = Session::get('user');
+        if(!isset($auth)){
             $this->processLogout();
         }
-        return $session;
+        return $auth;
     }
 
     private function getUserLogin($email,$password){
@@ -89,19 +89,14 @@ class UserController extends Controller
 
     public function editProfileView()
     {
-        $session = $this->getAuthenSession();
-        $profile = Db::table('MERCURY_USER')
-            ->where('ID_USER','=',$session['ID_USER'])
-            ->get();
-        return view('users.editProfile')->with('profile',$profile);
+        $auth = $this->getAuthenSession();
+        return view('users.editProfile')->with('profile',$auth);
     }
 
     public function getProfileView()
     {
-        $session = $this->getAuthenSession();
-        $profile = Db::table('MERCURY_USER')->where('ID_USER','=',$session['ID_USER'])
-            ->get();
-        return view('users.profile')->with('profile',$profile);
+        $auth = $this->getAuthenSession();
+        return view('users.profile')->with('profile',$auth);
     }
 
     public function getRegisterView()
@@ -160,7 +155,7 @@ class UserController extends Controller
 
     public function processEditProfile(Request $request)
     {
-        $session = $this->getAuthenSession();
+        $auth = $this->getAuthenSession();
         $rules = array(
             'Name' =>'required|max:100',
             'Surname' =>'required|max:100',
@@ -183,7 +178,7 @@ class UserController extends Controller
         ];
         $validator = Validator::make($request->all(),$rules,$message);
         if($validator->fails()){
-            return redirect('profile/'.$id)->withErrors($validator)->withInput();
+            return redirect('profile/edit')->withErrors($validator)->withInput();
         }else{
             $name = $request->input('Name');
             $surName = $request->input('Surname');
@@ -191,38 +186,59 @@ class UserController extends Controller
             $mobile = $request->input('Mobile');
             $email = $request->input('Email');
 
-            $checkMobile = $this->checkMobileEdit($Mobile,$session['ID_USER']);
-
             $isExistTelephoneResult = self::$factory->callWebservice([
                 'query' => [
-                    'service' => 'isExistTelephone',
+                    'service' => 'userTelephoneExist',
+                    'idUser' => $auth['ID_USER'],
                     'telephone' => Utils::encodeParameter($mobile)
                 ]
             ]);
-            dd($isExistTelephoneResult);
-            if($isExistTelephoneResult>0){
+            if($isExistTelephoneResult["data"][0]["result"]==1){
                 Session::flash('alert-danger', 'Mobile already to use');
-                return redirect('register')->withinput();
-            }
-            $checkEmail = $this->checkEmailEdit($Email,$session['ID_USER']);
-            if($checkEmail>0){
-                Session::flash('alert-danger', 'Email already to use');
-                return redirect('register')->withInput();
+                return redirect('profile/edit')->withinput();
             }
 
-            Db::table('mercury_user')->where('ID_USER','=',$session['ID_USER'])
-                ->update(
-                [
-                    'FIRST_NAME'=>$Name,
-                    'LAST_NAME'=>$SurName,
-                    'TELEPHONE'=>$Mobile,
-                    'EMAIL'=>$Email,
-                    'POSITION'=>$Position
+            $isExistEmailResult = self::$factory->callWebservice([
+                'query' => [
+                    'service' => 'userEmailExist',
+                    'idUser' => $auth['ID_USER'],
+                    'telephone' => Utils::encodeParameter($email)
                 ]
-            );
+            ]);
 
-            Session::flash('alert-success', 'Update Successful');
-            return redirect('profile');
+            if($isExistEmailResult["data"][0]["result"]==1){
+                Session::flash('alert-danger', 'Email already to use');
+                return redirect('profile/edit')->withInput();
+            }
+
+            $updateResult = self::$factory->callWebservice([
+                'query' => [
+                    'service' => 'updateUser',
+                    'idUser' =>  $auth["ID_USER"],
+                    'firstName' => Utils::encodeParameter($name),
+                    'lastName' => Utils::encodeParameter($surName),
+                    'telephone' => Utils::encodeParameter($mobile),
+                    'email' => Utils::encodeParameter($email),
+                    'position' => Utils::encodeParameter($position)
+                ]
+            ]);
+            if($updateResult["data"][0]["result"]==1){
+                $userResult = self::$factory->callWebservice([
+                    'query' => [
+                        'service' => 'getUser',
+                        'idUser' => $auth['ID_USER']
+                    ]
+                ]);
+                Session::put('user',$userResult["data"][0]);
+
+                Session::flash('alert-success', 'Update Successful');
+                return redirect('profile');
+            }
+            else{
+                Session::flash('alert-danger', 'An error occored, please contact admin.');
+                return redirect('profile/edit')->withInput();
+            }
+
         }
     }
 
