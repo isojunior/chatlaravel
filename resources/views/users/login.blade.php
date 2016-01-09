@@ -1,6 +1,6 @@
 @extends('app')
 @section('content')
-<div class="container-fluid" style="margin-top:60px">
+<div class="container-fluid">
     <div class="row">
         <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
             @include('partials.flashmessage')

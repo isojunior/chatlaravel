@@ -7,7 +7,7 @@
                 <span class="navbar-custom icon-bar"></span>
                 <span class="navbar-custom icon-bar"></span>
             </button>
-            <a class="navbar-brand">Mercury</a>
+            <a class="navbar-brand" href="main">Mercury</a>
         </div>
 
         @if(Session::has('user'))

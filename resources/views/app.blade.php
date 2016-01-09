@@ -8,7 +8,8 @@
     <base href="/chatlaravel/public/" target="_top">
     <link rel="stylesheet" type="text/css" href="{{ asset("css/bootstrap.css")  }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset("css/style.css") }}"/>
-    <link href="css/font-awesome.css" rel="stylesheet">
+    <!-- <link href="{{ asset("css/font-awesome.css") }}" rel="stylesheet"> -->
+    <link rel="stylesheet" type="text/css" href="{{ asset("css/fileinput.css") }}" />
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -18,7 +19,7 @@
   </head>
   <body>
     @include('partials.nav')
-    <div class="container">
+    <div class="container mercuryContainer">
     @yield('content')
     </div>
   </body>
@@ -26,5 +27,6 @@
   <script src="{{ asset("js/bootstrap.min.js")}}"></script>
   <script src="{{ asset("js/angular.min.js") }}"></script>
   <script src="{{ asset("js/jquery-ui.min.js")}}"></script>
+  <script src="{{ asset("js/fileinput.min.js")}}"></script>
   @yield('scripts')
 </html>

@@ -13,18 +13,20 @@
 
 Route::get('/', 'UserController@getLoginView');
 Route::get('login', 'UserController@getLoginView');
+Route::get('main', 'UserController@getLoginView');
 Route::get('/testJa', 'UserController@testJTGService');
 Route::get('/testJa2', 'UserController@getFaculty');
+Route::get('register', 'UserController@getRegisterView');
+
+Route::post('login', 'UserController@processLogin');
+Route::post('register', 'UserController@processRegister');
 
 Route::group(['middleware' => 'guest'], function () {
-	Route::get('register', 'UserController@getRegisterView');
 	Route::get('chats', 'ChatController@getChatView');
 	Route::get('contacts', 'ContactController@getContactView');
 	Route::get('profile', 'UserController@getProfileView');
 	Route::get('profile/edit', 'UserController@editProfileView');
 	Route::get('logout', 'UserController@processLogout');
 
-	Route::post('login', 'UserController@processLogin');
-	Route::post('register', 'UserController@processRegister');
 	Route::post('profile/edit', 'UserController@processEditProfile');
 });
