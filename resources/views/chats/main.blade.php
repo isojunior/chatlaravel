@@ -45,11 +45,20 @@
 			    	<div class="list-group">
 			    		@foreach ($userChatList as $userChat)
 						    <a href="chat/{{$userChat['ID_GROUP']}}" class="list-group-item">
-						    	<h4 class="list-group-item-heading">
-						    		{{$userChat['USER2'][0]["FIRST_NAME"]}} {{$userChat['USER2'][0]["LAST_NAME"]}}
-						    		<span class="label label-default label-badge">{{$userChat['BADGE']}}</span>
-						    	</h4>
-						    	<p class="list-group-item-text">{{$userChat['USER2'][0]["POSITION"]}}</p>
+						    	<div class="row">
+							    	<div class="col-xs-1">
+							    		<img class="img-responsive img-circle avatar imgUsr" src="http://apps.jobtopgun.com/Mercury/photos/{{$userChat['USER2'][0]['ID_USER']}}.jpg" onerror='this.src="img/avatar.png"'>
+							    	</div>
+							    	<div class="col-xs-9">
+							    		<h4 class="list-group-item-heading">
+								    		{{$userChat['USER2'][0]['FIRST_NAME']}} {{$userChat['USER2'][0]['LAST_NAME']}}
+								    	</h4>
+								    	<p class="list-group-item-text">{{$userChat['USER2'][0]["POSITION"]}}</p>
+							    	</div>
+							    	<div class="col-xs-2">
+							    		<span class="label label-default label-badge">{{$userChat['BADGE']}}</span>
+							    	</div>
+						    	</div>
 						    </a>
 						@endforeach
 					</div>

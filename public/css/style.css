@@ -52,12 +52,12 @@
     text-decoration: none;
 }
 
-.avatar {
-    float: left;
-    margin-top: 1em;
-    margin-right: 1em;
-    position: relative;
+.imgUsr{
+    max-height: 75px;
+    margin: 0px auto;
+}
 
+.avatar {
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
