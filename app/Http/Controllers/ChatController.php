@@ -20,9 +20,6 @@ class ChatController extends Controller {
 
 	private function getAuthenSession() {
 		$auth = Session::get('user');
-		if (!isset($auth)) {
-			$this->processLogout();
-		}
 		return $auth;
 	}
 

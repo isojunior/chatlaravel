@@ -21,9 +21,6 @@ class UserController extends Controller {
 
 	private function getAuthenSession() {
 		$auth = Session::get('user');
-		if (!isset($auth)) {
-			$this->processLogout();
-		}
 		return $auth;
 	}
 
@@ -91,7 +88,7 @@ class UserController extends Controller {
 
 	public function getProfileView() {
 		$auth = $this->getAuthenSession();
-		return view('users.profile')->with('profile', $auth);
+		return view('users.profile')->with('user', $auth);
 	}
 
 	public function getRegisterView() {
@@ -109,6 +106,7 @@ class UserController extends Controller {
 
 	public function processLogout() {
 		Session::forget('user');
+		//dd(redirect('/'));
 		return redirect('/');
 	}
 

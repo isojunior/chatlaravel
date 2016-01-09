@@ -12,22 +12,22 @@
                             </div>
                             <div class="row">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label">{{ $profile['FIRST_NAME'] }}</label>
+                                    <label class="col-sm-4 control-label">{{ $user['FIRST_NAME'] }}</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label">{{ $profile['LAST_NAME'] }}</label>
+                                    <label class="col-sm-4 control-label">{{ $user['LAST_NAME'] }}</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label">{{ $profile['EMAIL'] }}</label>
+                                    <label class="col-sm-4 control-label">{{ $user['EMAIL'] }}</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label">{{ $profile['TELEPHONE'] }}</label>
+                                    <label class="col-sm-4 control-label">{{ $user['TELEPHONE'] }}</label>
                                 </div>
                             </div>
                             <a href="profile/edit">Edit Profile</a>

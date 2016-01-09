@@ -1,6 +1,5 @@
 @extends('app')
 @section('content')
-<br><br><br>
 	@if($user['USER_TYPE'] =='0')
 	    @if( $user['AUTHORIZE'] =='1')
 	        APPROVE
@@ -9,7 +8,6 @@
 	        therefore wait admin institution's approved
 	    @endif
     @else
-    	You'r admin
     	<div class="panel-group">
 	    	<div class="panel panel-default">
 		    	<div class="panel-heading">
