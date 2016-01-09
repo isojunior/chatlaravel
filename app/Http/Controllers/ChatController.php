@@ -18,13 +18,8 @@ class ChatController extends Controller {
 		}
 	}
 
-	private function getAuthenSession() {
-		$auth = Session::get('user');
-		return $auth;
-	}
-
 	public function getChatView() {
-		$user = $this->getAuthenSession();
+		$user = Session::get('user');
 		if ($user['USER_TYPE'] == 1) {
 			$groupChatServiceName = "getAllAdminGroupChat";
 			$userChatServiceName = "getAllUserGroupChat";
@@ -48,7 +43,7 @@ class ChatController extends Controller {
 	}
 
 	private function getChatListByService($service) {
-		$user = $this->getAuthenSession();
+		$user = Session::get('user');
 		return self::$factory->callWebservice([
 			'query' => [
 				'service' => $service,

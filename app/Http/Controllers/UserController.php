@@ -19,11 +19,6 @@ class UserController extends Controller {
 		self::$factory = new WebserviceClient();
 	}
 
-	private function getAuthenSession() {
-		$auth = Session::get('user');
-		return $auth;
-	}
-
 	private function getUserLogin($email, $password) {
 		$query = DB::table('MERCURY_USER')
 			->where('EMAIL', '=', $email)
@@ -82,12 +77,12 @@ class UserController extends Controller {
 	}
 
 	public function editProfileView() {
-		$auth = $this->getAuthenSession();
+		$auth = Session::get('user');
 		return view('users.editProfile')->with('profile', $auth);
 	}
 
 	public function getProfileView() {
-		$auth = $this->getAuthenSession();
+		$auth = Session::get('user');
 		return view('users.profile')->with('user', $auth);
 	}
 
@@ -96,7 +91,7 @@ class UserController extends Controller {
 	}
 
 	public function getLoginView() {
-		$auth = $this->getAuthenSession();
+		$auth = Session::get('user');
 		if (isset($auth)) {
 			return redirect('chats');
 		} else {
@@ -106,7 +101,6 @@ class UserController extends Controller {
 
 	public function processLogout() {
 		Session::forget('user');
-		//dd(redirect('/'));
 		return redirect('/');
 	}
 
@@ -148,7 +142,7 @@ class UserController extends Controller {
 	}
 
 	public function processEditProfile(Request $request) {
-		$auth = $this->getAuthenSession();
+		$auth = Session::get('user');
 		$rules = array(
 			'Name' => 'required|max:100',
 			'Surname' => 'required|max:100',
