@@ -34,6 +34,24 @@
     background-color: white;
 }
 
+.label-badge{
+    float: right;
+    font-size: 18px;
+}
+
+.mainName{
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.subName{
+    font-size: 14px;
+}
+
+.collapseLink:hover, .collapseLink:active, .collapseLink:focus{
+    text-decoration: none;
+}
+
 .avatar {
     float: left;
     margin-top: 1em;
@@ -67,7 +85,7 @@
 	
 a.logout {
 	margin: 3px 0px 3px 0px;
-
+}
 #project-label {
     display: block;
     font-weight: bold;
