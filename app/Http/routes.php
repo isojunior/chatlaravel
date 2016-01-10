@@ -17,10 +17,10 @@ Route::get('main', 'UserController@getLoginView');
 Route::get('/testJa', 'UserController@testJTGService');
 Route::get('/testJa2', 'UserController@getFaculty');
 Route::get('register', 'UserController@getRegisterView');
-
+Route::get('api/getFaculty','SearchController@getFaculty');
 Route::post('login', 'UserController@processLogin');
 Route::post('register', 'UserController@processRegister');
-
+Route::post('registerUniFac','UserController@updateUniAndFac');
 Route::group(['middleware' => 'guest'], function () {
 	Route::get('chats', 'ChatController@getChatView');
 	Route::get('contacts', 'ContactController@getContactView');

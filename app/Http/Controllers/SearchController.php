@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Constrants;
 use App\Http\WebserviceClient;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Response;
 
 class SearchController extends Controller
 {
@@ -37,22 +39,25 @@ class SearchController extends Controller
         return view('users.registerUniversity')->with('university',$rowsUniversity);
     }
 
-    public function autoComplete(){
-        $term = \Input::get('term');
-        $results = array();
+    public function getFaculty()
+    {
+        $input = Input::get('option');
         $webServiceClient = self::$factory->getWebServiceClient();
         //currently use same uri with base uri bcuz webservice no specify pathURI
         $response = $webServiceClient->get(Constrants::WEB_SERVICE_URI, [
             'query' => [
-                'service' => 'getAllUniversity'
-            ]
+                'service' => 'getAllFaculty',
+                'idUniversity' => $input,
+            ],
         ]);
-        foreach ($response as $query)
+        $dataFac = array();
+        foreach($response['data'] as $data)
         {
-            $results[] = [ 'id' => $query->ID_UNIVERSITY, 'value' => $query->NAME_THA.' '.$query->NAME_ENG ];
+            $dataFac['ID_FACULTY'] = [$data['ID_FACULTY'],$data['NAME_THA']];
         }
-        dd($results);
-        return \Response::json($results);
+
+        return Response::make($dataFac);//eloquent('1');//eloquent($models->get(['id','name']));
+//        dd(json_decode($response->getBody()->getContents(), true));
     }
 
     public function index()
