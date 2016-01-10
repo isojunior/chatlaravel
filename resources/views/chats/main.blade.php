@@ -1,12 +1,18 @@
 @extends('app')
 @section('content')
 @if($user['USER_TYPE'] =='0')
-@if( $user['AUTHORIZE'] =='1')
-	APPROVE
-@else
-	This Application only specified for eduction with advice and useful for students <br>
-	therefore wait admin institution's approved
-@endif
+	@if( $user['AUTHORIZE'] =='0')
+		<div class="row">
+			<div class="jumbotron">
+				<h2>Hello, {{$user['FIRST_NAME']}} {{$user['LAST_NAME']}}</h2>
+			  	<p>This Application only specified for eduction with advice and useful for students
+				therefore wait admin institution's approved</p>
+			  	<p><a class="btn btn-primary btn-lg" href="#" role="button">Go to profile</a></p>
+			</div>
+		</div>
+	@else
+		approve
+	@endif
 @else
 <div class="panel-group">
 	<div class="panel panel-default">
@@ -23,10 +29,10 @@
 				@foreach ($groupChatList as $groupChat)
 				<a href="chat/{{$groupChat['ID_GROUP']}}" class="list-group-item">
 					<h4 class="list-group-item-heading">
-					{{$groupChat['UNIVERSITY'][0]["NAME_THA"]}}
+					{{$groupChat['UNIVERSITY'][0]['NAME_THA']}}
 					<span class="label label-default label-badge">{{$groupChat['BADGE']}}</span>
 					</h4>
-					<p class="list-group-item-text">{{$groupChat['FACULTY'][0]["NAME_THA"]}}</p>
+					<p class="list-group-item-text">{{$groupChat['FACULTY'][0]['NAME_THA']}}</p>
 				</a>
 				@endforeach
 			</div>
