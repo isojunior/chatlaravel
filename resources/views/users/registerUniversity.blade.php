@@ -6,7 +6,7 @@
                 <div class="panel panel-primary loginPanel">
                     <div class="loginPanel loginPanelHeader panel-heading">University and Faculty</div>
                     <p id="project-description"></p>
-{{--                        {{print_r($university['data'][0])}}--}}
+                    {{--{{print_r($university['data'][0])}}--}}
                         @foreach($university['data'] as $value)
                             {{--{{$value['ID_UNIVERSITY']}}{{$value['NAME_THA']}}{{$value['NAME_ENG']}}  <br>--}}
                             {{--{{ $i++ }}--}}
