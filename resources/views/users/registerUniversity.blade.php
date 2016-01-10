@@ -2,7 +2,7 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+            <div class="col-md-8 col-lg-6 col-md-offset-2 col-lg-offset-3">
                 <div class="panel panel-primary loginPanel">
                     <div class="loginPanel loginPanelHeader panel-heading">University and Faculty</div>
                     <p id="project-description"></p>
@@ -13,20 +13,27 @@
                         @endforeach
                     <form action="registerUniFac" method="post">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <label>University</label>
-                        <select id="make" name="university" class="form-control">
-                            @foreach($items as $data)
-                                {{--        print {{$data}};--}}
-                                <option value="{{$data[0]}}">{{$data[1]}}</option>
-                            @endforeach
-                        </select>
+                        <div class="form-group">
+                            <label>University</label>
+                            <select id="make" name="university" class="form-control">
+                                @foreach($items as $data)
+                                    {{--        print {{$data}};--}}
+                                    <option value="{{$data[0]}}">{{$data[1]}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <br>
-                        <label>Faculty</label>
-                        <select id="model" name="faculty" class="form-control">
-                            <option>Please choose University make first</option>
-                        </select>
+                        <div class="form-group">
+                            <label>Faculty</label>
+                            <select id="model" name="faculty" class="form-control">
+                                <option>Please choose University make first</option>
+                            </select>
+                        </div>
                         <br>
-                            <input type="submit" value="Save" class="btn btn-info">
+                        <div class="form-group">
+                                <input type="submit" value="Save" class="btn btn-info btn-block">
+                        </div>
+                        <br>
                     </form>
             </div>
         </div>
