@@ -89,7 +89,6 @@ class UserController extends Controller {
 
 	public function getProfileView() {
 		$auth = Session::get('user');
-		//dd($auth);
 		return view('users.profile')->with('user', $auth);
 	}
 
