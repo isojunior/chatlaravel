@@ -15,6 +15,7 @@ Route::get('/', 'UserController@getLoginView');
 Route::get('login', 'UserController@getLoginView');
 Route::get('/testJa', 'UserController@testJTGService');
 Route::get('/testJa2', 'UserController@getFaculty');
+Route::post('login', 'UserController@processLogin');
 
 Route::group(['middleware' => 'guest'], function () {
 	Route::get('register', 'UserController@getRegisterView');
@@ -24,7 +25,6 @@ Route::group(['middleware' => 'guest'], function () {
 	Route::get('profile/edit', 'UserController@editProfileView');
 	Route::get('logout', 'UserController@processLogout');
 
-	Route::post('login', 'UserController@processLogin');
 	Route::post('register', 'UserController@processRegister');
 	Route::post('profile/edit', 'UserController@processEditProfile');
 });
