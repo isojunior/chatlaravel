@@ -14,7 +14,10 @@
                     </div>
                     <div id="uploadImage" class="row uploadImageInput">
                         <div class="col-xs-8 col-xs-offset-2">
-                            <input id="uploadImageInput" type="file" class="file" data-preview-file-type="text" data-show-preview="false" >
+                            <form id="bannerForm" class="form-horizontal" role="form" method="post" action="uploadProfileImage"  enctype="multipart/form-data">
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <input id="profileImage" name="profileImage" type="file" class="file" data-preview-file-type="text" data-show-preview="false" >
+                            </form>
                         </div>
                     </div>
                     <div class="row">
@@ -46,7 +49,7 @@
 @section('scripts')
 <script type="text/javascript">
     $(document).ready(function(){
-        $("#uploadImageInput").fileinput();
+        $("#profileImage").fileinput();
     });
 
     function uploadImage(){

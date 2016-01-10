@@ -1,11 +1,10 @@
 @extends('app')
 @section('content')
-<br><br><br>
 	@if($user['USER_TYPE'] == 1)
 		<div class="panel-group">
 		  <div class="panel panel-default">
 			<div class="panel-heading">
-				<a data-toggle="collapse" href="#groupList">
+				<a class="collapseLink" data-toggle="collapse" href="#groupList">
 					<h4 class="panel-title">
 			        	<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
 			        	Groups
@@ -16,25 +15,25 @@
 			  <ul class="list-group">
 				@foreach ($groupList as $index)
 					@foreach ($index as $group)
-								<a href="#" class="list-group-item">		<!-- Change href -->
-									<h4 class="list-group-item-heading">
-										{{ $group['UNIVERSITY'][0]['NAME_THA'] }}
-									</h4>
-									<p class="list-group-item-text">{{ $group['FACULTY'][0]['NAME_THA'] }}</p>
-								</a>
+						<a href="#" class="list-group-item">		<!-- Change href -->
+							<h4 class="list-group-item-heading">
+								{{ $group['UNIVERSITY'][0]['NAME_THA'] }}
+							</h4>
+							<p class="list-group-item-text">{{ $group['FACULTY'][0]['NAME_THA'] }}</p>
+						</a>
 					@endforeach
 				@endforeach
 			  </ul>
 			</div>
 			<div class="panel-heading">
-				<a data-toggle="collapse" href="#adminList">
+				<a class="collapseLink" data-toggle="collapse" href="#adminList">
 					<h4 class="panel-title">
 			        	<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 			        	Administrators
 			        </h4>
 				</a>
 			</div>
-			<div id="adminList" class="panel-collapse collapse"> 
+			<div id="adminList" class="panel-collapse collapse">
 			  <ul class="list-group">
 				@foreach ($adminList as $index)
 					@foreach ($index as $admin)

@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Constrants;
 use App\Http\Controllers\Controller;
 use App\Http\WebserviceClient;
-use App\Http\Constrants;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 
-class ContactController extends Controller
-{
+class ContactController extends Controller {
 	private static $factory;
 
 	public function __construct() {
@@ -19,7 +18,7 @@ class ContactController extends Controller
 			self::$factory = new WebserviceClient();
 		}
 	}
-	
+
 	private function getAuthenSession() {
 		$auth = Session::get('user');
 		if (!isset($auth)) {
@@ -27,34 +26,34 @@ class ContactController extends Controller
 		}
 		return $auth;
 	}
-	
+
 	private function getContactList($service, Array $result = array()) {
 		$user = $this->getAuthenSession();
 		foreach ($service as $s) {
-			array_push($result, 
-					self::$factory->callWebservice([
-						'query' => [
-							'service' => $s
-						],
-					])
+			array_push($result,
+				self::$factory->callWebservice([
+					'query' => [
+						'service' => $s,
+					],
+				])
 			);
 		}
 
 		return $result;
 	}
-	
-	public function getContactView() {	
+
+	public function getContactView() {
 		$user = $this->getAuthenSession();
-		if($user['USER_TYPE'] == 1) {
-			$service_set = array("getAllMemberUniversityAndFaculty","getAllAdmin");
+		if ($user['USER_TYPE'] == 1) {
+			$service_set = array("getAllMemberUniversityAndFaculty", "getAllAdmin");
 		}
 		$contacts = $this->getContactList($service_set);
-		
+
 		return View('contacts.list')
 			->with('user', $user)
 			->with('groupList', $contacts[0])
 			->with('adminList', $contacts[1])
-			->with('company', Constrants::company_name);
+			->with('company', Constrants::TOPGUN_COMPANY_NAME);
 	}
 
 }
