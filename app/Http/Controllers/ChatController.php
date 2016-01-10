@@ -36,8 +36,6 @@ class ChatController extends Controller {
 
 		$userBadgeResult = $this->getChatListByService($userBadgeServiceName);
 
-		dd($userChatResult);
-
 		return View('chats.main')->with('user', $user)
 			->with('groupChatList', $groupChatResult["data"])
 			->with('userChatList', $userChatResult["data"])
