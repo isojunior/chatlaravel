@@ -31,7 +31,7 @@
             </div>
         </div>
     </div>
-    <a href="logout">Logout</a>
+    {{--<a href="logout">Logout</a>--}}
         <div id="project-label">Select a project (type "j" for a start):</div>
         {{--<img id="project-icon" src="images/transparent_1x1.png" class="ui-state-default" alt="">--}}
         <input id="project">
@@ -39,19 +39,19 @@
         <p id="project-description"></p>
     </div>
 <br><br><br><br><br><br><br><br><br>
-    <h1>Dropdown demo</h1>
-    <form>
-        <select id="make" name="make">
-            @foreach($items as $data)
+    {{--<h1>Dropdown demo</h1>--}}
+    {{--<form>--}}
+        {{--<select id="make" name="make">--}}
+            {{--@foreach($items as $data)--}}
                 {{--        print {{$data}};--}}
-                <option value="{{$data[0]}}">{{$data[0].'--'.$data[1]}}</option>
-            @endforeach
-        </select>
-        <br>
-        <select id="model" name="model">
-            <option>Please choose University make first</option>
-        </select>
-    </form>
+                {{--<option value="{{$data[0]}}">{{$data[0].'--'.$data[1]}}</option>--}}
+            {{--@endforeach--}}
+        {{--</select>--}}
+        {{--<br>--}}
+        {{--<select id="model" name="model">--}}
+            {{--<option>Please choose University make first</option>--}}
+        {{--</select>--}}
+    {{--</form>--}}
 
 
 @endsection
@@ -67,7 +67,7 @@
                             model.empty();
 
                             $.each(data, function(index, element) {
-                                model.append("<option value='"+ element.id +"'>" + element.name + "</option>");
+                                model.append("<option value='"+ element.ID_FACULTY +"'>" + element.NAME_THA + "</option>");
                             });
                         });
             });
@@ -76,7 +76,7 @@
         $(function() {
 
             //--console.log({{--$university['data']}});--}}
-            //--console.log(<?php// echo $university['data'] ?>);--}}
+            //--console.log(<--?php// echo $university['data'] ?>);--}}
             //--var data = {{-- json_encode($university['data'])}}--}}
             //            console.log('123');
             var projects = [
@@ -123,4 +123,5 @@
             };
         });
     </script>
+
 @endsection

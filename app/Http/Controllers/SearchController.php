@@ -42,21 +42,32 @@ class SearchController extends Controller
     public function getFaculty()
     {
         $input = Input::get('option');
-        $webServiceClient = self::$factory->getWebServiceClient();
-        //currently use same uri with base uri bcuz webservice no specify pathURI
-        $response = $webServiceClient->get(Constrants::WEB_SERVICE_URI, [
+//        $webServiceClient = self::$factory->getWebServiceClient();
+//        //currently use same uri with base uri bcuz webservice no specify pathURI
+//        $response = $webServiceClient->get(Constrants::WEB_SERVICE_URI, [
+//            'query' => [
+//                'service' => 'getAllFaculty',
+//                'idUniversity' => $input,
+//            ],
+//        ]);
+        $faculty = self::$factory->callWebservice([
             'query' => [
                 'service' => 'getAllFaculty',
                 'idUniversity' => $input,
             ],
         ]);
         $dataFac = array();
-        foreach($response['data'] as $data)
+
+        foreach($faculty['data'] as $data)
         {
             $dataFac['ID_FACULTY'] = [$data['ID_FACULTY'],$data['NAME_THA']];
         }
+//        if(strlen($dataFac)==0)
+//        {
+//            $dataFac[0] = [$dataFac[0],['NOT FOUND']];
+//        }
 
-        return Response::make($dataFac);//eloquent('1');//eloquent($models->get(['id','name']));
+        return Response::make($faculty['data']);//eloquent('1');//eloquent($models->get(['id','name']));
 //        dd(json_decode($response->getBody()->getContents(), true));
     }
 

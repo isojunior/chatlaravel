@@ -81,6 +81,7 @@ class UserController extends Controller {
 			],
 		]);
 		$item=array();
+		$item[0] = [0,'------SELECT UNIVERSITY------'];
 		foreach($university['data'] as $data)
 		{
 			$item[$data['ID_UNIVERSITY']] = [$data['ID_UNIVERSITY'],$data['NAME_THA']];
@@ -324,6 +325,7 @@ class UserController extends Controller {
 		$auth = Session::get('user');
 		$inputUni = $request->input("university");
 		$inputFac = $request->input("faculty");
+		dd($inputUni.'-'.$inputFac);
 		$updateFac = self::$factory->callWebservice([
 			'query' => [
 				'service' => 'updateFaculty',
