@@ -56,18 +56,24 @@ class SearchController extends Controller
                 'idUniversity' => $input,
             ],
         ]);
-        $dataFac = array();
 
+        $item=array();
+        $item[0] = [0,'ส่วนกลาง CENTER'];
         foreach($faculty['data'] as $data)
         {
-            $dataFac['ID_FACULTY'] = [$data['ID_FACULTY'],$data['NAME_THA']];
+            $item[$data['ID_FACULTY']] = [$data['ID_FACULTY'],$data['NAME_THA'].' '.$data['NAME_ENG']];
         }
+//        $faculty['data'][0] = ['0','ส่วนกลาง'];
+//        foreach($faculty['data'] as $data)
+//        {
+//            $dataFac['ID_FACULTY'] = [$data['ID_FACULTY'],$data['NAME_THA']];
+//        }
 //        if(strlen($dataFac)==0)
 //        {
 //            $dataFac[0] = [$dataFac[0],['NOT FOUND']];
 //        }
-
-        return Response::make($faculty['data']);//eloquent('1');//eloquent($models->get(['id','name']));
+        return Response::make($item);
+     //   return Response::make($faculty['data']);//eloquent('1');//eloquent($models->get(['id','name']));
 //        dd(json_decode($response->getBody()->getContents(), true));
     }
 

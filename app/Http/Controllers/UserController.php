@@ -68,7 +68,7 @@ class UserController extends Controller {
 		dd($faculty);
 		//dd(json_decode($response->getBody()->getContents(), true));
 	}
-	public function testJTGService() {
+	public function processUniversityAndFaculty() {
 		$university = self::$factory->callWebservice([
 			'query' => [
 				'service' => 'getAllUniversity',

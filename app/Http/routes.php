@@ -14,7 +14,7 @@
 Route::get('/', 'UserController@getLoginView');
 Route::get('login', 'UserController@getLoginView');
 Route::get('main', 'UserController@getLoginView');
-Route::get('/testJa', 'UserController@testJTGService');
+Route::get('uniAndFac', 'UserController@processUniversityAndFaculty');
 Route::get('/testJa2', 'UserController@getFaculty');
 Route::get('register', 'UserController@getRegisterView');
 Route::get('api/getFaculty', 'SearchController@getFaculty');
