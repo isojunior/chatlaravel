@@ -360,6 +360,16 @@ class UserController extends Controller {
 				'idUser' => $auth['ID_USER'],
 			],
 		]);
+		if ($updateFac["data"][0]["result"] == 1) {
+			$userResult = self::$factory->callWebservice([
+				'query' => [
+					'service' => 'getUser',
+					'idUser' => $auth['ID_USER'],
+				],
+			]);
+			Session::put('user', $userResult["data"][0]);
+			Session::flash('alert-success', 'Update Successful');
+		}
 		return redirect('profile');
 	}
 }
