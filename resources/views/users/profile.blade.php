@@ -3,7 +3,7 @@
 <div class="container-fluid" >
     <div class="row">
         <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
-            <div class="panel panel-info loginPanel">
+            <div class="panel panel-primary loginPanel">
                 <div class="loginPanel loginPanelHeader panel-heading">Account</div>
                 <div class="panel-body">
                     @include('partials.flashmessage')
@@ -37,11 +37,45 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-12 text-center">
-                            <a class="btn btn-primary" href="profile/edit">Edit Profile</a>
+                            <a class="btn btn-info" href="profile/edit">Edit Profile</a>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+            <div class="form-group">
+                <label for="university">University:</label>
+                <div class="col-xs-12">
+                    @if( $user['ID_UNIVERSITY'] <= 0 || count($user['UNIVERSITY'])==0)
+                        <span id="university" class="red">ไม่ระบุ</span>
+                    @else
+                        <span id="university" class="red">
+                            {{$user['UNIVERSITY'][0]["NAME_THA"]}}
+                        </span>
+                    @endif
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="university">Faculty:</label>
+                <div class="col-xs-12">
+                    @if( $user['ID_FACULTY'] <= 0 || count($user['FACULTY'])==0)
+                        <span id="faculty" class="red">ไม่ระบุ</span>
+                    @else
+                        <span id="faculty" class="blue">
+                            {{$user['FACULTY'][0]["NAME_THA"]}}
+                        </span>
+                    @endif
+                </div>
+            </div>
+            <div class="form-group marginTopProfile">
+                <div class="col-md-8 col-lg-6 col-md-offset-2 col-lg-offset-3">
+                    <a class="btn btn-info btn-block" href="#">ระบุ/แก้ไขข้อมูลสถาบันการศึกษา/คณะ</a>
+                </div>
+            </div>
+        </div>
         </div>
     </div>
 </div>

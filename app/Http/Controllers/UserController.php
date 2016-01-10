@@ -74,11 +74,10 @@ class UserController extends Controller {
 				'service' => 'getAllUniversity',
 			],
 		]);
-		$item=array();
-		$item[0] = [0,'------SELECT UNIVERSITY------'];
-		foreach($university['data'] as $data)
-		{
-			$item[$data['ID_UNIVERSITY']] = [$data['ID_UNIVERSITY'],$data['NAME_THA']];
+		$item = array();
+		$item[0] = [0, '------SELECT UNIVERSITY------'];
+		foreach ($university['data'] as $data) {
+			$item[$data['ID_UNIVERSITY']] = [$data['ID_UNIVERSITY'], $data['NAME_THA']];
 		}
 		return view('users.registerUniversity')->with('university', $university)->with('items', $item);
 	}
@@ -90,6 +89,7 @@ class UserController extends Controller {
 
 	public function getProfileView() {
 		$auth = Session::get('user');
+		//dd($auth);
 		return view('users.profile')->with('user', $auth);
 	}
 
