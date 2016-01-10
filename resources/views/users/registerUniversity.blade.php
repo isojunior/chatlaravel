@@ -32,13 +32,13 @@
         </div>
     </div>
     {{--<a href="logout">Logout</a>--}}
-        <div id="project-label">Select a project (type "j" for a start):</div>
+        {{--<div id="project-label">Select a project (type "j" for a start):</div>--}}
         {{--<img id="project-icon" src="images/transparent_1x1.png" class="ui-state-default" alt="">--}}
-        <input id="project">
-        <input type="hidden" id="project-id">
-        <p id="project-description"></p>
-    </div>
-<br><br><br><br><br><br><br><br><br>
+        {{--<input id="project">--}}
+        {{--<input type="hidden" id="project-id">--}}
+        {{--<p id="project-description"></p>--}}
+    {{--</div>--}}
+{{--<br><br><br><br><br><br><br><br><br>--}}
     {{--<h1>Dropdown demo</h1>--}}
     {{--<form>--}}
         {{--<select id="make" name="make">--}}
@@ -67,7 +67,7 @@
                             model.empty();
 
                             $.each(data, function(index, element) {
-                                model.append("<option value='"+ element.ID_FACULTY +"'>" + element.NAME_THA + "</option>");
+                                model.append("<option value='"+ element[0] +"'>" + element[1] + "</option>");
                             });
                         });
             });

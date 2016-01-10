@@ -72,7 +72,7 @@
             </div>
             <div class="form-group marginTopProfile">
                 <div class="col-md-8 col-lg-6 col-md-offset-2 col-lg-offset-3">
-                    <a class="btn btn-info btn-block" href="#">ระบุ/แก้ไขข้อมูลสถาบันการศึกษา/คณะ</a>
+                    <a class="btn btn-info btn-block" href="uniAndFac">ระบุ/แก้ไขข้อมูลสถาบันการศึกษา/คณะ</a>
                 </div>
             </div>
         </div>
