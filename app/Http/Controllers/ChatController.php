@@ -20,21 +20,37 @@ class ChatController extends Controller {
 
 	public function getChatView() {
 		$user = Session::get('user');
-		if ($user['USER_TYPE'] == 1) {
-			$groupChatServiceName = "getAllAdminGroupChat";
-			$userChatServiceName = "getAllUserGroupChat";
-			$userBadgeServiceName = "getUserBadge";
-
-		} else {
+		$groupChatServiceName = "getAllAdminGroupChat";
+		$userChatServiceName = "getAllUserGroupChat";
+		$userBadgeServiceName = "getUserBadge";
+		if ($user['USER_TYPE'] == 0) {
 			$groupChatServiceName = "getAllGroupChat";
 			$userChatServiceName = "getAllUserGroupChat";
 			$userBadgeServiceName = "getUserBadge";
 		}
-		$groupChatResult = $this->getChatListByService($groupChatServiceName);
 
-		$userChatResult = $this->getChatListByService($userChatServiceName);
+		$groupChatResult = self::$factory->callWebservice([
+			'query' => [
+				'service' => $groupChatServiceName,
+				'idUser' => $user['ID_USER'],
+				'idUniversity' => $user['ID_UNIVERSITY'],
+				'idFaculty' => $user['ID_FACULTY'],
+			],
+		]);
 
-		$userBadgeResult = $this->getChatListByService($userBadgeServiceName);
+		$userChatResult = self::$factory->callWebservice([
+			'query' => [
+				'service' => $userChatServiceName,
+				'idUser' => $user['ID_USER'],
+			],
+		]);
+
+		$userBadgeResult = self::$factory->callWebservice([
+			'query' => [
+				'service' => $userBadgeServiceName,
+				'idUser' => $user['ID_USER'],
+			],
+		]);
 
 		return View('chats.main')->with('user', $user)
 			->with('groupChatList', $groupChatResult["data"])
@@ -42,13 +58,4 @@ class ChatController extends Controller {
 			->with('userBadge', $userBadgeResult["data"]);
 	}
 
-	private function getChatListByService($service) {
-		$user = Session::get('user');
-		return self::$factory->callWebservice([
-			'query' => [
-				'service' => $service,
-				'idUser' => $user['ID_USER'],
-			],
-		]);
-	}
 }

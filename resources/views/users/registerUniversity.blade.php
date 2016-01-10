@@ -74,11 +74,6 @@
         });
 
         $(function() {
-
-            //--console.log({{--$university['data']}});--}}
-            //--console.log(<--?php// echo $university['data'] ?>);--}}
-            //--var data = {{-- json_encode($university['data'])}}--}}
-            //            console.log('123');
             var projects = [
                 {
                     value: "jquery",
@@ -111,8 +106,6 @@
                             $( "#project" ).val( ui.item.label );
                             $( "#project-id" ).val( ui.item.value );
                             $( "#project-description" ).html( ui.item.desc );
-//                            $( "#project-icon" ).attr( "src", "images/" + ui.item.icon );
-
                             return false;
                         }
                     })

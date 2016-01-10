@@ -52,7 +52,7 @@
                     @if( $user['ID_UNIVERSITY'] <= 0 || count($user['UNIVERSITY'])==0)
                         <span id="university" class="red">ไม่ระบุ</span>
                     @else
-                        <span id="university" class="red">
+                        <span id="university" class="blue">
                             {{$user['UNIVERSITY'][0]["NAME_THA"]}}
                         </span>
                     @endif
@@ -61,11 +61,15 @@
             <div class="form-group">
                 <label for="university">Faculty:</label>
                 <div class="col-xs-12">
-                    @if( $user['ID_FACULTY'] <= 0 || count($user['FACULTY'])==0)
+                    @if( ($user['ID_UNIVERSITY'] <= 0 && $user['ID_FACULTY'] < 0) || count($user['FACULTY'])==0)
                         <span id="faculty" class="red">ไม่ระบุ</span>
                     @else
                         <span id="faculty" class="blue">
-                            {{$user['FACULTY'][0]["NAME_THA"]}}
+                            @if($user['ID_FACULTY']==0)
+                                ส่วนกลาง
+                            @else
+                                {{$user['FACULTY'][0]["NAME_THA"]}}
+                            @endif
                         </span>
                     @endif
                 </div>
