@@ -57,15 +57,22 @@ class UserController extends Controller {
 		return $query;
 	}
 	public function getFaculty() {
-		$webServiceClient = self::$factory->getWebServiceClient();
-		//currently use same uri with base uri bcuz webservice no specify pathURI
-		$response = $webServiceClient->get(Constrants::WEB_SERVICE_URI, [
+//		$webServiceClient = self::$factory->getWebServiceClient();
+//		//currently use same uri with base uri bcuz webservice no specify pathURI
+//		$response = $webServiceClient->get(Constrants::WEB_SERVICE_URI, [
+//			'query' => [
+//				'service' => 'getAllFaculty',
+//				'idUniversity' => '9027',
+//			],
+//		]);
+		$faculty = self::$factory->callWebservice([
 			'query' => [
 				'service' => 'getAllFaculty',
 				'idUniversity' => '9027',
 			],
 		]);
-		dd(json_decode($response->getBody()->getContents(), true));
+		dd($faculty);
+		//dd(json_decode($response->getBody()->getContents(), true));
 	}
 	public function testJTGService() {
 		$university = self::$factory->callWebservice([
@@ -73,7 +80,12 @@ class UserController extends Controller {
 				'service' => 'getAllUniversity',
 			],
 		]);
-		return view('users.registerUniversity')->with('university', $university);
+		$item=array();
+		foreach($university['data'] as $data)
+		{
+			$item[$data['ID_UNIVERSITY']] = [$data['ID_UNIVERSITY'],$data['NAME_THA']];
+		}
+		return view('users.registerUniversity')->with('university', $university)->with('items',$item);
 	}
 
 	public function editProfileView() {
@@ -305,5 +317,21 @@ class UserController extends Controller {
 			Session::flash('alert-success', 'Register Successful');
 			return redirect('/');
 		}
+	}
+
+	public function updateUniAndFac(Request $request)
+	{
+		$auth = Session::get('user');
+		$inputUni = $request->input("university");
+		$inputFac = $request->input("faculty");
+		$updateFac = self::$factory->callWebservice([
+			'query' => [
+				'service' => 'updateFaculty',
+				'idUniversity'=>$inputUni,
+				'idFaculty'=>$inputFac,
+				'idUser'=>$auth['ID_USER']
+			],
+		]);
+		return redirect('profile');
 	}
 }
