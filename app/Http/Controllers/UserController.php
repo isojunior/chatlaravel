@@ -69,6 +69,7 @@ class UserController extends Controller {
 		//dd(json_decode($response->getBody()->getContents(), true));
 	}
 	public function processUniversityAndFaculty() {
+		$auth = Session::get('user');
 		$university = self::$factory->callWebservice([
 			'query' => [
 				'service' => 'getAllUniversity',
@@ -79,7 +80,7 @@ class UserController extends Controller {
 		foreach ($university['data'] as $data) {
 			$item[$data['ID_UNIVERSITY']] = [$data['ID_UNIVERSITY'], $data['NAME_THA']];
 		}
-		return view('users.registerUniversity')->with('university', $university)->with('items', $item);
+		return view('users.registerUniversity')->with('university', $university)->with('items', $item)->with('user',$auth);
 	}
 
 	public function editProfileView() {

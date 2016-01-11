@@ -11,6 +11,7 @@
                             {{--{{$value['ID_UNIVERSITY']}}{{$value['NAME_THA']}}{{$value['NAME_ENG']}}  <br>--}}
                             {{--{{ $i++ }}--}}
                         @endforeach
+
                     <form action="registerUniFac" method="post">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="form-group">
@@ -18,7 +19,9 @@
                             <select id="make" name="university" class="form-control">
                                 @foreach($items as $data)
                                     {{--        print {{$data}};--}}
-                                    <option value="{{$data[0]}}">{{$data[1]}}</option>
+                                    <option value="{{$data[0]}}"
+                                            {{Session::get('user')['ID_UNIVERSITY'] == $data[0] ? 'selected':''}}>
+                                        {{$data[1]}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -26,7 +29,11 @@
                         <div class="form-group">
                             <label>Faculty</label>
                             <select id="model" name="faculty" class="form-control">
-                                <option>Please choose University make first</option>
+                                @if(Session::get('user')['ID_FACULTY']==-1)
+                                    <option>Please choose University make first</option>
+                                @else
+                                    <option value="{{$user['FACULTY'][0]['ID_FACULTY']}}">{{$user['FACULTY'][0]['NAME_THA']}} {{$user['FACULTY'][0]['NAME_ENG']}}</option>
+                                @endif
                             </select>
                         </div>
                         <br>
@@ -50,7 +57,7 @@
     {{--<form>--}}
         {{--<select id="make" name="make">--}}
             {{--@foreach($items as $data)--}}
-                {{--        print {{$data}};--}}
+                        {{--print {{$data}};--}}
                 {{--<option value="{{$data[0]}}">{{$data[0].'--'.$data[1]}}</option>--}}
             {{--@endforeach--}}
         {{--</select>--}}
@@ -79,49 +86,50 @@
                         });
             });
         });
+        {{--$(function() {--}}
 
-        $(function() {
-            var projects = [
-                {
-                    value: "jquery",
-                    label: "jQuery",
-                    desc: "the write less, do more, JavaScript library",
-                    icon: "jquery_32x32.png"
-                },
-                {
-                    value: "jquery-ui",
-                    label: "jQuery UI",
-                    desc: "the official user interface library for jQuery",
-                    icon: "jqueryui_32x32.png"
-                },
-                {
-                    value: "sizzlejs",
-                    label: "Sizzle JS",
-                    desc: "a pure-JavaScript CSS selector engine",
-                    icon: "sizzlejs_32x32.png"
-                }
-            ];
+            {{--var test = {!!  json_encode($university)!!}--}}
+            {{--alert(test['data'][0]['ID_UNIVERSITY']+'_'+test['data'][0]['NAME_THA']+'_'+test['data'][0]['NAME_ENG']);--}}
+            {{--var projects = [--}}
+                {{--{--}}
+                    {{--value: "jquery",--}}
+                    {{--label: "jQuery",--}}
+                    {{--desc: "the write less, do more, JavaScript library",--}}
+                    {{--icon: "jquery_32x32.png"--}}
+                {{--},--}}
+                {{--{--}}
+                    {{--value: "jquery-ui",--}}
+                    {{--label: "jQuery UI",--}}
+                    {{--desc: "the official user interface library for jQuery",--}}
+                    {{--icon: "jqueryui_32x32.png"--}}
+                {{--},--}}
+                {{--{--}}
+                    {{--value: "sizzlejs",--}}
+                    {{--label: "Sizzle JS",--}}
+                    {{--desc: "a pure-JavaScript CSS selector engine",--}}
+                    {{--icon: "sizzlejs_32x32.png"--}}
+                {{--}--}}
+            {{--];--}}
 
-            $( "#project" ).autocomplete({
-                        minLength: 0,
-                        source: projects,
-                        focus: function( event, ui ) {
-                            $( "#project" ).val( ui.item.label );
-                            return false;
-                        },
-                        select: function( event, ui ) {
-                            $( "#project" ).val( ui.item.label );
-                            $( "#project-id" ).val( ui.item.value );
-                            $( "#project-description" ).html( ui.item.desc );
-                            return false;
-                        }
-                    })
-                    .autocomplete( "instance" )._renderItem = function( ul, item ) {
-                return $( "<li>" )
-                        .append( "<a>" + item.label + "<br>" + item.desc + "</a>" )
-                        .appendTo( ul );
-            };
-        });
+            {{--$( "#project" ).autocomplete({--}}
+                        {{--minLength: 0,--}}
+                        {{--source: projects,--}}
+                        {{--focus: function( event, ui ) {--}}
+                            {{--$( "#project" ).val( ui.item.label );--}}
+                            {{--return false;--}}
+                        {{--},--}}
+                        {{--select: function( event, ui ) {--}}
+                            {{--$( "#project" ).val( ui.item.label );--}}
+                            {{--$( "#project-id" ).val( ui.item.value );--}}
+                            {{--$( "#project-description" ).html( ui.item.desc );--}}
+                            {{--return false;--}}
+                        {{--}--}}
+                    {{--})--}}
+                    {{--.autocomplete( "instance" )._renderItem = function( ul, item ) {--}}
+                {{--return $( "<li>" )--}}
+                        {{--.append( "<a>" + item.label + "<br>" + item.desc + "</a>" )--}}
+                        {{--.appendTo( ul );--}}
+            {{--};--}}
+        {{--});--}}
     </script>
-
 @endsection
