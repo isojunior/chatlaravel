@@ -30,4 +30,5 @@ Route::group(['middleware' => 'guest'], function () {
 	Route::get('profile/edit', 'UserController@editProfileView');
 	Route::get('logout', 'UserController@processLogout');
 	Route::post('profile/edit', 'UserController@processEditProfile');
+	Route::get('authorizedList', 'ContactController@getAuthorizedResult');
 });
