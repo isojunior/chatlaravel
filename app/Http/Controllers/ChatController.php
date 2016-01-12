@@ -4,18 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\WebserviceClient;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 
 class ChatController extends Controller {
 	private static $factory;
 
 	public function __construct() {
-		if (!Session::has('user')) {
-			return Redirect::to('/')->send();
-		} else {
-			self::$factory = new WebserviceClient();
-		}
+		self::$factory = new WebserviceClient();
 	}
 
 	public function getChatView() {
@@ -40,7 +35,7 @@ class ChatController extends Controller {
 				'idUser' => $user['ID_USER'],
 			],
 		]);
-		//dd($userChatResult);
+
 		return View('chats.main')->with('user', $user)
 			->with('userChatList', $userChatResult["data"])
 			->with('userBadge', $userBadgeResult["data"]);

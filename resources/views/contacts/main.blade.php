@@ -121,7 +121,7 @@
 					<div class="panel-heading">
 						<a class="collapseLink" data-toggle="collapse" href="#unAuthorizeList">
 							<h4 class="panel-title">
-					        	<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+					        	<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
 					        	คำร้องขอ
 					        </h4>
 						</a>
@@ -154,7 +154,7 @@
 					<div class="panel-heading">
 						<a class="collapseLink" data-toggle="collapse" href="#adminList">
 							<h4 class="panel-title">
-					        	<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+					        	<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
 					        	Administrators
 					        </h4>
 						</a>
@@ -183,7 +183,7 @@
 					<div class="panel-heading">
 						<a class="collapseLink" data-toggle="collapse" href="#memberList">
 							<h4 class="panel-title">
-					        	<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+					        	<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 					        	Friend
 					        </h4>
 						</a>
@@ -216,7 +216,7 @@
 					<div class="panel-heading">
 						<a class="collapseLink" data-toggle="collapse" href="#rejectList">
 							<h4 class="panel-title">
-					        	<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+					        	<span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
 					        	ผู้ที่ถูกปฏิเสธเข้าร่วมกลุ่ม
 					        </h4>
 						</a>
