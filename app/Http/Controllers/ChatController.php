@@ -20,23 +20,12 @@ class ChatController extends Controller {
 
 	public function getChatView() {
 		$user = Session::get('user');
-		$groupChatServiceName = "getAllAdminGroupChat";
-		$userChatServiceName = "getAllUserGroupChat";
+		$userChatServiceName = "getGroupChatForAdmin";
 		$userBadgeServiceName = "getUserBadge";
 		if ($user['USER_TYPE'] == 0) {
-			$groupChatServiceName = "getAllGroupChat";
-			$userChatServiceName = "getAllUserGroupChat";
+			$userChatServiceName = "getGroupChatForUser";
 			$userBadgeServiceName = "getUserBadge";
 		}
-
-		$groupChatResult = self::$factory->callWebservice([
-			'query' => [
-				'service' => $groupChatServiceName,
-				'idUser' => $user['ID_USER'],
-				'idUniversity' => $user['ID_UNIVERSITY'],
-				'idFaculty' => $user['ID_FACULTY'],
-			],
-		]);
 
 		$userChatResult = self::$factory->callWebservice([
 			'query' => [
@@ -51,9 +40,8 @@ class ChatController extends Controller {
 				'idUser' => $user['ID_USER'],
 			],
 		]);
-
+		//dd($userChatResult);
 		return View('chats.main')->with('user', $user)
-			->with('groupChatList', $groupChatResult["data"])
 			->with('userChatList', $userChatResult["data"])
 			->with('userBadge', $userBadgeResult["data"]);
 	}

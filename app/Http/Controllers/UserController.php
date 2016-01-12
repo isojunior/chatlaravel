@@ -80,7 +80,7 @@ class UserController extends Controller {
 		foreach ($university['data'] as $data) {
 			$item[$data['ID_UNIVERSITY']] = [$data['ID_UNIVERSITY'], $data['NAME_THA']];
 		}
-		return view('users.registerUniversity')->with('university', $university)->with('items', $item)->with('user',$auth);
+		return view('users.registerUniversity')->with('university', $university)->with('items', $item)->with('user', $auth);
 	}
 
 	public function editProfileView() {

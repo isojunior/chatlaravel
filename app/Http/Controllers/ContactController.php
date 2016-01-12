@@ -2,34 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Constrants;
 use App\Http\Controllers\Controller;
 use App\Http\WebserviceClient;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 
 class ContactController extends Controller {
 	private static $factory;
 
 	public function __construct() {
-		if (!Session::has('user')) {
-			return Redirect::to('/')->send();
-		} else {
-			self::$factory = new WebserviceClient();
-		}
+		self::$factory = new WebserviceClient();
 	}
-	
+
 	// get Authorzied & Unauthorized list
 	private function getAuthorizedList($services, $university, $faculty, $result = array()) {
 		foreach ($services as $s) {
-			array_push($result, 
-					self::$factory->callWebservice([
-						'query' => [
-							'service' => $s,
-							'idUniversity' => $university,
-							'idFaculty' => $faculty
-						],
-					])
+			array_push($result,
+				self::$factory->callWebservice([
+					'query' => [
+						'service' => $s,
+						'idUniversity' => $university,
+						'idFaculty' => $faculty,
+					],
+				])
 			);
 		}
 		return $result;
@@ -47,28 +41,86 @@ class ContactController extends Controller {
 		}
 		return $result;
 	}
-	
-	public function getContactView() {		
+
+	public function getContactView() {
 		$user = Session::get('user');
-		if($user['USER_TYPE'] == 1) {
-			$services = array("getAllMemberUniversityAndFaculty","getAllAdmin");
+		if ($user['USER_TYPE'] == 1) {
+			$services = array("getAllMemberUniversityAndFaculty", "getAllAdmin");
 			$contacts = $this->getContactList($services);
-		
-		return View('contacts.list')
-			->with('user', $user)
-			->with('groupList', $contacts[0]['data'])
-			->with('adminList', $contacts[1]['data'])
-			->with('company', Constrants::TOPGUN_COMPANY_NAME);
-		
+
+			return View('contacts.main')
+				->with('user', $user)
+				->with('groupList', $contacts[0]['data'])
+				->with('adminList', $contacts[1]['data']);
+
 		} else {
-			return View('contacts.list')->with('user', $user);
+			if ($user['AUTHORIZE'] == 3) {
+				$memberAuthorizedResult = self::$factory->callWebservice([
+					'query' => [
+						'service' => "getMemberAuthorized",
+						'idUniversity' => $user['ID_UNIVERSITY'],
+						'idFaculty' => $user['ID_FACULTY'],
+					],
+				]);
+
+				return View('contacts.main')
+					->with('user', $user)
+					->with('memberAuthorizedList', $memberAuthorizedResult);
+			} else {
+				$unAuthorizeResult = null;
+				$allAdminResult = null;
+				$groupResult = null;
+				$memberResult = null;
+				$memberRejectedResult = null;
+				if ($user['AUTHORIZE'] == 1) {
+					$unAuthorizeResult = self::$factory->callWebservice([
+						'query' => [
+							'service' => "getMemberUnAuthorized",
+							'idUniversity' => $user['ID_UNIVERSITY'],
+							'idFaculty' => $user['ID_FACULTY'],
+						],
+					]);
+
+					$memberRejectedResult = self::$factory->callWebservice([
+						'query' => [
+							'service' => "getMemberReject",
+							'idUniversity' => $user['ID_UNIVERSITY'],
+							'idFaculty' => $user['ID_FACULTY'],
+						],
+					]);
+
+				}
+				/** todo case group **/
+
+				$allAdminResult = self::$factory->callWebservice([
+					'query' => [
+						'service' => "getAllAdmin",
+						'idUniversity' => $user['ID_UNIVERSITY'],
+					],
+				]);
+
+				$memberResult = self::$factory->callWebservice([
+					'query' => [
+						'service' => "getMember",
+						'idUniversity' => $user['ID_UNIVERSITY'],
+						'idFaculty' => $user['ID_FACULTY'],
+					],
+				]);
+
+				return View('contacts.main')
+					->with('unAuthorizeList', $unAuthorizeResult['data'])
+					->with('adminList', $allAdminResult['data'])
+					->with('memberList', $memberResult['data'])
+					->with('rejectList', $memberRejectedResult['data'])
+					->with('user', $user);
+			}
 		}
 	}
-	
-	public function getAuthorizedResult(){
+
+	public function getAuthorizedResult() {
 		$idUniversity = $_GET['data'][0];
 		$idFaculty = $_GET['data'][1];
-		$services = array("getMemberAuthorized","getMemberUnAuthorized","getMemberGroup","getMemberReject");
+		$services = array("getMemberAuthorized", "getMemberUnAuthorized", "getMemberGroup", "getMemberReject");
 		$authorized_list = $this->getAuthorizedList($services, $idUniversity, $idFaculty);
 		dd($authorized_list);
 		//return Response::make($authorized_list);
