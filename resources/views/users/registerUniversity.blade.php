@@ -2,7 +2,7 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+            <div class="col-md-8 col-lg-6 col-md-offset-2 col-lg-offset-3">
                 <div class="panel panel-primary loginPanel">
                     <div class="loginPanel loginPanelHeader panel-heading">University and Faculty</div>
                     <p id="project-description"></p>
@@ -11,39 +11,53 @@
                             {{--{{$value['ID_UNIVERSITY']}}{{$value['NAME_THA']}}{{$value['NAME_ENG']}}  <br>--}}
                             {{--{{ $i++ }}--}}
                         @endforeach
+
                     <form action="registerUniFac" method="post">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <label>University</label>
-                        <select id="make" name="university" class="form-control">
-                            @foreach($items as $data)
-                                {{--        print {{$data}};--}}
-                                <option value="{{$data[0]}}">{{$data[1]}}</option>
-                            @endforeach
-                        </select>
+                        <div class="form-group">
+                            <label>University</label>
+                            <select id="make" name="university" class="form-control">
+                                @foreach($items as $data)
+                                    {{--        print {{$data}};--}}
+                                    <option value="{{$data[0]}}"
+                                            {{Session::get('user')['ID_UNIVERSITY'] == $data[0] ? 'selected':''}}>
+                                        {{$data[1]}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <br>
-                        <label>Faculty</label>
-                        <select id="model" name="faculty" class="form-control">
-                            <option>Please choose University make first</option>
-                        </select>
+                        <div class="form-group">
+                            <label>Faculty</label>
+                            <select id="model" name="faculty" class="form-control">
+                                @if(Session::get('user')['ID_FACULTY']==-1)
+                                    <option>Please choose University make first</option>
+                                @else
+                                    <option value="{{$user['FACULTY'][0]['ID_FACULTY']}}">{{$user['FACULTY'][0]['NAME_THA']}} {{$user['FACULTY'][0]['NAME_ENG']}}</option>
+                                @endif
+                            </select>
+                        </div>
                         <br>
-                            <input type="submit" value="Save" class="btn btn-info">
+                        <div class="form-group">
+                                <input type="submit" value="Save" class="btn btn-info btn-block">
+                        </div>
+                        <br>
                     </form>
             </div>
         </div>
     </div>
     {{--<a href="logout">Logout</a>--}}
-        <div id="project-label">Select a project (type "j" for a start):</div>
+        {{--<div id="project-label">Select a project (type "j" for a start):</div>--}}
         {{--<img id="project-icon" src="images/transparent_1x1.png" class="ui-state-default" alt="">--}}
-        <input id="project">
-        <input type="hidden" id="project-id">
-        <p id="project-description"></p>
-    </div>
-<br><br><br><br><br><br><br><br><br>
+        {{--<input id="project">--}}
+        {{--<input type="hidden" id="project-id">--}}
+        {{--<p id="project-description"></p>--}}
+    {{--</div>--}}
+{{--<br><br><br><br><br><br><br><br><br>--}}
     {{--<h1>Dropdown demo</h1>--}}
     {{--<form>--}}
         {{--<select id="make" name="make">--}}
             {{--@foreach($items as $data)--}}
-                {{--        print {{$data}};--}}
+                        {{--print {{$data}};--}}
                 {{--<option value="{{$data[0]}}">{{$data[0].'--'.$data[1]}}</option>--}}
             {{--@endforeach--}}
         {{--</select>--}}
@@ -67,61 +81,55 @@
                             model.empty();
 
                             $.each(data, function(index, element) {
-                                model.append("<option value='"+ element.ID_FACULTY +"'>" + element.NAME_THA + "</option>");
+                                model.append("<option value='"+ element[0] +"'>" + element[1] + "</option>");
                             });
                         });
             });
         });
+        {{--$(function() {--}}
 
-        $(function() {
+            {{--var test = {!!  json_encode($university)!!}--}}
+            {{--alert(test['data'][0]['ID_UNIVERSITY']+'_'+test['data'][0]['NAME_THA']+'_'+test['data'][0]['NAME_ENG']);--}}
+            {{--var projects = [--}}
+                {{--{--}}
+                    {{--value: "jquery",--}}
+                    {{--label: "jQuery",--}}
+                    {{--desc: "the write less, do more, JavaScript library",--}}
+                    {{--icon: "jquery_32x32.png"--}}
+                {{--},--}}
+                {{--{--}}
+                    {{--value: "jquery-ui",--}}
+                    {{--label: "jQuery UI",--}}
+                    {{--desc: "the official user interface library for jQuery",--}}
+                    {{--icon: "jqueryui_32x32.png"--}}
+                {{--},--}}
+                {{--{--}}
+                    {{--value: "sizzlejs",--}}
+                    {{--label: "Sizzle JS",--}}
+                    {{--desc: "a pure-JavaScript CSS selector engine",--}}
+                    {{--icon: "sizzlejs_32x32.png"--}}
+                {{--}--}}
+            {{--];--}}
 
-            //--console.log({{--$university['data']}});--}}
-            //--console.log(<--?php// echo $university['data'] ?>);--}}
-            //--var data = {{-- json_encode($university['data'])}}--}}
-            //            console.log('123');
-            var projects = [
-                {
-                    value: "jquery",
-                    label: "jQuery",
-                    desc: "the write less, do more, JavaScript library",
-                    icon: "jquery_32x32.png"
-                },
-                {
-                    value: "jquery-ui",
-                    label: "jQuery UI",
-                    desc: "the official user interface library for jQuery",
-                    icon: "jqueryui_32x32.png"
-                },
-                {
-                    value: "sizzlejs",
-                    label: "Sizzle JS",
-                    desc: "a pure-JavaScript CSS selector engine",
-                    icon: "sizzlejs_32x32.png"
-                }
-            ];
-
-            $( "#project" ).autocomplete({
-                        minLength: 0,
-                        source: projects,
-                        focus: function( event, ui ) {
-                            $( "#project" ).val( ui.item.label );
-                            return false;
-                        },
-                        select: function( event, ui ) {
-                            $( "#project" ).val( ui.item.label );
-                            $( "#project-id" ).val( ui.item.value );
-                            $( "#project-description" ).html( ui.item.desc );
-//                            $( "#project-icon" ).attr( "src", "images/" + ui.item.icon );
-
-                            return false;
-                        }
-                    })
-                    .autocomplete( "instance" )._renderItem = function( ul, item ) {
-                return $( "<li>" )
-                        .append( "<a>" + item.label + "<br>" + item.desc + "</a>" )
-                        .appendTo( ul );
-            };
-        });
+            {{--$( "#project" ).autocomplete({--}}
+                        {{--minLength: 0,--}}
+                        {{--source: projects,--}}
+                        {{--focus: function( event, ui ) {--}}
+                            {{--$( "#project" ).val( ui.item.label );--}}
+                            {{--return false;--}}
+                        {{--},--}}
+                        {{--select: function( event, ui ) {--}}
+                            {{--$( "#project" ).val( ui.item.label );--}}
+                            {{--$( "#project-id" ).val( ui.item.value );--}}
+                            {{--$( "#project-description" ).html( ui.item.desc );--}}
+                            {{--return false;--}}
+                        {{--}--}}
+                    {{--})--}}
+                    {{--.autocomplete( "instance" )._renderItem = function( ul, item ) {--}}
+                {{--return $( "<li>" )--}}
+                        {{--.append( "<a>" + item.label + "<br>" + item.desc + "</a>" )--}}
+                        {{--.appendTo( ul );--}}
+            {{--};--}}
+        {{--});--}}
     </script>
-
 @endsection

@@ -1,11 +1,10 @@
 @extends('app')
 @section('content')
-<br><br><br>
 	@if($user['USER_TYPE'] == 1)
 		<div class="panel-group">
 		  <div class="panel panel-default">
 			<div class="panel-heading">
-				<a data-toggle="collapse" href="#groupList">
+				<a class="collapseLink" data-toggle="collapse" href="#groupList">
 					<h4 class="panel-title">
 			        	<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
 			        	Groups
@@ -25,14 +24,14 @@
 			  </ul>
 			</div>
 			<div class="panel-heading">
-				<a data-toggle="collapse" href="#adminList">
+				<a class="collapseLink" data-toggle="collapse" href="#adminList">
 					<h4 class="panel-title">
 			        	<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 			        	Administrators
 			        </h4>
 				</a>
 			</div>
-			<div id="adminList" class="panel-collapse collapse"> 
+			<div id="adminList" class="panel-collapse collapse">
 			  <ul class="list-group">
 				@foreach ($adminList as $admin)
 						@if ($user['ID_USER'] != $admin['ID_USER'])

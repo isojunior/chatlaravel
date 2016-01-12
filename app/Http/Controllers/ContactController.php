@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Constrants;
 use App\Http\Controllers\Controller;
 use App\Http\WebserviceClient;
-use App\Http\Constrants;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 
-class ContactController extends Controller
-{
+class ContactController extends Controller {
 	private static $factory;
 
 	public function __construct() {
@@ -20,21 +19,8 @@ class ContactController extends Controller
 		}
 	}
 	
-	private function getContactList($services, Array $result = array()) {
-		foreach ($services as $s) {
-			array_push($result, 
-					self::$factory->callWebservice([
-						'query' => [
-							'service' => $s
-						],
-					])
-			);
-		}
-		return $result;
-	}
-	
 	// get Authorzied & Unauthorized list
-	private function getAuthorizedList($services, $university, $faculty, Array $result = array()) {
+	private function getAuthorizedList($services, $university, $faculty, $result = array()) {
 		foreach ($services as $s) {
 			array_push($result, 
 					self::$factory->callWebservice([
@@ -44,6 +30,19 @@ class ContactController extends Controller
 							'idFaculty' => $faculty
 						],
 					])
+			);
+		}
+		return $result;
+	}
+
+	private function getContactList($service, $result = array()) {
+		foreach ($service as $s) {
+			array_push($result,
+				self::$factory->callWebservice([
+					'query' => [
+						'service' => $s,
+					],
+				])
 			);
 		}
 		return $result;
@@ -74,5 +73,4 @@ class ContactController extends Controller
 		dd($authorized_list);
 		//return Response::make($authorized_list);
 	}
-
 }

@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Constrants;
+use App\Http\Constrants;
 use App\Http\Controllers\Controller;
 use App\Http\Utils;
 use App\Http\WebserviceClient;
+use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-use Symfony\Component\Console\Input\Input;
 
 class UserController extends Controller {
 	private static $factory;
@@ -58,13 +59,6 @@ class UserController extends Controller {
 	}
 	public function getFaculty() {
 //		$webServiceClient = self::$factory->getWebServiceClient();
-//		//currently use same uri with base uri bcuz webservice no specify pathURI
-//		$response = $webServiceClient->get(Constrants::WEB_SERVICE_URI, [
-//			'query' => [
-//				'service' => 'getAllFaculty',
-//				'idUniversity' => '9027',
-//			],
-//		]);
 		$faculty = self::$factory->callWebservice([
 			'query' => [
 				'service' => 'getAllFaculty',
@@ -74,19 +68,19 @@ class UserController extends Controller {
 		dd($faculty);
 		//dd(json_decode($response->getBody()->getContents(), true));
 	}
-	public function testJTGService() {
+	public function processUniversityAndFaculty() {
+		$auth = Session::get('user');
 		$university = self::$factory->callWebservice([
 			'query' => [
 				'service' => 'getAllUniversity',
 			],
 		]);
-		$item=array();
-		$item[0] = [0,'------SELECT UNIVERSITY------'];
-		foreach($university['data'] as $data)
-		{
-			$item[$data['ID_UNIVERSITY']] = [$data['ID_UNIVERSITY'],$data['NAME_THA']];
+		$item = array();
+		$item[0] = [0, '------SELECT UNIVERSITY------'];
+		foreach ($university['data'] as $data) {
+			$item[$data['ID_UNIVERSITY']] = [$data['ID_UNIVERSITY'], $data['NAME_THA']];
 		}
-		return view('users.registerUniversity')->with('university', $university)->with('items',$item);
+		return view('users.registerUniversity')->with('university', $university)->with('items', $item)->with('user',$auth);
 	}
 
 	public function editProfileView() {
@@ -150,6 +144,40 @@ class UserController extends Controller {
 			} else {
 				Session::flash('alert-danger', 'Email or Password is incorrect.');
 				return redirect('/');
+			}
+		}
+	}
+
+	public function uploadProfileImage(Request $request) {
+		$auth = Session::get('user');
+		$rules = [
+			'profileImage' => 'image|max:1024',
+		];
+		$messages = [
+			'profileImage.image' => 'A file is not images, Plese specific image file.',
+			'profileImage.max' => 'Image size must be less then or equal 1MB',
+		];
+		$validator = Validator::make($request->all(), $rules, $messages);
+		if ($validator->fails()) {
+			return redirect('profile')->withErrors($validator)->withInput();
+		} else {
+			$profileImage = Input::file('profileImage');
+			if ($profileImage != null && $profileImage->isValid()) {
+				$destinationPath = Constrants::PROFILE_PATH;
+				$extension = $profileImage->getClientOriginalExtension();
+				$fileNameFull = $auth["ID_USER"] . "." . $extension;
+				$fileMoved = $profileImage->move($destinationPath, $fileNameFull);
+				dd($fileMoved->getRealPath());
+				if (File::exists($fileMoved->getRealPath())) {
+					Session::flash('alert-success', 'Upload image success.');
+					return redirect('profile');
+				} else {
+					Session::flash('alert-danger', 'Error occored 2, please contact administrator.');
+					return redirect('profile');
+				}
+			} else {
+				Session::flash('alert-danger', 'Error occored 1, please contact administrator.');
+				return redirect('profile');
 			}
 		}
 	}
@@ -320,20 +348,44 @@ class UserController extends Controller {
 		}
 	}
 
-	public function updateUniAndFac(Request $request)
-	{
+	public function updateUniversityAndFaculty(Request $request) {
 		$auth = Session::get('user');
 		$inputUni = $request->input("university");
 		$inputFac = $request->input("faculty");
-		dd($inputUni.'-'.$inputFac);
 		$updateFac = self::$factory->callWebservice([
 			'query' => [
 				'service' => 'updateFaculty',
-				'idUniversity'=>$inputUni,
-				'idFaculty'=>$inputFac,
-				'idUser'=>$auth['ID_USER']
+				'idUniversity' => $inputUni,
+				'idFaculty' => $inputFac,
+				'idUser' => $auth['ID_USER'],
 			],
 		]);
+		if ($updateFac["data"][0]["result"] == 1) {
+			$updateRegister = self::$factory->callWebservice([
+				'query' => [
+					'service' => 'registerSuccess',
+					'idUniversity' => $inputUni,
+					'idFaculty' => $inputFac,
+					'idUser' => $auth['ID_USER'],
+				],
+			]);
+			if($updateRegister["data"][0]["result"]==1)
+			{
+				$userResult = self::$factory->callWebservice([
+					'query' => [
+						'service' => 'getUser',
+						'idUser' => $auth['ID_USER'],
+					],
+				]);
+
+				Session::put('user', $userResult["data"][0]);
+				Session::flash('alert-success', 'Update Successful');
+			}else{
+				Session::flash('alert-danger', 'Update Fail Please Try Again');
+			}
+		}else{
+			Session::flash('alert-danger', 'Update Fail Please Try Again');
+		}
 		return redirect('profile');
 	}
 }
