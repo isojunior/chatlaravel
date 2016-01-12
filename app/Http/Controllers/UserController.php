@@ -348,7 +348,7 @@ class UserController extends Controller {
 		}
 	}
 
-	public function updateUniAndFac(Request $request) {
+	public function updateUniversityAndFaculty(Request $request) {
 		$auth = Session::get('user');
 		$inputUni = $request->input("university");
 		$inputFac = $request->input("faculty");
@@ -361,14 +361,30 @@ class UserController extends Controller {
 			],
 		]);
 		if ($updateFac["data"][0]["result"] == 1) {
-			$userResult = self::$factory->callWebservice([
+			$updateRegister = self::$factory->callWebservice([
 				'query' => [
-					'service' => 'getUser',
+					'service' => 'registerSuccess',
+					'idUniversity' => $inputUni,
+					'idFaculty' => $inputFac,
 					'idUser' => $auth['ID_USER'],
 				],
 			]);
-			Session::put('user', $userResult["data"][0]);
-			Session::flash('alert-success', 'Update Successful');
+			if($updateRegister["data"][0]["result"]==1)
+			{
+				$userResult = self::$factory->callWebservice([
+					'query' => [
+						'service' => 'getUser',
+						'idUser' => $auth['ID_USER'],
+					],
+				]);
+
+				Session::put('user', $userResult["data"][0]);
+				Session::flash('alert-success', 'Update Successful');
+			}else{
+				Session::flash('alert-danger', 'Update Fail Please Try Again');
+			}
+		}else{
+			Session::flash('alert-danger', 'Update Fail Please Try Again');
 		}
 		return redirect('profile');
 	}
