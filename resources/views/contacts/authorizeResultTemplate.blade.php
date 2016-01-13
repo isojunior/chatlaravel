@@ -88,9 +88,9 @@
 								    		{{ $unAuth['FIRST_NAME'] }} {{ $unAuth['LAST_NAME'] }}
 								    	</h4>
 								    	<p class="list-group-item-text">{{ $unAuth['POSITION'] }}</p>
-										<button data-attr="{{ $reUser['ID_USER'] }}" class="btn btn-success btn-sm accept">เพิ่มเป็นผู้เกี่ยวข้อง</button>
-										<button data-attr="{{ $reUser['ID_USER'] }}" class="btn btn-info btn-sm group">เพิ่มเข้ากลุ่ม</button>
-										<button data-attr="{{ $reUser['ID_USER'] }}" class="btn btn-warning btn-sm reject">ปฏิเสธ</button>
+										<button data-attr="{{ $unAuth['ID_USER'] }}" class="btn btn-success btn-sm accept">เพิ่มเป็นผู้เกี่ยวข้อง</button>
+										<button data-attr="{{ $unAuth['ID_USER'] }}" class="btn btn-info btn-sm group">เพิ่มเข้ากลุ่ม</button>
+										<button data-attr="{{ $unAuth['ID_USER'] }}" class="btn btn-warning btn-sm reject">ปฏิเสธ</button>
 							    	</div>
 						    	</div>
 						    </a>
