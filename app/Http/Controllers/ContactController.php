@@ -168,7 +168,7 @@ class ContactController extends Controller {
 			if (null != $userResult) {
 				$userIdUniversity = $userResult[0]['ID_UNIVERSITY'];
 				$userIdFaculty = $userResult[0]['ID_FACULTY'];
-				$authorizeResult = $this->authorizeUser($idUser, $authorizeStatus, $admin['ID_USER']);
+				$authorizeResult = $this->authorizeUser($idUser, 3, $admin['ID_USER']);
 				if ($authorizeResult == 1) {
 					return redirect('authorizedList')->send();
 				} else {
