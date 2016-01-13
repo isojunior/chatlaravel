@@ -146,7 +146,6 @@
 				var groupButton = $("button.group");
 				manageButton.handler(acceptButton, modal);
 			};
-<<<<<<< HEAD
 
 			manageAcceptButton.handler
 			= function(acceptButton, modal){
@@ -167,9 +166,6 @@
 					});
 				});
 			};
-			
-=======
->>>>>>> origin/master
 			manageButton.init();
 	});
 </script>
