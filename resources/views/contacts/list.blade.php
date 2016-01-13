@@ -78,10 +78,10 @@
 			  <div class="panel panel-default">
 				<div class="panel-heading">
 				  <h4 class="panel-title">
-					<a data-toggle="collapse" href="#collapse1">Collapsible panel</a>
+					<a data-toggle="collapse" href="#collapsePanel"></a>
 				  </h4>
 				</div>
-				<div id="collapse1" class="panel-collapse collapse">
+				<div id="collapsePanel" class="panel-collapse collapse">
 				  <div class="panel-body">Panel Body</div>
 				  <div class="panel-footer">Panel Footer</div>
 				</div>
@@ -104,35 +104,24 @@
 				var modal = $("#modal-data");
 				memberAuthorization.handler(groupList, adminList, modal);
 			};
-			
-		// error /*	
-		/*	memberAuthorization.test
-			= function(result){
-				$.each(result, function(i, item){
-					modal.html(item);
-				});​
-			};
-			
-			*/
 		
 		memberAuthorization.putData
 			= function(container, result) {
 				var container = $(".modal-body");
 				var div = $("div.memberContainer");
-					container.append(div);
-					div.show();
-					 
-					for (var key in result)
-					{
-					    var i;
-					   if (result.hasOwnProperty(key))
-					   {
-						  // here you have access to
-						  alert(result[key][i]["ID_USER"]);
-					   }
-					   i++;
-					}
-					
+				container.append(div);	
+				var memberTypeName;
+				for (var key in result){
+					//$("div.memberContainer > panel-title").text("")
+						
+						for(var index in result[key]){
+						
+							//alert(result[key][index]["ID_USER"]);
+						
+						}
+				}
+				div.show();
+						
 			};
 		
 		memberAuthorization.handler
@@ -147,13 +136,11 @@
 						url: "authorizedList",
 						type: 'get',
 						data: { 'data': data },
-						//dataType: 'json',
-						dataType: 'html',
+						dataType: 'json',
+						//dataType: 'html',
 						success: function(result){
-							modal.html(result);
-							//modal.html(result[1][0]["ID_USER"]);
-							//memberAuthorization.test(result);
-							//memberAuthorization.putData(modal, result);
+							//modal.html(result);
+							memberAuthorization.putData(modal, result);
 						},
 						error: function(){
 							alert("Error");

@@ -141,10 +141,6 @@ class ContactController extends Controller {
 		$authorizedArrangedList = array($authorizedList[0]['data'],$authorizedList[1]['data'],$authorizedList[2]['data'],$authorizedList[3]['data']);
 		$result = $this->getAuthorizedDetail($authorizedArrangedList);
 
-		dd($result);
-		//dd(key($result));
-		//return json_encode($result);
-		//return Response::make($authorized_list);
-		//return Response::make('authorizedMember', $authorized_list[0]['data']);
+		return json_encode($result);
 	}
 }
