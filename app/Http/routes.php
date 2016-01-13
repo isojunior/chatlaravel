@@ -25,10 +25,10 @@ Route::group(['middleware' => 'guest'], function () {
 	Route::get('profile', 'UserController@getProfileView');
 	Route::get('profile/edit', 'UserController@editProfileView');
 	Route::get('logout', 'UserController@processLogout');
-	Route::get('uniAndFac', 'UserController@processUniversityAndFaculty');
+	Route::get('setupUniversity', 'UserController@getSetupUniversityView');
 	Route::post('uploadProfileImage', 'UserController@uploadProfileImage');
 	Route::post('profile/edit', 'UserController@processEditProfile');
-	Route::post('registerUniFac', 'UserController@updateUniversityAndFaculty');
+	Route::post('setupUniversity', 'UserController@processSetupUniversityView');
 	Route::get('authorizedList', 'ContactController@getAuthorizedResult');
 	Route::get('authorizedUser/{authorizeStatus}/{idUser}', 'ContactController@processAuthorizeUser');
 });

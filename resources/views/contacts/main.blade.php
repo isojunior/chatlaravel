@@ -131,7 +131,7 @@
 				@endif
 				</div>
 			</div>
-		@else
+			@else
 			<div class="panel-group">
 			  <div class="panel panel-default">
 			  	@if(isset($unAuthorizeList))

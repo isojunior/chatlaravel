@@ -8,5 +8,6 @@ class Constrants {
 	const TOPGUN_COMPANY_NAME = "Top Gun Co.,Ltd.";
 	/** todo: change image profile path **/
 	const IMAGE_PROFILE_PATH = '/Mercury/photos/';
+	const AUTHORIZE = "authorize";
 }
 ?>
