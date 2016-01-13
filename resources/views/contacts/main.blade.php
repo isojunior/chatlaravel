@@ -311,11 +311,11 @@
 						url: "authorizedList",
 						type: 'get',
 						data: { 'data': data },
-						dataType: 'json',
-						//dataType: 'html',
+						//dataType: 'json',
+						dataType: 'html',
 						success: function(result){
-							//modal.html(result);
-							memberAuthorization.putData(modal, result);
+							modal.html(result);
+							//memberAuthorization.putData(modal, result);
 						},
 						error: function(){
 							alert("Error");
