@@ -176,7 +176,7 @@ class UserController extends Controller {
 					return redirect('profile');
 				}
 			} else {
-				Session::flash('alert-danger', 'Error occored 1, please contact administrator.');
+				Session::flash('alert-danger', 'Error occored, please contact administrator.');
 				return redirect('profile');
 			}
 		}
@@ -369,8 +369,7 @@ class UserController extends Controller {
 					'idUser' => $auth['ID_USER'],
 				],
 			]);
-			if($updateRegister["data"][0]["result"]==1)
-			{
+			if ($updateRegister["data"][0]["result"] == 1) {
 				$userResult = self::$factory->callWebservice([
 					'query' => [
 						'service' => 'getUser',
@@ -380,10 +379,10 @@ class UserController extends Controller {
 
 				Session::put('user', $userResult["data"][0]);
 				Session::flash('alert-success', 'Update Successful');
-			}else{
+			} else {
 				Session::flash('alert-danger', 'Update Fail Please Try Again');
 			}
-		}else{
+		} else {
 			Session::flash('alert-danger', 'Update Fail Please Try Again');
 		}
 		return redirect('profile');
