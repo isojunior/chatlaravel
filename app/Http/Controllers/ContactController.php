@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\WebserviceClient;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Response;
 
 class ContactController extends Controller {
 	private static $factory;
@@ -65,12 +66,32 @@ class ContactController extends Controller {
 		}
 	}
 	
+	public function getAuthorizedDetail($params, $result = array()) {
+		$membeTypeIndex = 0;
+		$innerIndex = 0;
+		foreach($params as $key){
+			foreach($key as $value){
+				$result[$membeTypeIndex][$innerIndex] = $value;
+				$innerIndex++;
+			}
+			$membeTypeIndex++;
+		}
+		return $result;
+	}
+	
 	public function getAuthorizedResult(){
+	
 		$idUniversity = $_GET['data'][0];
 		$idFaculty = $_GET['data'][1];
-		$services = array("getMemberAuthorized","getMemberUnAuthorized","getMemberGroup","getMemberReject");
-		$authorized_list = $this->getAuthorizedList($services, $idUniversity, $idFaculty);
-		dd($authorized_list);
+		$services = array("getMemberUnAuthorized","getMemberAuthorized","getMemberGroup","getMemberReject");
+		$authorizedList = $this->getAuthorizedList($services, $idUniversity, $idFaculty);
+		$authorizedArrangedList = array($authorizedList[0]['data'],$authorizedList[1]['data'],$authorizedList[2]['data'],$authorizedList[3]['data']);
+		$result = $this->getAuthorizedDetail($authorizedArrangedList);
+
+		dd($result);
+		//dd(key($result));
+		//return json_encode($result);
 		//return Response::make($authorized_list);
+		//return Response::make('authorizedMember', $authorized_list[0]['data']);
 	}
 }

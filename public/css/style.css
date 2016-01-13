@@ -134,3 +134,6 @@ a.logout {
     margin: 0;
     padding: 0;
 }
+.memberContainer {
+	display: none;
+}
