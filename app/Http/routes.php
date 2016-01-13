@@ -31,4 +31,5 @@ Route::group(['middleware' => 'guest'], function () {
 	Route::post('setupUniversity', 'UserController@processSetupUniversityView');
 	Route::get('authorizedList', 'ContactController@getAuthorizedResult');
 	Route::get('authorizedUser/{authorizeStatus}/{idUser}', 'ContactController@processAuthorizeUser');
+	Route::get('rejectUser/{authorizeStatus}/{idUser}', 'ContactController@processRejectUser');
 });

@@ -123,12 +123,12 @@ class ContactController extends Controller {
 		$idFaculty = $_GET['data'][1];
 		$services = array("getMemberUnAuthorized", "getMemberAuthorized", "getMemberGroup", "getMemberReject");
 		$authorizedList = $this->getAuthorizedList($services, $idUniversity, $idFaculty);
-		
+
 		return View('contacts.authorizeResultTemplate')
-					->with('unAuthorize', 	$authorizedList[0]['data'])
-					->with('highUser', 		$authorizedList[1]['data'])
-					->with('normalUser', 	$authorizedList[2]['data'])
-					->with('rejectUser',		$authorizedList[3]['data']);
+			->with('unAuthorize', $authorizedList[0]['data'])
+			->with('highUser', $authorizedList[1]['data'])
+			->with('normalUser', $authorizedList[2]['data'])
+			->with('rejectUser', $authorizedList[3]['data']);
 	}
 
 	public function processAuthorizeUser($authorizeStatus = null, $idUser = null) {
@@ -146,14 +146,42 @@ class ContactController extends Controller {
 					$this->addUserToAdminGroup($idUser, $userIdUniversity, $userIdFaculty);
 					$this->addUserToPrimaryGroup($idUser, $userIdUniversity, $userIdFaculty);
 					$this->sendPushResult($idUser, Constrants::AUTHORIZE);
+					return redirect('authorizedList')->send();
+				} else {
+					Session::flash('alert-danger', 'Error occored, please contact administrator.[Error update authorize code]');
+					return redirect('contacts')->send();
 				}
 			} else {
 				Session::flash('alert-danger', 'Error occored, please contact administrator.[Not found user]');
-				return redirect('contacts');
+				return redirect('contacts')->send();
 			}
 		} else {
 			Session::flash('alert-danger', 'Error occored, please contact administrator.[Error occored when accessing the process.]');
-			return redirect('contacts');
+			return redirect('contacts')->send();
+		}
+	}
+
+	public function processRejectUser($idUser = null) {
+		$admin = Session::get('user');
+		if ($admin['USER_TYPE'] == 1) {
+			$userResult = $this->getUser($idUser);
+			if (null != $userResult) {
+				$userIdUniversity = $userResult[0]['ID_UNIVERSITY'];
+				$userIdFaculty = $userResult[0]['ID_FACULTY'];
+				$authorizeResult = $this->authorizeUser($idUser, $authorizeStatus, $admin['ID_USER']);
+				if ($authorizeResult == 1) {
+					return redirect('authorizedList')->send();
+				} else {
+					Session::flash('alert-danger', 'Error occored, please contact administrator.[Error update authorize code]');
+					return redirect('contacts')->send();
+				}
+			} else {
+				Session::flash('alert-danger', 'Error occored, please contact administrator.[Not found user]');
+				return redirect('contacts')->send();
+			}
+		} else {
+			Session::flash('alert-danger', 'Error occored, please contact administrator.[Error occored when accessing the process.]');
+			return redirect('contacts')->send();
 		}
 	}
 
