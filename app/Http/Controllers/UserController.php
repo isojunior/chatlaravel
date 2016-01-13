@@ -68,7 +68,7 @@ class UserController extends Controller {
 		dd($faculty);
 		//dd(json_decode($response->getBody()->getContents(), true));
 	}
-	public function processUniversityAndFaculty() {
+	public function getSetupUniversityView() {
 		$auth = Session::get('user');
 		$university = self::$factory->callWebservice([
 			'query' => [
@@ -80,7 +80,7 @@ class UserController extends Controller {
 		foreach ($university['data'] as $data) {
 			$item[$data['ID_UNIVERSITY']] = [$data['ID_UNIVERSITY'], $data['NAME_THA']];
 		}
-		return view('users.registerUniversity')->with('university', $university)->with('items', $item)->with('user', $auth);
+		return view('users.setupUniversity')->with('university', $university)->with('items', $item)->with('user', $auth);
 	}
 
 	public function editProfileView() {
@@ -176,7 +176,7 @@ class UserController extends Controller {
 					return redirect('profile');
 				}
 			} else {
-				Session::flash('alert-danger', 'Error occored 1, please contact administrator.');
+				Session::flash('alert-danger', 'Error occored, please contact administrator.');
 				return redirect('profile');
 			}
 		}
@@ -322,9 +322,11 @@ class UserController extends Controller {
 			$isExistEmailResult = self::$factory->callWebservice([
 				'query' => [
 					'service' => 'isExistEmail',
-					'telephone' => Utils::encodeParameter($email),
+					'email' => Utils::encodeParameter($email),
 				],
 			]);
+
+			//dd($isExistEmailResult["data"]);
 
 			if ($isExistEmailResult["data"][0]["result"] == 1) {
 				Session::flash('alert-danger', 'Email already to use');
@@ -348,7 +350,7 @@ class UserController extends Controller {
 		}
 	}
 
-	public function updateUniversityAndFaculty(Request $request) {
+	public function processSetupUniversityView(Request $request) {
 		$auth = Session::get('user');
 		$inputUni = $request->input("university");
 		$inputFac = $request->input("faculty");
@@ -369,8 +371,7 @@ class UserController extends Controller {
 					'idUser' => $auth['ID_USER'],
 				],
 			]);
-			if($updateRegister["data"][0]["result"]==1)
-			{
+			if ($updateRegister["data"][0]["result"] == 1) {
 				$userResult = self::$factory->callWebservice([
 					'query' => [
 						'service' => 'getUser',
@@ -380,10 +381,10 @@ class UserController extends Controller {
 
 				Session::put('user', $userResult["data"][0]);
 				Session::flash('alert-success', 'Update Successful');
-			}else{
+			} else {
 				Session::flash('alert-danger', 'Update Fail Please Try Again');
 			}
-		}else{
+		} else {
 			Session::flash('alert-danger', 'Update Fail Please Try Again');
 		}
 		return redirect('profile');

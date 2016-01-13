@@ -9,7 +9,7 @@ class WebServiceClient {
 		if (self::$client == null) {
 			self::$client = new Client([
 				'base_uri' => Constrants::WEB_SERVICE_URI,
-				'timeout' => 2.0,
+				'timeout' => 60.0,
 			]);
 		}
 		return self::$client;
