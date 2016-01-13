@@ -118,28 +118,17 @@ class ContactController extends Controller {
 		}
 	}
 
-	public function getAuthorizedDetail($params, $result = array()) {
-		$membeTypeIndex = 0;
-		$innerIndex = 0;
-		foreach ($params as $key) {
-			foreach ($key as $value) {
-				$result[$membeTypeIndex][$innerIndex] = $value;
-				$innerIndex++;
-			}
-			$membeTypeIndex++;
-		}
-		return $result;
-	}
-
 	public function getAuthorizedResult() {
 		$idUniversity = $_GET['data'][0];
 		$idFaculty = $_GET['data'][1];
 		$services = array("getMemberUnAuthorized", "getMemberAuthorized", "getMemberGroup", "getMemberReject");
 		$authorizedList = $this->getAuthorizedList($services, $idUniversity, $idFaculty);
-		$authorizedArrangedList = array($authorizedList[0]['data'], $authorizedList[1]['data'], $authorizedList[2]['data'], $authorizedList[3]['data']);
-		$result = $this->getAuthorizedDetail($authorizedArrangedList);
-
-		return json_encode($result);
+		
+		return View('contacts.authorizeResultTemplate')
+					->with('unAuthorize', 	$authorizedList[0]['data'])
+					->with('highUser', 		$authorizedList[1]['data'])
+					->with('normalUser', 	$authorizedList[2]['data'])
+					->with('rejectUser',		$authorizedList[3]['data']);
 	}
 
 	public function processAuthorizeUser($authorizeStatus = null, $idUser = null) {
