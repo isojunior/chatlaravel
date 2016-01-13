@@ -1,4 +1,4 @@
-	<div class="panel-group">
+<div class="panel-group">
 		  <div class="panel panel-default">
 			@if(isset($highUser))
 			<div class="panel-heading">
@@ -23,7 +23,7 @@
 											<p class="list-group-item-text">{{ $hiUser['POSITION'] }}</p>		
 										</div>
 										<div class="row">
-											<a href="#" class="btn btn-danger btn-sm" role="button">ยกเลิกเป็นผู้เกี่ยวข้อง</a>
+											<button class="btn btn-danger btn-sm cancel">ยกเลิกเป็นผู้เกี่ยวข้อง</button>
 										</div>
 									</div>
 						    	</div>
@@ -53,7 +53,7 @@
 								    		{{ $nmUser['FIRST_NAME'] }} {{ $nmUser['LAST_NAME'] }}
 								    	</h4>
 								    	<p class="list-group-item-text">{{ $nmUser['POSITION'] }}</p>
-										<a href="#" class="btn btn-danger btn-sm" role="button">ยกเลิกเป็นผู้เกี่ยวข้อง</a>
+										<button class="btn btn-danger btn-sm cancel">ยกเลิกเป็นผู้เกี่ยวข้อง</button>
 							    	</div>
 						    	</div>
 						    </a>
@@ -82,9 +82,9 @@
 								    		{{ $unAuth['FIRST_NAME'] }} {{ $unAuth['LAST_NAME'] }}
 								    	</h4>
 								    	<p class="list-group-item-text">{{ $unAuth['POSITION'] }}</p>
-										<a href="authorizedUser/1/{{$unAuth['ID_USER']}}" class="btn btn-success btn-sm" role="button">เพิ่มเป็นผู้เกี่ยวข้อง</a>
-										<a href="authorizedUser/2/{{$unAuth['ID_USER']}}" class="btn btn-info btn-sm" role="button">เพิ่มเข้ากลุ่ม</a>
-										<a href="#" class="btn btn-warning btn-sm" role="button">ปฏิเสธ</a>
+										<button class="btn btn-success btn-sm accept">เพิ่มเป็นผู้เกี่ยวข้อง</button>
+										<button class="btn btn-info btn-sm group">เพิ่มเข้ากลุ่ม</button>
+										<button class="btn btn-warning btn-sm reject">ปฏิเสธ</button>
 							    	</div>
 						    	</div>
 						    </a>
@@ -113,8 +113,8 @@
 								    		{{ $reUser['FIRST_NAME'] }} {{ $reUser['LAST_NAME'] }}
 								    	</h4>
 								    	<p class="list-group-item-text">{{ $reUser['POSITION'] }}</p>
-										<a href="authorizedUser/1/{{$reUser['ID_USER']}}" class="btn btn-success btn-sm" role="button">เพิ่มเป็นผู้เกี่ยวข้อง</a>
-										<a href="authorizedUser/2/{{$reUser['ID_USER']}}" class="btn btn-info btn-sm" role="button">เพิ่มเข้ากลุ่ม</a>
+										<button class="btn btn-success btn-sm accept">เพิ่มเป็นผู้เกี่ยวข้อง</button>
+										<button class="btn btn-info btn-sm group">เพิ่มเข้ากลุ่ม</button>
 							    	</div>
 						    	</div>
 						    </a>
@@ -122,3 +122,24 @@
 			  </ul>
 			</div>
 			@endif
+@section('scripts')
+<script>
+	$(document).ready(function(){
+	
+		var manageButton = {};
+		
+			manageButton.init
+			= function(){
+				var acceptButton = $("button.accept");
+				var groupButton = $("button.group");
+				var cancelButton = $("button.cancel");
+				var rejectButton = $("button.reject");
+			};
+
+			
+			
+			
+			manageButton.init();
+	});
+</script>
+@endsection			
