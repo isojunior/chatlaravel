@@ -82,9 +82,9 @@
 								    		{{ $unAuth['FIRST_NAME'] }} {{ $unAuth['LAST_NAME'] }}
 								    	</h4>
 								    	<p class="list-group-item-text">{{ $unAuth['POSITION'] }}</p>
-										<button class="btn btn-success btn-sm accept">เพิ่มเป็นผู้เกี่ยวข้อง</button>
-										<button class="btn btn-info btn-sm group">เพิ่มเข้ากลุ่ม</button>
-										<button class="btn btn-warning btn-sm reject">ปฏิเสธ</button>
+										<button data-attr="{{ $reUser['ID_USER'] }}" class="btn btn-success btn-sm accept">เพิ่มเป็นผู้เกี่ยวข้อง</button>
+										<button data-attr="{{ $reUser['ID_USER'] }}" class="btn btn-info btn-sm group">เพิ่มเข้ากลุ่ม</button>
+										<button data-attr="{{ $reUser['ID_USER'] }}" class="btn btn-warning btn-sm reject">ปฏิเสธ</button>
 							    	</div>
 						    	</div>
 						    </a>
@@ -113,8 +113,8 @@
 								    		{{ $reUser['FIRST_NAME'] }} {{ $reUser['LAST_NAME'] }}
 								    	</h4>
 								    	<p class="list-group-item-text">{{ $reUser['POSITION'] }}</p>
-										<button class="btn btn-success btn-sm accept">เพิ่มเป็นผู้เกี่ยวข้อง</button>
-										<button class="btn btn-info btn-sm group">เพิ่มเข้ากลุ่ม</button>
+										<button data-attr="{{ $reUser['ID_USER'] }}" class="btn btn-success btn-sm accept">เพิ่มเป็นผู้เกี่ยวข้อง</button>
+										<button data-attr="{{ $reUser['ID_USER'] }}"class="btn btn-info btn-sm group">เพิ่มเข้ากลุ่ม</button>
 							    	</div>
 						    	</div>
 						    </a>
@@ -130,14 +130,31 @@
 		
 			manageButton.init
 			= function(){
+				var modal = $("#modal-data");
 				var acceptButton = $("button.accept");
 				var groupButton = $("button.group");
-				var cancelButton = $("button.cancel");
-				var rejectButton = $("button.reject");
+				manageButton.handler(acceptButton, modal);
 			};
 
-			
-			
+			manageAcceptButton.handler
+			= function(acceptButton, modal){
+				acceptButton.click(function(e){
+					var userID = $(this).data("attr");
+					$.ajax({
+						url: "authorizedUser/1/"+userID,
+						type: 'get',
+						data: { 'data': data },
+						dataType: 'html',
+						success: function(result){
+							modal.html(result);
+						},
+						error: function(){
+							alert("Error");
+							return false;
+						}
+					});
+				});
+			};
 			
 			manageButton.init();
 	});
