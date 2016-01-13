@@ -3,46 +3,49 @@
 			@if(isset($highUser))
 			<div class="panel-heading">
 				<a class="collapseLink" data-toggle="collapse" href="#highUser">
-					<h4 class="panel-title">High User</h4>
-					<span class="label label-default label-badge">{{ count($highUser) }}</span>
+					<h4 class="panel-title">High User <span class="label label-default label-badge-authorized">{{ count($highUser) }}</span></h4>
 				</a>
 			</div>
 			<div id="highUser" class="panel-collapse collapse">
 			  <ul class="list-group">
-				@foreach ($highUser as $hiUser)
-							<a href="#" class="list-group-item link .clearfix">
-						    	<div class="row">
-							    	<div class="col-xs-2">
-							    		<img class="img-responsive img-circle avatar imgUsr" src="http://apps.jobtopgun.com/Mercury/photos/{{ $hiUser['ID_USER'] }}.jpg" onerror='this.src="img/avatar.png"'>
-							    	</div>
-							    	<div class="col-xs-8">
-										<div class="row">
-											<h4 class="list-group-item-heading">
-												{{ $hiUser['FIRST_NAME'] }} {{ $hiUser['LAST_NAME'] }}
-											</h4>
-											<p class="list-group-item-text">{{ $hiUser['POSITION'] }}</p>		
-										</div>
-										<div class="row">
-											<button class="btn btn-danger btn-sm cancel">ยกเลิกเป็นผู้เกี่ยวข้อง</button>
-										</div>
-									</div>
+			  	@if(count($highUser)>0)
+					@foreach ($highUser as $hiUser)
+						<a href="#" class="list-group-item link .clearfix">
+					    	<div class="row">
+						    	<div class="col-xs-2">
+						    		<img class="img-responsive img-circle avatar imgUsr" src="http://apps.jobtopgun.com/Mercury/photos/{{ $hiUser['ID_USER'] }}.jpg" onerror='this.src="img/avatar.png"'>
 						    	</div>
-						    </a>
-				@endforeach
+						    	<div class="col-xs-8">
+									<div class="row">
+										<h4 class="list-group-item-heading">
+											{{ $hiUser['FIRST_NAME'] }} {{ $hiUser['LAST_NAME'] }}
+										</h4>
+										<p class="list-group-item-text">{{ $hiUser['POSITION'] }}</p>
+									</div>
+									<div class="row">
+										<button class="btn btn-danger btn-sm cancel">ยกเลิกเป็นผู้เกี่ยวข้อง</button>
+									</div>
+								</div>
+					    	</div>
+					    </a>
+					@endforeach
+				@else
+					<a class="list-group-item text-center"><h3>ไม่พบข้อมูล</h3></a>
+				@endif
 			  </ul>
 			</div>
 			@endif
-			
+
 			@if(isset($normalUser))
 			<div class="panel-heading">
 				<a class="collapseLink" data-toggle="collapse" href="#normalUser">
-					<h4 class="panel-title">Normal User</h4>
-					<span class="label label-default label-badge">{{ count($normalUser) }}</span>
+					<h4 class="panel-title">Normal User <span class="label label-default label-badge-authorized">{{ count($normalUser) }}</span></h4>
 				</a>
 			</div>
 			<div id="normalUser" class="panel-collapse collapse">
 			  <ul class="list-group">
-				@foreach ($normalUser as $nmUser)
+			  	@if(count($normalUser)>0)
+					@foreach ($normalUser as $nmUser)
 							<a href="#" class="list-group-item link">
 						    	<div class="row">
 							    	<div class="col-xs-2">
@@ -57,21 +60,24 @@
 							    	</div>
 						    	</div>
 						    </a>
-				@endforeach
+					@endforeach
+				@else
+					<a class="list-group-item text-center"><h3>ไม่พบข้อมูล</h3></a>
+				@endif
 			  </ul>
 			</div>
 			@endif
-			
+
 			@if(isset($unAuthorize))
 			<div class="panel-heading">
 				<a class="collapseLink" data-toggle="collapse" href="#unAuthorize">
-					<h4 class="panel-title">Unauthorized User</h4>
-					<span class="label label-default label-badge">{{ count($unAuthorize) }}</span>
+					<h4 class="panel-title">Unauthorized User <span class="label label-default label-badge-authorized">{{ count($unAuthorize) }}</span></h4>
 				</a>
 			</div>
 			<div id="unAuthorize" class="panel-collapse collapse">
 			  <ul class="list-group">
-				@foreach ($unAuthorize as $unAuth)
+			  	@if(count($unAuthorize)>0)
+					@foreach ($unAuthorize as $unAuth)
 							<a href="#" class="list-group-item link">
 						    	<div class="row">
 							    	<div class="col-xs-2">
@@ -88,21 +94,24 @@
 							    	</div>
 						    	</div>
 						    </a>
-				@endforeach
+					@endforeach
+				@else
+					<a class="list-group-item text-center"><h3>ไม่พบข้อมูล</h3></a>
+				@endif
 			  </ul>
 			</div>
 			@endif
-			
+
 			@if(isset($rejectUser))
 			<div class="panel-heading">
 				<a class="collapseLink" data-toggle="collapse" href="#rejectUser">
-					<h4 class="panel-title">Rejected User</h4>
-					<span class="label label-default label-badge">{{ count($rejectUser) }}</span>
+					<h4 class="panel-title">Rejected User <span class="label label-default label-badge-authorized">{{ count($rejectUser) }}</span></h4>
 				</a>
 			</div>
 			<div id="rejectUser" class="panel-collapse collapse">
 			  <ul class="list-group">
-				@foreach ($rejectUser as $reUser)
+			  	@if(count($rejectUser)>0)
+					@foreach ($rejectUser as $reUser)
 							<a href="#" class="list-group-item link">
 						    	<div class="row">
 							    	<div class="col-xs-2">
@@ -118,16 +127,18 @@
 							    	</div>
 						    	</div>
 						    </a>
-				@endforeach
+					@endforeach
+				@else
+					<a class="list-group-item text-center"><h3>ไม่พบข้อมูล</h3></a>
+				@endif
 			  </ul>
 			</div>
 			@endif
 @section('scripts')
 <script>
 	$(document).ready(function(){
-	
+
 		var manageButton = {};
-		
 			manageButton.init
 			= function(){
 				var modal = $("#modal-data");
@@ -135,6 +146,7 @@
 				var groupButton = $("button.group");
 				manageButton.handler(acceptButton, modal);
 			};
+<<<<<<< HEAD
 
 			manageAcceptButton.handler
 			= function(acceptButton, modal){
@@ -156,7 +168,9 @@
 				});
 			};
 			
+=======
+>>>>>>> origin/master
 			manageButton.init();
 	});
 </script>
-@endsection			
+@endsection

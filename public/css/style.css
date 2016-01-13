@@ -64,6 +64,11 @@
     font-size: 18px;
 }
 
+.label-badge-authorized{
+    float: right;
+    font-size: 14px;
+}
+
 .mainName{
     font-size: 22px;
     font-weight: bold;
