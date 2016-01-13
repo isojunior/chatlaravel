@@ -76,7 +76,7 @@ class UserController extends Controller {
 			],
 		]);
 		$item = array();
-		$item[0] = [0, '------SELECT UNIVERSITY------'];
+		$item[0] = [0, '-- มหาวิทยาลัย --'];
 		foreach ($university['data'] as $data) {
 			$item[$data['ID_UNIVERSITY']] = [$data['ID_UNIVERSITY'], $data['NAME_THA']];
 		}

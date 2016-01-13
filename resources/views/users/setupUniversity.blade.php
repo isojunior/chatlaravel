@@ -6,7 +6,7 @@
                 <div class="panel panel-primary loginPanel">
                     <div class="loginPanel loginPanelHeader panel-heading">University and Faculty</div>
                     <div class="panel-body">
-                    <form action="registerUniFac" method="post">
+                    <form action="setupUniversity" method="post">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="form-group">
                             <label>University</label>
@@ -22,7 +22,7 @@
                             <label>Faculty</label>
                             <select id="model" name="faculty" class="form-control">
                                 @if(Session::get('user')['ID_FACULTY']==-1)
-                                    <option>Please choose University make first</option>
+                                    <option>-- กรุณาเลือกมหาวิทยาลัย --</option>
                                 @else
                                     <option value="{{$user['FACULTY'][0]['ID_FACULTY']}}">{{$user['FACULTY'][0]['NAME_THA']}} {{$user['FACULTY'][0]['NAME_ENG']}}</option>
                                 @endif
