@@ -10,7 +10,7 @@
 			  <ul class="list-group">
 			  	@if(count($highUser)>0)
 					@foreach ($highUser as $hiUser)
-						<a href="#" class="list-group-item link .clearfix">
+						<li class="list-group-item link .clearfix">
 					    	<div class="row">
 						    	<div class="col-xs-2">
 						    		<img class="img-responsive img-circle avatar imgUsr" src="http://apps.jobtopgun.com/Mercury/photos/{{ $hiUser['ID_USER'] }}.jpg" onerror='this.src="img/avatar.png"'>
@@ -27,7 +27,7 @@
 									</div>
 								</div>
 					    	</div>
-					    </a>
+					    </li>
 					@endforeach
 				@else
 					<a class="list-group-item text-center"><h3>ไม่พบข้อมูล</h3></a>
@@ -46,7 +46,7 @@
 			  <ul class="list-group">
 			  	@if(count($normalUser)>0)
 					@foreach ($normalUser as $nmUser)
-							<a href="#" class="list-group-item link">
+							<li class="list-group-item link">
 						    	<div class="row">
 							    	<div class="col-xs-2">
 							    		<img class="img-responsive img-circle avatar imgUsr" src="http://apps.jobtopgun.com/Mercury/photos/{{ $nmUser['ID_USER'] }}.jpg" onerror='this.src="img/avatar.png"'>
@@ -59,7 +59,7 @@
 										<button class="btn btn-danger btn-sm cancel">ยกเลิกเป็นผู้เกี่ยวข้อง</button>
 							    	</div>
 						    	</div>
-						    </a>
+						    </li>
 					@endforeach
 				@else
 					<a class="list-group-item text-center"><h3>ไม่พบข้อมูล</h3></a>
@@ -78,7 +78,7 @@
 			  <ul class="list-group">
 			  	@if(count($unAuthorize)>0)
 					@foreach ($unAuthorize as $unAuth)
-							<a href="#" class="list-group-item link">
+							<li class="list-group-item link">
 						    	<div class="row">
 							    	<div class="col-xs-2">
 							    		<img class="img-responsive img-circle avatar imgUsr" src="http://apps.jobtopgun.com/Mercury/photos/{{ $unAuth['ID_USER'] }}.jpg" onerror='this.src="img/avatar.png"'>
@@ -88,12 +88,12 @@
 								    		{{ $unAuth['FIRST_NAME'] }} {{ $unAuth['LAST_NAME'] }}
 								    	</h4>
 								    	<p class="list-group-item-text">{{ $unAuth['POSITION'] }}</p>
-										<button data-attr="{{ $reUser['ID_USER'] }}" class="btn btn-success btn-sm accept">เพิ่มเป็นผู้เกี่ยวข้อง</button>
-										<button data-attr="{{ $reUser['ID_USER'] }}" class="btn btn-info btn-sm group">เพิ่มเข้ากลุ่ม</button>
-										<button data-attr="{{ $reUser['ID_USER'] }}" class="btn btn-warning btn-sm reject">ปฏิเสธ</button>
+										<button data-attr="{{ $unAuth['ID_USER'] }}" class="btn btn-success btn-sm accept">เพิ่มเป็นผู้เกี่ยวข้อง</button>
+										<button data-attr="{{ $unAuth['ID_USER'] }}" class="btn btn-info btn-sm group">เพิ่มเข้ากลุ่ม</button>
+										<button data-attr="{{ $unAuth['ID_USER'] }}" class="btn btn-warning btn-sm reject">ปฏิเสธ</button>
 							    	</div>
 						    	</div>
-						    </a>
+						    </li>
 					@endforeach
 				@else
 					<a class="list-group-item text-center"><h3>ไม่พบข้อมูล</h3></a>
@@ -112,7 +112,7 @@
 			  <ul class="list-group">
 			  	@if(count($rejectUser)>0)
 					@foreach ($rejectUser as $reUser)
-							<a href="#" class="list-group-item link">
+							<li href="#" class="list-group-item link">
 						    	<div class="row">
 							    	<div class="col-xs-2">
 							    		<img class="img-responsive img-circle avatar imgUsr" src="http://apps.jobtopgun.com/Mercury/photos/{{ $reUser['ID_USER'] }}.jpg" onerror='this.src="img/avatar.png"'>
@@ -126,7 +126,7 @@
 										<button data-attr="{{ $reUser['ID_USER'] }}"class="btn btn-info btn-sm group">เพิ่มเข้ากลุ่ม</button>
 							    	</div>
 						    	</div>
-						    </a>
+						    </li>
 					@endforeach
 				@else
 					<a class="list-group-item text-center"><h3>ไม่พบข้อมูล</h3></a>
