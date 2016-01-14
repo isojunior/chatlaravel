@@ -144,17 +144,38 @@
 				var modal = $("#modal-data");
 				var acceptButton = $("button.accept");
 				var groupButton = $("button.group");
+				var rejectButton = $("button.reject");
 				manageButton.handler(acceptButton, modal);
 			};
 
-			manageAcceptButton.handler
+			manageButton.acceptBandler
 			= function(acceptButton, modal){
 				acceptButton.click(function(e){
 					var userID = $(this).data("attr");
 					$.ajax({
-						url: "authorizedUser/1/"+userID,
+						url: "authorizedUser/2/"+userID,
 						type: 'get',
-						data: { 'data': data },
+						data: { 'data': userID },
+						dataType: 'html',
+						success: function(result){
+							modal.html(result);
+						},
+						error: function(){
+							alert("Error");
+							return false;
+						}
+					});
+				});
+			};
+			
+			manageButton.rejectBandler
+			= function(acceptButton, modal){
+				acceptButton.click(function(e){
+					var userID = $(this).data("attr");
+					$.ajax({
+						url: "rejectUser/"+userID
+						type: 'get',
+						data: { 'data': userID },
 						dataType: 'html',
 						success: function(result){
 							modal.html(result);
