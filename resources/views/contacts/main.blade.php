@@ -1,5 +1,15 @@
 @extends('app')
 @section('content')
+@if( $user['AUTHORIZE'] =='0' && $user['USER_TYPE'] != '1')
+	<div class="row">
+		<div class="jumbotron">
+			<h2>สวัสดี, {{$user['FIRST_NAME']}} {{$user['LAST_NAME']}}</h2>
+		  	<p>แอพพลิเคชั่นนี้เป็นแอพพลิเคชั่นเฉพาะกลุ่มเพื่อสถาบันการศึกษาใช้ประโยชน์ในการแนะแนว
+และพัฒนานักศึกษา เพราะฉะนั้น จำเป็นต้องรอการยืนยันตัวตนจากแอดมินของสถาบันของท่าน</p>
+		  	<p><a class="btn btn-primary btn-lg" href="setupUniversity" role="button">คลิกเพื่อเลือกมหาวิทยาลัย</a></p>
+		</div>
+	</div>
+@else
 	@if($user['USER_TYPE'] == 1)
 		<div class="panel-group">
 		  <div class="panel panel-default">
@@ -93,7 +103,7 @@
 			</div>
 		</div>
 		@else
-		@if($user['AUTHORIZE']==3)
+			@if($user['AUTHORIZE']==3)
 			<div class="row">
 				<div class="jumbotron">
 					<h2>สวัสดี, {{$user['FIRST_NAME']}} {{$user['LAST_NAME']}}</h2>
@@ -131,7 +141,7 @@
 				@endif
 				</div>
 			</div>
-		@else
+			@else
 			<div class="panel-group">
 			  <div class="panel panel-default">
 			  	@if(isset($unAuthorizeList))
@@ -266,6 +276,7 @@
 			</div>
 		@endif
 	@endif
+@endif
 @endsection
 @section('scripts')
 	<script>
@@ -311,11 +322,11 @@
 						url: "authorizedList",
 						type: 'get',
 						data: { 'data': data },
-						dataType: 'json',
-						//dataType: 'html',
+						//dataType: 'json',
+						dataType: 'html',
 						success: function(result){
-							//modal.html(result);
-							memberAuthorization.putData(modal, result);
+							modal.html(result);
+							//memberAuthorization.putData(modal, result);
 						},
 						error: function(){
 							alert("Error");

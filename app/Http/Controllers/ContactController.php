@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Constrants;
 use App\Http\Controllers\Controller;
 use App\Http\WebserviceClient;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Response;
 
 class ContactController extends Controller {
 	private static $factory;
@@ -118,29 +117,216 @@ class ContactController extends Controller {
 			}
 		}
 	}
-	
-	public function getAuthorizedDetail($params, $result = array()) {
-		$membeTypeIndex = 0;
-		$innerIndex = 0;
-		foreach($params as $key){
-			foreach($key as $value){
-				$result[$membeTypeIndex][$innerIndex] = $value;
-				$innerIndex++;
-			}
-			$membeTypeIndex++;
-		}
-		return $result;
-	}
-	
-	public function getAuthorizedResult(){
-	
+
+	public function getAuthorizedResult() {
 		$idUniversity = $_GET['data'][0];
 		$idFaculty = $_GET['data'][1];
-		$services = array("getMemberUnAuthorized","getMemberAuthorized","getMemberGroup","getMemberReject");
+		$services = array("getMemberUnAuthorized", "getMemberAuthorized", "getMemberGroup", "getMemberReject");
 		$authorizedList = $this->getAuthorizedList($services, $idUniversity, $idFaculty);
-		$authorizedArrangedList = array($authorizedList[0]['data'],$authorizedList[1]['data'],$authorizedList[2]['data'],$authorizedList[3]['data']);
-		$result = $this->getAuthorizedDetail($authorizedArrangedList);
 
-		return json_encode($result);
+		return View('contacts.authorizeResultTemplate')
+			->with('unAuthorize', $authorizedList[0]['data'])
+			->with('highUser', $authorizedList[1]['data'])
+			->with('normalUser', $authorizedList[2]['data'])
+			->with('rejectUser', $authorizedList[3]['data']);
+	}
+
+	public function processAuthorizeUser($authorizeStatus = null, $idUser = null) {
+		$admin = Session::get('user');
+		if ($admin['USER_TYPE'] == 1
+			&& null != $authorizeStatus
+			&& ($authorizeStatus == 1 || $authorizeStatus == 2)) {
+
+			$userResult = $this->getUser($idUser);
+			if (null != $userResult) {
+				$userIdUniversity = $userResult[0]['ID_UNIVERSITY'];
+				$userIdFaculty = $userResult[0]['ID_FACULTY'];
+				$authorizeResult = $this->authorizeUser($idUser, $authorizeStatus, $admin['ID_USER']);
+				if ($authorizeResult == 1) {
+					$this->addUserToAdminGroup($idUser, $userIdUniversity, $userIdFaculty);
+					$this->addUserToPrimaryGroup($idUser, $userIdUniversity, $userIdFaculty);
+					$this->sendPushResult($idUser, Constrants::AUTHORIZE);
+					return redirect('authorizedList')->send();
+				} else {
+					Session::flash('alert-danger', 'Error occored, please contact administrator.[Error update authorize code]');
+					return redirect('contacts')->send();
+				}
+			} else {
+				Session::flash('alert-danger', 'Error occored, please contact administrator.[Not found user]');
+				return redirect('contacts')->send();
+			}
+		} else {
+			Session::flash('alert-danger', 'Error occored, please contact administrator.[Error occored when accessing the process.]');
+			return redirect('contacts')->send();
+		}
+	}
+
+	public function processRejectUser($idUser = null) {
+		$admin = Session::get('user');
+		if ($admin['USER_TYPE'] == 1) {
+			$userResult = $this->getUser($idUser);
+			if (null != $userResult) {
+				$userIdUniversity = $userResult[0]['ID_UNIVERSITY'];
+				$userIdFaculty = $userResult[0]['ID_FACULTY'];
+				$authorizeResult = $this->authorizeUser($idUser, 3, $admin['ID_USER']);
+				if ($authorizeResult == 1) {
+					return redirect('authorizedList')->send();
+				} else {
+					Session::flash('alert-danger', 'Error occored, please contact administrator.[Error update authorize code]');
+					return redirect('contacts')->send();
+				}
+			} else {
+				Session::flash('alert-danger', 'Error occored, please contact administrator.[Not found user]');
+				return redirect('contacts')->send();
+			}
+		} else {
+			Session::flash('alert-danger', 'Error occored, please contact administrator.[Error occored when accessing the process.]');
+			return redirect('contacts')->send();
+		}
+	}
+
+	private function addUserToPrimaryGroup($idUser, $idUniversity, $idFaculty) {
+		$primaryGroupChatResult = $this->getPrimaryGroupChat($idUniversity, $idFaculty, $idUser);
+		if ($primaryGroupChatResult == null) {
+			//create group then get again
+			$createGroupResult = $this->createGroup($idUniversity, $idFaculty, $idUser, 1, -1, -1);
+			if ($createGroupResult == 1) {
+				$primaryGroupChatResult = $this->getPrimaryGroupChat($idUniversity, $idFaculty, $idUser);
+				if ($primaryGroupChatResult == null) {
+					Session::flash('alert-danger', 'Error occored, please contact administrator.[Error occored when create group]');
+					return redirect('contacts')->send();
+				}
+			} else {
+				Session::flash('alert-danger', 'Error occored, please contact administrator.[Error occored when create group]');
+				return redirect('contacts')->send();
+			}
+		}
+		$this->processAddMemberToGroup($primaryGroupChatResult[0]["ID_GROUP"], $idUser);
+	}
+
+	private function addUserToAdminGroup($idUser, $idUniversity, $idFaculty) {
+		$adminGroupChatResult = $this->getAdminGroupChat($idUniversity, $idFaculty, $idUser);
+		if ($adminGroupChatResult == null) {
+			//create group then get again
+			$createGroupResult = $this->createGroup($idUniversity, $idFaculty, $idUser, 1, -1, -1);
+			if ($createGroupResult == 1) {
+				$adminGroupChatResult = $this->getAdminGroupChat($idUniversity, $idFaculty, $idUser);
+				if ($adminGroupChatResult == null) {
+					Session::flash('alert-danger', 'Error occored, please contact administrator.[Error occored when create group]');
+					return redirect('contacts')->send();
+				}
+			} else {
+				Session::flash('alert-danger', 'Error occored, please contact administrator.[Error occored when create group]');
+				return redirect('contacts')->send();
+			}
+		}
+		$this->processAddMemberToGroup($adminGroupChatResult[0]["ID_GROUP"], $idUser);
+	}
+
+	private function processAddMemberToGroup($idGroup, $idUser) {
+		$checkMemberInGroupChat = $this->checkMemberInGroupChat($idGroup, $idUser);
+		if ($checkMemberInGroupChat == 0) {
+			$addmemberResult = $this->addMemberToGroup($idGroup, $idUser);
+			if ($addmemberResult != 1) {
+				Session::flash('alert-danger', 'Error occored, please contact administrator.[Can not add member to group]');
+				return redirect('contacts')->send();
+			}
+		} else {
+			Session::flash('alert-danger', 'Error occored, please contact administrator.[User already exist in group]');
+			return redirect('contacts')->send();
+		}
+	}
+
+	private function sendPushResult($idUser, $action) {
+		$addMemberToGroupResult = self::$factory->callWebservice([
+			'query' => [
+				'service' => "sendPushResult",
+				'idUser' => $idUser,
+				'action' => $idUser,
+			],
+		]);
+		return $addMemberToGroupResult['data'][0]['result'];
+	}
+
+	private function addMemberToGroup($idGroup, $idUser) {
+		$addMemberToGroupResult = self::$factory->callWebservice([
+			'query' => [
+				'service' => "addMemberGroupChat",
+				'idGroup' => $idGroup,
+				'idUser' => $idUser,
+			],
+		]);
+		return $addMemberToGroupResult['data'][0]['result'];
+	}
+
+	private function checkMemberInGroupChat($idGroup, $idUser) {
+		$checkMemberInGroupChatResult = self::$factory->callWebservice([
+			'query' => [
+				'service' => "isMemberGroupChat",
+				'idGroup' => $idGroup,
+				'idUser' => $idUser,
+			],
+		]);
+		return $checkMemberInGroupChatResult['data'][0]['result'];
+	}
+
+	private function createGroup($idUniversity, $idFaculty, $isAdmin, $idUser1, $idUser2) {
+		$createGroupResult = self::$factory->callWebservice([
+			'query' => [
+				'service' => "addGroupChat",
+				'idUniversity' => $idUniversity,
+				'idFaculty' => $idFaculty,
+				'isAdmin' => $isAdmin,
+				'idUser1' => $idUser1,
+				'idUser2' => $idUser2,
+			],
+		]);
+		return $createGroupResult['data'][0]['result'];
+	}
+
+	private function getUser($idUser) {
+		$userResult = self::$factory->callWebservice([
+			'query' => [
+				'service' => "getUser",
+				'idUser' => $idUser,
+			],
+		]);
+		return $userResult['data'];
+	}
+
+	private function getPrimaryGroupChat($idUniversity, $idFaculty, $idUser) {
+		$primaryGroupChatResult = self::$factory->callWebservice([
+			'query' => [
+				'service' => "getPrimaryGroupChat",
+				'idUniversity' => $idUniversity,
+				'idFaculty' => $idFaculty,
+				'idUser' => $idUser,
+			],
+		]);
+		return $primaryGroupChatResult['data'];
+	}
+
+	private function getAdminGroupChat($idUniversity, $idFaculty, $idUser) {
+		$adminGroupChatResult = self::$factory->callWebservice([
+			'query' => [
+				'service' => "getAdminGroupChat",
+				'idUniversity' => $idUniversity,
+				'idFaculty' => $idFaculty,
+				'idUser' => $idUser,
+			],
+		]);
+		return $adminGroupChatResult['data'];
+	}
+
+	private function authorizeUser($idUser, $authorizeStatus, $authorizeBy) {
+		$authorizeResult = self::$factory->callWebservice([
+			'query' => [
+				'service' => "updateAuthorization",
+				'idUser' => $idUser,
+				'authorize' => $authorizeStatus,
+				'authorizeBy' => $authorizeBy,
+			],
+		]);
+		return $authorizeResult['data'][0]['result'];
 	}
 }
