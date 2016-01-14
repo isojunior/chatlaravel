@@ -33,8 +33,6 @@ Route::group(['middleware' => 'guest'], function () {
 	Route::post('profile/edit', 'UserController@processEditProfile');
 	Route::post('setupUniversity', 'UserController@processSetupUniversityView');
 	Route::get('authorizedList', 'ContactController@getAuthorizedResult');
-
-});
-
 	Route::get('authorizedUser/{authorizeStatus}/{idUser}', 'ContactController@processAuthorizeUser');
-	Route::get('rejectUser/{idUser}', 'ContactController@processRejectUser');
+	//Route::get('rejectUser/{idUser}', 'ContactController@processRejectUser');
+});
