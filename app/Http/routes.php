@@ -11,6 +11,9 @@
 |
  */
 
+Route::get('socket', 'SocketController@index');
+Route::post('sendMessage', 'socketController@sendMessage');
+Route::get('writeMessage', 'socketController@writeMessage');
 Route::get('/', 'UserController@getLoginView');
 Route::get('login', 'UserController@getLoginView');
 Route::get('main', 'UserController@getLoginView');
@@ -30,6 +33,8 @@ Route::group(['middleware' => 'guest'], function () {
 	Route::post('profile/edit', 'UserController@processEditProfile');
 	Route::post('setupUniversity', 'UserController@processSetupUniversityView');
 	Route::get('authorizedList', 'ContactController@getAuthorizedResult');
+
+});
+
 	Route::get('authorizedUser/{authorizeStatus}/{idUser}', 'ContactController@processAuthorizeUser');
 	Route::get('rejectUser/{idUser}', 'ContactController@processRejectUser');
-});
