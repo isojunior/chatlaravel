@@ -354,6 +354,20 @@
 		}
 	}
 
+	function cancelAuthorized(idUser){
+		if(confirm("กดตกลงเพื่อยืนยันการเปลี่ยนสถานะ")){
+			var url ="authorizedUser/0/"+idUser;
+			callAjaxAuthorized(url);
+		}
+	}
+
+	function reject(idUser){
+		if(confirm("กดตกลงเพื่อยืนยันการปฏิเสธ")){
+			var url ="authorizedUser/3/"+idUser;
+			callAjaxAuthorized(url);
+		}
+	}
+
 	function callAjaxAuthorized(url){
 		$.ajax({
 			url: url,

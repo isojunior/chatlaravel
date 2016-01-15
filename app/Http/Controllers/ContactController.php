@@ -135,54 +135,56 @@ class ContactController extends Controller {
 		$admin = Session::get('user');
 		if ($admin['USER_TYPE'] == 1
 			&& null != $authorizeStatus
-			&& ($authorizeStatus == 1 || $authorizeStatus == 2)) {
-
+			&& ($authorizeStatus >= 0 && $authorizeStatus <= 3)) {
 			$userResult = $this->getUser($idUser);
 			if (null != $userResult) {
 				$userIdUniversity = $userResult[0]['ID_UNIVERSITY'];
 				$userIdFaculty = $userResult[0]['ID_FACULTY'];
 				$authorizeResult = $this->authorizeUser($idUser, $authorizeStatus, $admin['ID_USER']);
 				if ($authorizeResult == 1) {
-					$this->addUserToAdminGroup($idUser, $userIdUniversity, $userIdFaculty);
-					$this->addUserToPrimaryGroup($idUser, $userIdUniversity, $userIdFaculty);
-					$this->sendPushResult($idUser, Constrants::AUTHORIZE);
-
+					if ($authorizeStatus == 1 || $authorizeStatus == 2) {
+						$this->addUserToAdminGroup($idUser, $userIdUniversity, $userIdFaculty);
+						$this->addUserToPrimaryGroup($idUser, $userIdUniversity, $userIdFaculty);
+						$this->sendPushResult($idUser, Constrants::AUTHORIZE);
+					} else if ($authorizeStatus == 3) {
+						$this->removeUserFromAdminGroup($idUser, $userIdUniversity, $userIdFaculty);
+						$this->removeUserFromPrimaryGroup($idUser, $userIdUniversity, $userIdFaculty);
+					}
 					return $this->getAuthorizedResult($userIdUniversity, $userIdFaculty);
 				} else {
 					Session::flash('alert-danger', 'Error occored, please contact administrator.[Error update authorize code]');
-					return redirect('contacts')->send();
+					return "error1";
 				}
+
 			} else {
 				Session::flash('alert-danger', 'Error occored, please contact administrator.[Not found user]');
-				return redirect('contacts')->send();
+				return "error2";
 			}
 		} else {
 			Session::flash('alert-danger', 'Error occored, please contact administrator.[Error occored when accessing the process.]');
-			return redirect('contacts')->send();
+			return "error3";
 		}
 	}
 
-	public function processRejectUser($idUser = null) {
-		$admin = Session::get('user');
-		if ($admin['USER_TYPE'] == 1) {
-			$userResult = $this->getUser($idUser);
-			if (null != $userResult) {
-				$userIdUniversity = $userResult[0]['ID_UNIVERSITY'];
-				$userIdFaculty = $userResult[0]['ID_FACULTY'];
-				$authorizeResult = $this->authorizeUser($idUser, 3, $admin['ID_USER']);
-				if ($authorizeResult == 1) {
-					return $this->getAuthorizedResult($userIdUniversity, $userIdFaculty);
-				} else {
-					Session::flash('alert-danger', 'Error occored, please contact administrator.[Error update authorize code]');
-					return redirect('contacts')->send();
-				}
-			} else {
-				Session::flash('alert-danger', 'Error occored, please contact administrator.[Not found user]');
-				return redirect('contacts')->send();
+	private function removeUserFromAdminGroup($idUser, $idUniversity, $idFaculty) {
+		$adminGroupChatResult = $this->getAdminGroupChat($idUniversity, $idFaculty, $idUser);
+		if ($adminGroupChatResult == null) {
+			$idGroup = $adminGroupChatResult[0]["ID_GROUP"];
+			$checkMemberInGroupChat = $this->checkMemberInGroupChat($idGroup, $idUser);
+			if ($checkMemberInGroupChat == 1) {
+				$this->removeMemberFromGroup($idGroup, $idUser);
 			}
-		} else {
-			Session::flash('alert-danger', 'Error occored, please contact administrator.[Error occored when accessing the process.]');
-			return redirect('contacts')->send();
+		}
+	}
+
+	private function removeUserFromPrimaryGroup($idUser, $idUniversity, $idFaculty) {
+		$primaryGroupChatResult = $this->getPrimaryGroupChat($idUniversity, $idFaculty, $idUser);
+		if ($primaryGroupChatResult == null) {
+			$idGroup = $adminGroupChatResult[0]["ID_GROUP"];
+			$primaryGroupChatResult = $this->checkMemberInGroupChat($idGroup, $idUser);
+			if ($primaryGroupChatResult == 1) {
+				$this->removeMemberFromGroup($idGroup, $idUser);
+			}
 		}
 	}
 
@@ -195,11 +197,11 @@ class ContactController extends Controller {
 				$primaryGroupChatResult = $this->getPrimaryGroupChat($idUniversity, $idFaculty, $idUser);
 				if ($primaryGroupChatResult == null) {
 					Session::flash('alert-danger', 'Error occored, please contact administrator.[Error occored when create group]');
-					return redirect('contacts')->send();
+					return "error4";
 				}
 			} else {
 				Session::flash('alert-danger', 'Error occored, please contact administrator.[Error occored when create group]');
-				return redirect('contacts')->send();
+				return "error5";
 			}
 		}
 		$this->processAddMemberToGroup($primaryGroupChatResult[0]["ID_GROUP"], $idUser);
@@ -214,11 +216,11 @@ class ContactController extends Controller {
 				$adminGroupChatResult = $this->getAdminGroupChat($idUniversity, $idFaculty, $idUser);
 				if ($adminGroupChatResult == null) {
 					Session::flash('alert-danger', 'Error occored, please contact administrator.[Error occored when create group]');
-					return redirect('contacts')->send();
+					return "error6";
 				}
 			} else {
 				Session::flash('alert-danger', 'Error occored, please contact administrator.[Error occored when create group]');
-				return redirect('contacts')->send();
+				return "error7";
 			}
 		}
 		$this->processAddMemberToGroup($adminGroupChatResult[0]["ID_GROUP"], $idUser);
@@ -230,12 +232,23 @@ class ContactController extends Controller {
 			$addmemberResult = $this->addMemberToGroup($idGroup, $idUser);
 			if ($addmemberResult != 1) {
 				Session::flash('alert-danger', 'Error occored, please contact administrator.[Can not add member to group]');
-				return redirect('contacts')->send();
+				return "error8";
 			}
 		} else {
 			Session::flash('alert-danger', 'Error occored, please contact administrator.[User already exist in group]');
-			return redirect('contacts')->send();
+			return "error8";
 		}
+	}
+
+	private function removeMemberFromGroup($idGroup, $idUser) {
+		$addMemberToGroupResult = self::$factory->callWebservice([
+			'query' => [
+				'service' => "removeMemberGroupChat",
+				'idGroup' => $idGroup,
+				'idUser' => $idUser,
+			],
+		]);
+		return $addMemberToGroupResult['data'][0]['result'];
 	}
 
 	private function sendPushResult($idUser, $action) {
