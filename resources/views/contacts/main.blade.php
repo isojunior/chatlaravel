@@ -290,25 +290,6 @@
 				memberAuthorization.handler(groupList, adminList, modal);
 			};
 
-		memberAuthorization.putData
-			= function(container, result) {
-				var container = $(".modal-body");
-				var div = $("div.memberContainer");
-				container.append(div);
-				var memberTypeName;
-				for (var key in result){
-					//$("div.memberContainer > panel-title").text("")
-
-						for(var index in result[key]){
-
-							//alert(result[key][index]["ID_USER"]);
-
-						}
-				}
-				div.show();
-
-			};
-
 		memberAuthorization.handler
 			= function(groupList, adminList, modal){
 				groupList.click(function(e){

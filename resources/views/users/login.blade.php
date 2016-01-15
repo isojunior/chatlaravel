@@ -12,14 +12,14 @@
                         <div class="form-group @if ($errors->has('email')) has-error @endif">
                             <label class="col-sm-4 control-label">Username</label>
                             <div class="col-sm-5">
-                                <input type="text" class="form-control" name="email" maxlength="20" value="{{ old('email') }}">
+                                <input type="text" class="form-control" name="email" maxlength="100" value="{{ old('email') }}">
                                 @if($errors->has('email')) <p class="help-block">{{$errors->first('email')}}</p>@endif
                             </div>
                         </div>
                         <div class="form-group @if ($errors->has('password')) has-error @endif">
                             <label class="col-sm-4 control-label">Password</label>
                             <div class="col-sm-5">
-                                <input type="password" class="form-control" name="password" maxlength="20">
+                                <input type="password" class="form-control" name="password" maxlength="100">
                                 @if($errors->has('password')) <p class="help-block">{{$errors->first('password')}}</p>@endif
                             </div>
                         </div>

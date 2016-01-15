@@ -155,7 +155,7 @@ class UserController extends Controller {
 		];
 		$messages = [
 			'profileImage.image' => 'A file is not images, Plese specific image file.',
-			'profileImage.max' => 'Image size must be less then or equal 1MB',
+			'profileImage.max' => 'Image size must be less than or equal 1MB',
 		];
 		$validator = Validator::make($request->all(), $rules, $messages);
 		if ($validator->fails()) {
@@ -172,11 +172,11 @@ class UserController extends Controller {
 					Session::flash('alert-success', 'Upload image success.');
 					return redirect('profile');
 				} else {
-					Session::flash('alert-danger', 'Error occored 2, please contact administrator.');
+					Session::flash('alert-danger', 'Error occurred 2, please contact administrator.');
 					return redirect('profile');
 				}
 			} else {
-				Session::flash('alert-danger', 'Error occored, please contact administrator.');
+				Session::flash('alert-danger', 'Error occurred, please contact administrator.');
 				return redirect('profile');
 			}
 		}
@@ -188,21 +188,21 @@ class UserController extends Controller {
 			'Name' => 'required|max:100',
 			'Surname' => 'required|max:100',
 			'Position' => 'required|max:100',
-			'Mobile' => 'required|max:100',
+			'Mobile' => 'required|max:10',
 			'Email' => 'required|email|max:100',
 		);
 		$message = [
 			'Name.required' => 'Name is Required',
-			'Name.max' => 'Name length must me less then or equals 100 character.',
+			'Name.max' => 'Name length must be less than or equals 100 character.',
 			'Surname.required' => 'SurName is Required',
-			'Surname.max' => 'SurName length must me less then or equals 100 character.',
+			'Surname.max' => 'SurName length must be less than or equals 100 character.',
 			'Position.required' => 'Position is Required',
-			'Position.max' => 'Position length must me less then or equals 100 character.',
+			'Position.max' => 'Position length must be less than or equals 100 character.',
 			'Mobile.required' => 'Mobile is Required',
-			'Mobile.max' => 'Mobile length must me less then or equals 100 character.',
+			'Mobile.max' => 'Mobile length must be less than or equals 10 character.',
 			'Email.required' => 'Email is Required',
 			'Email.email' => 'Email format not correct',
-			'Email.max' => 'Email length must me less then or equals 100 character.',
+			'Email.max' => 'Email length must be less than or equals 100 character.',
 		];
 		$validator = Validator::make($request->all(), $rules, $message);
 		if ($validator->fails()) {
@@ -262,7 +262,7 @@ class UserController extends Controller {
 				Session::flash('alert-success', 'Update Successful');
 				return redirect('profile');
 			} else {
-				Session::flash('alert-danger', 'An error occored, please contact admin.');
+				Session::flash('alert-danger', 'An error occurred, please contact admin.');
 				return redirect('profile/edit')->withInput();
 			}
 
@@ -274,27 +274,27 @@ class UserController extends Controller {
 			'Name' => 'required|max:100',
 			'Surname' => 'required|max:100',
 			'Position' => 'required|max:100',
-			'Mobile' => 'required|max:100',
+			'Mobile' => 'required|max:10',
 			'Email' => 'required|email|max:100',
 			'Password' => 'required|confirmed|max:100',
 			'Password_confirmation' => 'required',
 		);
 		$message = [
 			'Name.required' => 'Name is Required.',
-			'Name.max' => 'Name length must me less then or equals 100 character.',
+			'Name.max' => 'Name length must be less than or equals 100 character.',
 			'Surname.required' => 'SurName is Required.',
-			'Surname.max' => 'SurName length must me less then or equals 100 character.',
+			'Surname.max' => 'SurName length must be less than or equals 100 character.',
 			'Position.required' => 'Position is Required.',
-			'Position.max' => 'Position length must me less then or equals 100 character.',
+			'Position.max' => 'Position length must be less than or equals 100 character.',
 			'Mobile.required' => 'Mobile is Required.',
-			'Mobile.max' => 'Mobile length must me less then or equals 100 character.',
+			'Mobile.max' => 'Mobile length must be less than or equals 100 character.',
 			'Email.required' => 'Email is Required.',
 			'Email.email' => 'Email format not correct.',
-			'Email.max' => 'Email length must me less then or equals 100 character.',
+			'Email.max' => 'Email length must be less than or equals 10 character.',
 			'Password.required' => 'Password is Required.',
 			'Password.confirmed' => 'Password not match.',
 			'Password_confirmation.required' => 'Password Confirm is Required.',
-			'Password.max' => 'Password length must me less then or equals 100 character.',
+			'Password.max' => 'Password length must be less than or equals 100 character.',
 		];
 		$validator = Validator::make($request->all(), $rules, $message);
 		if ($validator->fails()) {

@@ -10,7 +10,7 @@
 		  <ul class="list-group">
 		  	@if(count($highUser)>0)
 				@foreach ($highUser as $hiUser)
-					<li class="list-group-item link .clearfix">
+					<li class="list-group-item link">
 				    	<div class="row">
 					    	<div class="col-xs-2">
 					    		<img class="img-responsive img-circle avatar imgUsr" src="http://apps.jobtopgun.com/Mercury/photos/{{ $hiUser['ID_USER'] }}.jpg" onerror='this.src="img/avatar.png"'>

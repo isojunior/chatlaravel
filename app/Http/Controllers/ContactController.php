@@ -256,7 +256,7 @@ class ContactController extends Controller {
 			'query' => [
 				'service' => "sendPushResult",
 				'idUser' => $idUser,
-				'action' => $idUser,
+				'action' => $action,
 			],
 		]);
 		return $addMemberToGroupResult['data'][0]['result'];
