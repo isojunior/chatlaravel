@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
     <title>Mercury</title>
-    <base href="/chatlaravel/public/" target="_top">
+    {{--<base href="/ChatApplication/public/" target="_top">--}}
     <link rel="stylesheet" type="text/css" href="{{ asset("css/bootstrap.css")  }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset("css/style.css") }}"/>
     <!-- <link href="{{ asset("css/font-awesome.css") }}" rel="stylesheet"> -->
@@ -28,5 +28,6 @@
   <script src="{{ asset("js/angular.min.js") }}"></script>
   <script src="{{ asset("js/jquery-ui.min.js")}}"></script>
   <script src="{{ asset("js/fileinput.min.js")}}"></script>
+  <script src="{{ asset("js/socket.io.js") }}"></script>
   @yield('scripts')
 </html>

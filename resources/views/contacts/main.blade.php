@@ -279,8 +279,7 @@
 @endif
 @endsection
 @section('scripts')
-	<script>
-		// initial js function
+<script>
 	$(document).ready(function(){
 		var memberAuthorization = {};
 		memberAuthorization.init
@@ -322,14 +321,16 @@
 						url: "authorizedList",
 						type: 'get',
 						data: { 'data': data },
-						//dataType: 'json',
 						dataType: 'html',
+						beforeSend: function() {
+					        //modal.slideUp(300);
+					        modal.html("<img src='img/preload_horizontal.gif' class='img-responsive center-block'/>");
+					    },
 						success: function(result){
 							modal.html(result);
-							//memberAuthorization.putData(modal, result);
+							modal.slideDown(300);
 						},
 						error: function(){
-							alert("Error");
 							return false;
 						}
 					});
@@ -338,5 +339,37 @@
 
 		memberAuthorization.init();
 	});
-	</script>
+
+	function addToAuthorized(idUser){
+		if(confirm("กดตกลงเพื่อยืนยันการเปลี่ยนสถานะ")){
+			var url ="authorizedUser/1/"+idUser;
+			callAjaxAuthorized(url);
+		}
+	}
+
+	function addToGroup(idUser){
+		if(confirm("กดตกลงเพื่อยืนยันการเปลี่ยนสถานะ")){
+			var url ="authorizedUser/2/"+idUser;
+			callAjaxAuthorized(url);
+		}
+	}
+
+	function callAjaxAuthorized(url){
+		$.ajax({
+			url: url,
+			type: 'get',
+			dataType: 'html',
+			beforeSend: function() {
+		        $("#modal-data").html("<img src='img/preload_horizontal.gif' class='img-responsive center-block'/>");
+		    },
+			success: function(result){
+				$("#modal-data").html(result);
+				$("#modal-data").slideDown(300);
+			},
+			error: function(){
+				return false;
+			}
+		});
+	}
+</script>
 @endsection

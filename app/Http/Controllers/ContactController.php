@@ -118,9 +118,9 @@ class ContactController extends Controller {
 		}
 	}
 
-	public function getAuthorizedResult() {
-		$idUniversity = $_GET['data'][0];
-		$idFaculty = $_GET['data'][1];
+	public function getAuthorizedResult($idUniversityRequest = null, $idFacultyRequest = null) {
+		$idUniversity = $idUniversityRequest == null ? $_GET['data'][0] : $idUniversityRequest;
+		$idFaculty = $idFacultyRequest == null ? $_GET['data'][1] : $idFacultyRequest;
 		$services = array("getMemberUnAuthorized", "getMemberAuthorized", "getMemberGroup", "getMemberReject");
 		$authorizedList = $this->getAuthorizedList($services, $idUniversity, $idFaculty);
 
@@ -146,7 +146,8 @@ class ContactController extends Controller {
 					$this->addUserToAdminGroup($idUser, $userIdUniversity, $userIdFaculty);
 					$this->addUserToPrimaryGroup($idUser, $userIdUniversity, $userIdFaculty);
 					$this->sendPushResult($idUser, Constrants::AUTHORIZE);
-					return redirect('authorizedList')->send();
+
+					return $this->getAuthorizedResult($userIdUniversity, $userIdFaculty);
 				} else {
 					Session::flash('alert-danger', 'Error occored, please contact administrator.[Error update authorize code]');
 					return redirect('contacts')->send();
@@ -170,7 +171,7 @@ class ContactController extends Controller {
 				$userIdFaculty = $userResult[0]['ID_FACULTY'];
 				$authorizeResult = $this->authorizeUser($idUser, 3, $admin['ID_USER']);
 				if ($authorizeResult == 1) {
-					return redirect('authorizedList')->send();
+					return $this->getAuthorizedResult($userIdUniversity, $userIdFaculty);
 				} else {
 					Session::flash('alert-danger', 'Error occored, please contact administrator.[Error update authorize code]');
 					return redirect('contacts')->send();
