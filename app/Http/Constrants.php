@@ -9,5 +9,8 @@ class Constrants {
 	/** todo: change image profile path **/
 	const IMAGE_PROFILE_PATH = '/Mercury/photos/';
 	const AUTHORIZE = "authorize";
+	const UNAUTHORIZE = "unauthorize";
+	const ACCEPT = "accept";
+	const REJECT = "reject";
 }
 ?>

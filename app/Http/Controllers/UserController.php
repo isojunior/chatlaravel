@@ -57,17 +57,7 @@ class UserController extends Controller {
 			->count();
 		return $query;
 	}
-	public function getFaculty() {
-//		$webServiceClient = self::$factory->getWebServiceClient();
-		$faculty = self::$factory->callWebservice([
-			'query' => [
-				'service' => 'getAllFaculty',
-				'idUniversity' => '9027',
-			],
-		]);
-		dd($faculty);
-		//dd(json_decode($response->getBody()->getContents(), true));
-	}
+
 	public function getSetupUniversityView() {
 		$auth = Session::get('user');
 		$university = self::$factory->callWebservice([
@@ -75,12 +65,31 @@ class UserController extends Controller {
 				'service' => 'getAllUniversity',
 			],
 		]);
-		$item = array();
-		$item[0] = [0, '-- มหาวิทยาลัย --'];
-		foreach ($university['data'] as $data) {
-			$item[$data['ID_UNIVERSITY']] = [$data['ID_UNIVERSITY'], $data['NAME_THA']];
+		$universityList = array();
+		$universityList[0] = [0, '-- มหาวิทยาลัย --'];
+		foreach ($university['data'] as $uni) {
+			$universityList[$uni['ID_UNIVERSITY']] = [$uni['ID_UNIVERSITY'], $uni['NAME_THA']];
 		}
-		return view('users.setupUniversity')->with('university', $university)->with('items', $item)->with('user', $auth);
+
+		if ($auth['ID_UNIVERSITY'] > 0) {
+			$faculty = self::$factory->callWebservice([
+				'query' => [
+					'service' => 'getAllFaculty',
+					'idUniversity' => $auth['ID_UNIVERSITY'],
+				],
+			]);
+
+			$facultyList = array();
+			$facultyList[0] = [0, 'ส่วนกลาง CENTER'];
+			foreach ($faculty['data'] as $fac) {
+				$facultyList[$fac['ID_FACULTY']] = [$fac['ID_FACULTY'], $fac['NAME_THA'] . ' ' . $fac['NAME_ENG']];
+			}
+		}
+
+		return view('users.setupUniversity')
+			->with('universities', $universityList)
+			->with('faculties', $facultyList)
+			->with('user', $auth);
 	}
 
 	public function editProfileView() {
@@ -163,7 +172,7 @@ class UserController extends Controller {
 		} else {
 			$profileImage = Input::file('profileImage');
 			if ($profileImage != null && $profileImage->isValid()) {
-				$destinationPath = Constrants::PROFILE_PATH;
+				$destinationPath = Constrants::IMAGE_PROFILE_PATH;
 				$extension = $profileImage->getClientOriginalExtension();
 				$fileNameFull = $auth["ID_USER"] . "." . $extension;
 				$fileMoved = $profileImage->move($destinationPath, $fileNameFull);
@@ -326,8 +335,6 @@ class UserController extends Controller {
 				],
 			]);
 
-			//dd($isExistEmailResult["data"]);
-
 			if ($isExistEmailResult["data"][0]["result"] == 1) {
 				Session::flash('alert-danger', 'Email already to use');
 				return redirect('register')->withInput();
@@ -352,41 +359,46 @@ class UserController extends Controller {
 
 	public function processSetupUniversityView(Request $request) {
 		$auth = Session::get('user');
-		$inputUni = $request->input("university");
-		$inputFac = $request->input("faculty");
-		$updateFac = self::$factory->callWebservice([
-			'query' => [
-				'service' => 'updateFaculty',
-				'idUniversity' => $inputUni,
-				'idFaculty' => $inputFac,
-				'idUser' => $auth['ID_USER'],
-			],
-		]);
-		if ($updateFac["data"][0]["result"] == 1) {
-			$updateRegister = self::$factory->callWebservice([
+		$inputUniversity = $request->input("university");
+		$inputFaculty = $request->input("faculty");
+		if ($inputUniversity > 0) {
+			$updateFac = self::$factory->callWebservice([
 				'query' => [
-					'service' => 'registerSuccess',
-					'idUniversity' => $inputUni,
-					'idFaculty' => $inputFac,
+					'service' => 'updateFaculty',
+					'idUniversity' => $inputUniversity,
+					'idFaculty' => $inputFaculty,
 					'idUser' => $auth['ID_USER'],
 				],
 			]);
-			if ($updateRegister["data"][0]["result"] == 1) {
-				$userResult = self::$factory->callWebservice([
+			if ($updateFac["data"][0]["result"] == 1) {
+				$updateRegister = self::$factory->callWebservice([
 					'query' => [
-						'service' => 'getUser',
+						'service' => 'registerSuccess',
+						'idUniversity' => $inputUniversity,
+						'idFaculty' => $inputFaculty,
 						'idUser' => $auth['ID_USER'],
 					],
 				]);
+				if ($updateRegister["data"][0]["result"] == 1) {
+					$userResult = self::$factory->callWebservice([
+						'query' => [
+							'service' => 'getUser',
+							'idUser' => $auth['ID_USER'],
+						],
+					]);
 
-				Session::put('user', $userResult["data"][0]);
-				Session::flash('alert-success', 'Update Successful');
+					Session::put('user', $userResult["data"][0]);
+					Session::flash('alert-success', 'บันทึกข้อมูลสำเร็จ');
+				} else {
+					Session::flash('alert-danger', 'ขออภัย! เกิดความขัดข้อง กรุณาติดต่อผู้ดูแลระบบค่ะ');
+				}
 			} else {
-				Session::flash('alert-danger', 'Update Fail Please Try Again');
+				Session::flash('alert-danger', 'ขออภัย! เกิดความขัดข้อง กรุณาติดต่อผู้ดูแลระบบค่ะ');
 			}
+			return redirect('profile');
 		} else {
-			Session::flash('alert-danger', 'Update Fail Please Try Again');
+			Session::flash('alert-danger', 'กรุณาระบุมหาวิทยาลัยและคณะที่ท่านสังกัตค่ะ');
+			return redirect('setupUniversity');
 		}
-		return redirect('profile');
 	}
 }

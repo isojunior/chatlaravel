@@ -25,12 +25,12 @@
 			<div id="groupList" class="panel-collapse collapse">
 			  <ul class="list-group">
 				@foreach ($groupList as $group)
-								<a href="#" class="list-group-item link" data-toggle="modal" data-target="#myModal" data-group='["{{ $group['UNIVERSITY'][0]['ID_UNIVERSITY'] }}","{{ $group['FACULTY'][0]['ID_FACULTY'] }}"]'>
-									<h4 class="list-group-item-heading universityName">
-										{{ $group['UNIVERSITY'][0]['NAME_THA'] }}
-									</h4>
-									<p class="list-group-item-text facultyName">{{ $group['FACULTY'][0]['NAME_THA'] }}</p>
-								</a>
+					<a href="#" class="list-group-item link" data-toggle="modal" data-target="#myModal" data-group='["{{ $group['UNIVERSITY'][0]['ID_UNIVERSITY'] }}","{{ $group['FACULTY'][0]['ID_FACULTY'] }}"]'>
+						<h4 class="list-group-item-heading universityName">
+							{{ $group['UNIVERSITY'][0]['NAME_THA'] }}
+						</h4>
+						<p class="list-group-item-text facultyName">{{ $group['FACULTY'][0]['NAME_THA'] }}</p>
+					</a>
 				@endforeach
 			  </ul>
 			</div>
@@ -177,6 +177,44 @@
 					  </ul>
 					</div>
 				@endif
+
+				@if(isset($adminGroupChatList)||isset($primaryGroupChatList))
+					<div class="panel-heading">
+						<a class="collapseLink" data-toggle="collapse" href="#groupList">
+							<h4 class="panel-title">
+					        	<span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
+					        	Groups
+					        </h4>
+						</a>
+					</div>
+					<div id="groupList" class="panel-collapse collapse">
+					  <ul class="list-group">
+					  	@if(isset($adminGroupChatList))
+							@foreach ($adminGroupChatList as $adminGroup)
+								<a href="chat/{{$adminGroup['ID_GROUP']}}" class="list-group-item">
+									<h4 class="list-group-item-heading">
+										บริษัท ท็อปกัน จำกัด
+										<span class="label label-default label-badge">{{$adminGroup['BADGE']}}</span>
+									</h4>
+									<p class="list-group-item-text">Top Gun Co.,Ltd.</p>
+								</a>
+							@endforeach
+						@endIf
+						@if(isset($primaryGroupChatList))
+							@foreach ($primaryGroupChatList as $primaryGroup)
+								<a href="chat/{{$primaryGroup['ID_GROUP']}}" class="list-group-item">
+									<h4 class="list-group-item-heading">
+										{{$primaryGroup['UNIVERSITY'][0]['NAME_THA']}}
+										<span class="label label-default label-badge">{{$primaryGroup['BADGE']}}</span>
+									</h4>
+									<p class="list-group-item-text">{{$primaryGroup['FACULTY'][0]['NAME_THA']}}</p>
+								</a>
+							@endforeach
+						@endif
+					  </ul>
+					</div>
+				@endif
+
 				@if(isset($adminList))
 					<div class="panel-heading">
 						<a class="collapseLink" data-toggle="collapse" href="#adminList">

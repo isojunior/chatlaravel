@@ -14,35 +14,6 @@ class ContactController extends Controller {
 		self::$factory = new WebserviceClient();
 	}
 
-	// get Authorzied & Unauthorized list
-	private function getAuthorizedList($services, $university, $faculty, $result = array()) {
-		foreach ($services as $s) {
-			array_push($result,
-				self::$factory->callWebservice([
-					'query' => [
-						'service' => $s,
-						'idUniversity' => $university,
-						'idFaculty' => $faculty,
-					],
-				])
-			);
-		}
-		return $result;
-	}
-
-	private function getContactList($service, $result = array()) {
-		foreach ($service as $s) {
-			array_push($result,
-				self::$factory->callWebservice([
-					'query' => [
-						'service' => $s,
-					],
-				])
-			);
-		}
-		return $result;
-	}
-
 	public function getContactView() {
 		$user = Session::get('user');
 		if ($user['USER_TYPE'] == 1) {
@@ -92,6 +63,9 @@ class ContactController extends Controller {
 
 				}
 				/** todo case group **/
+				$adminGroupChatResult = $this->addUserToAdminGroup($user['ID_USER'], $user['ID_UNIVERSITY'], $user['ID_FACULTY']);
+
+				$primaryGroupChatResult = $this->addUserToPrimaryGroup($user['ID_USER'], $user['ID_UNIVERSITY'], $user['ID_FACULTY']);
 
 				$allAdminResult = self::$factory->callWebservice([
 					'query' => [
@@ -110,6 +84,8 @@ class ContactController extends Controller {
 
 				return View('contacts.main')
 					->with('unAuthorizeList', $unAuthorizeResult['data'])
+					->with('adminGroupChatList', $adminGroupChatResult)
+					->with('primaryGroupChatList', $primaryGroupChatResult)
 					->with('adminList', $allAdminResult['data'])
 					->with('memberList', $memberResult['data'])
 					->with('rejectList', $memberRejectedResult['data'])
@@ -142,14 +118,26 @@ class ContactController extends Controller {
 				$userIdFaculty = $userResult[0]['ID_FACULTY'];
 				$authorizeResult = $this->authorizeUser($idUser, $authorizeStatus, $admin['ID_USER']);
 				if ($authorizeResult == 1) {
+
 					if ($authorizeStatus == 1 || $authorizeStatus == 2) {
 						$this->addUserToAdminGroup($idUser, $userIdUniversity, $userIdFaculty);
 						$this->addUserToPrimaryGroup($idUser, $userIdUniversity, $userIdFaculty);
-						$this->sendPushResult($idUser, Constrants::AUTHORIZE);
 					} else if ($authorizeStatus == 3) {
 						$this->removeUserFromAdminGroup($idUser, $userIdUniversity, $userIdFaculty);
 						$this->removeUserFromPrimaryGroup($idUser, $userIdUniversity, $userIdFaculty);
 					}
+					$authorizeMessage = null;
+					if ($authorizeStatus == 1) {
+						$authorizeMessage = Constrants::AUTHORIZE;
+					} else if ($authorizeStatus == 2) {
+						$authorizeMessage = Constrants::ACCEPT;
+					} else if ($authorizeStatus == 0) {
+						$authorizeMessage = Constrants::UNAUTHORIZE;
+					} else if ($authorizeStatus == 3) {
+						$authorizeMessage = Constrants::REJECT;
+					}
+					$this->sendPushResult($idUser, $authorizeMessage);
+
 					return $this->getAuthorizedResult($userIdUniversity, $userIdFaculty);
 				} else {
 					Session::flash('alert-danger', 'Error occored, please contact administrator.[Error update authorize code]');
@@ -205,6 +193,7 @@ class ContactController extends Controller {
 			}
 		}
 		$this->processAddMemberToGroup($primaryGroupChatResult[0]["ID_GROUP"], $idUser);
+		return $primaryGroupChatResult;
 	}
 
 	private function addUserToAdminGroup($idUser, $idUniversity, $idFaculty) {
@@ -224,6 +213,7 @@ class ContactController extends Controller {
 			}
 		}
 		$this->processAddMemberToGroup($adminGroupChatResult[0]["ID_GROUP"], $idUser);
+		return $adminGroupChatResult;
 	}
 
 	private function processAddMemberToGroup($idGroup, $idUser) {
@@ -234,9 +224,6 @@ class ContactController extends Controller {
 				Session::flash('alert-danger', 'Error occored, please contact administrator.[Can not add member to group]');
 				return "error8";
 			}
-		} else {
-			Session::flash('alert-danger', 'Error occored, please contact administrator.[User already exist in group]');
-			return "error8";
 		}
 	}
 
@@ -342,5 +329,33 @@ class ContactController extends Controller {
 			],
 		]);
 		return $authorizeResult['data'][0]['result'];
+	}
+
+	private function getAuthorizedList($services, $university, $faculty, $result = array()) {
+		foreach ($services as $s) {
+			array_push($result,
+				self::$factory->callWebservice([
+					'query' => [
+						'service' => $s,
+						'idUniversity' => $university,
+						'idFaculty' => $faculty,
+					],
+				])
+			);
+		}
+		return $result;
+	}
+
+	private function getContactList($service, $result = array()) {
+		foreach ($service as $s) {
+			array_push($result,
+				self::$factory->callWebservice([
+					'query' => [
+						'service' => $s,
+					],
+				])
+			);
+		}
+		return $result;
 	}
 }
