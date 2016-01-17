@@ -35,3 +35,8 @@ Route::group(['middleware' => 'guest'], function () {
 	Route::get('authorizedUser/{authorizeStatus}/{idUser}', 'ContactController@processAuthorizeUser');
 	//Route::get('rejectUser/{idUser}', 'ContactController@processRejectUser');
 });
+Route::get('iso',function(){
+	$user = Session::get('user');
+	Return view("isohome")->with('user',$user);
+});
+Route::get('systemMessage', 'SocketController@systemMessage');

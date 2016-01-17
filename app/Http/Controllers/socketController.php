@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use LRedis;
 
-class socketController extends Controller {
+class SocketController extends Controller {
 	public function index() {
 		return view('socket');
 	}
@@ -19,5 +19,15 @@ class socketController extends Controller {
 		$redis = LRedis::connection();
 		$redis->publish('message', $request->input('message'));
 		return redirect('writeMessage');
+	}
+	public function systemMessage()
+	{
+		$redis = LRedis::connection();
+		$redis->publish('chat-message', json_encode([
+			'msg' =>'System Message',
+			'nickname'=>'System',
+			'system' => true
+		]));
+		return '1';
 	}
 }
