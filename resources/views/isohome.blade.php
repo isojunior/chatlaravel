@@ -103,7 +103,7 @@
 
             $messageForm.on('submit', function (e) {
                 e.preventDefault();
-                    socket.emit('chat.send.message', {msg: $messageBox.val(), nickname:"<?php echo $user["FIRST_NAME"]?>"});
+                    socket.emit('chat.send.message', {msg: $messageBox.val(), nickname:"<?php echo $user["FIRST_NAME"]?>",channel:$dd});
                     $messageBox.val('');
             });
             // get connected users and display to all conected
@@ -126,6 +126,8 @@
                 if(data.hasOwnProperty('system')) {
                     toastr["success"](data.msg);
                 } else {
+                    if($dd==data.channel)
+                    {
                     $chat.append(
                             '<li class="left clearfix">' +
                             '<span class="chat-img pull-left">' +
@@ -143,6 +145,7 @@
                             '<p>' + data.msg + '</p>' +
                             '</div>' +
                             '</li>');
+                    }
                 }
             });
         });

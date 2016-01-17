@@ -34,8 +34,6 @@ io.on('connection', function (socket) {
             'nickname': user.name,
             'socketId': socket.id,
         };
-        socket.join(user.chatchannel);
-
     });
 
     socket.on('subscribe',function(msg)
@@ -61,7 +59,7 @@ io.on('connection', function (socket) {
         console.log('Receive message ' + message.msg + ' from user in channel chat.message');
         //console.log("MEssage:"+io.sockets);
 
-        io.sockets.to(room).emit('chat.message', JSON.stringify(message));
+        io.sockets.emit('chat.message', JSON.stringify(message));
     });
 
 
