@@ -45,13 +45,13 @@ class ChatController extends Controller {
 		$user = Session::get('user');
 		if (!is_null($idGroup)) {
 			$groupChatResult = self::$factory->getGroupChat($user['ID_USER'], $idGroup);
-			$messagesResult = $this->getChatMessage($user['ID_USER'], $groupChatResult['ID_GROUP'], $groupChatResult['IS_ADMIN']);
+			$messagesResult = $this->getChatMessage($user['ID_USER'], $groupChatResult[0]['ID_GROUP'], $groupChatResult[0]['IS_ADMIN']);
 
 			//dd($messagesResult);
 
 			return View('chats.chat')
 				->with('user', $user)
-				->with('chat', $groupChatResult)
+				->with('chat', $groupChatResult[0])
 				->with('messages', $messagesResult);
 		}
 		return redirect('chats');
@@ -61,13 +61,13 @@ class ChatController extends Controller {
 		$user = Session::get('user');
 		if (!is_null($idUserChatWith)) {
 			$userChatResult = self::$factory->getUserGroupChat($user['ID_USER'], $idUserChatWith);
-			if (is_null($userChatResult)) {
+			if (count($userChatResult) == 0) {
 				$createGroupResult = self::$factory->createGroup(-1, -1, 3, $user['ID_USER'], $idUserChatWith);
 				if ($createGroupResult == 1) {
 					$userChatResult = self::$factory->getUserGroupChat($user['ID_USER'], $idUserChatWith);
-					if (!is_null($userChatResult)) {
-						$this->processAddMemberToGroup($userChatResult["ID_GROUP"], $idUser);
-						$this->processAddMemberToGroup($userChatResult["ID_GROUP"], $idUserChatWith);
+					if (count($userChatResult) > 0) {
+						$this->processAddMemberToGroup($userChatResult[0]["ID_GROUP"], $user['ID_USER']);
+						$this->processAddMemberToGroup($userChatResult[0]["ID_GROUP"], $idUserChatWith);
 					} else {
 						Session::flash('alert-danger', 'Error occored, please contact administrator.[Can not create a chat]');
 						return redirect('chats')->send();
@@ -80,12 +80,12 @@ class ChatController extends Controller {
 
 			$userChatWith = self::$factory->getUser($idUserChatWith);
 
-			$messagesResult = $this->getChatMessage($user['ID_USER'], $userChatResult['ID_GROUP'], $userChatResult['IS_ADMIN']);
+			$messagesResult = $this->getChatMessage($user['ID_USER'], $userChatResult[0]['ID_GROUP'], $userChatResult[0]['IS_ADMIN']);
 
 			//dd($messagesResult);
 			return View('chats.chat')->with('user', $user)
 				->with('userWith', $userChatWith)
-				->with('chat', $userChatResult)
+				->with('chat', $userChatResult[0])
 				->with('messages', $messagesResult);
 		}
 		return redirect('chats')->send();

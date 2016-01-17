@@ -73,7 +73,7 @@ class WebServiceClient {
 				'idUser2' => $idUserChatWith,
 			],
 		]);
-		return $getUserChat['data'][0];
+		return $getUserChat['data'];
 	}
 
 	public function getGroupChat($idUser, $idGroup) {
@@ -84,7 +84,7 @@ class WebServiceClient {
 				'idGroup' => $idGroup,
 			],
 		]);
-		return $getGroupChat['data'][0];
+		return $getGroupChat['data'];
 	}
 
 	public function createGroup($idUniversity, $idFaculty, $isAdmin, $idUser1, $idUser2) {
