@@ -29,5 +29,6 @@
   <script src="{{ asset("js/jquery-ui.min.js")}}"></script>
   <script src="{{ asset("js/fileinput.min.js")}}"></script>
   <script src="{{ asset("js/socket.io.js") }}"></script>
+  <script src="{{ asset("js/mercury.js") }}"></script>
   @yield('scripts')
 </html>

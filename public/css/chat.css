@@ -1,7 +1,9 @@
 .messageHeader{
     padding: 0px 20px;
 }
+
 .message-time{
+    margin: 0px 20px;
     font-size: 12px;
     color: #B5ADAD;
 }

@@ -65,6 +65,7 @@
 <link rel="stylesheet" type="text/css" href="{{ asset("css/chat.css") }}"/>
 <script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
 <script>
+	var date = new Date();
 	$(document).ready(function(){
 		$(".chat-panel-body").prop({ scrollTop: $(".chat-panel-body").prop("scrollHeight") });
 
@@ -91,7 +92,8 @@
             			messageText: messageBox.val(),
             			idUser:idUser,
             			userName:userFirstName,
-            			channel:idGroup
+            			channel:idGroup,
+            			time:date.today()+" "+date.timeNow()
             		});
             	messageBox.val('');
             }
@@ -101,9 +103,8 @@
         socket.on('chat.message', function (data) {
             message = JSON.parse(data);
             console.log(message);
-            //message.idUser =20;
             if(message.channel==idGroup){
-
+            	console.log("inSide");
             	var messageContainer =
             		'<li class="'+(message.idUser==idUser?'right':'left')+' clearfix">'+
 					'<span class="chat-img '+(message.idUser==idUser?'pull-right':'pull-left')+'">'+
@@ -117,7 +118,7 @@
 					'		<div class="talktext">'+message.messageText+'</div>'+
 					'	</div>'+
 					'	<div class="message-time">'+
-					'		<span class="glyphicon glyphicon-time"></span>Sometime'+
+					'		<span class="glyphicon glyphicon-time"></span>'+message.time
 					'	</div>'+
 					'</div>'+
 					'</li>';

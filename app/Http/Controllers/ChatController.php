@@ -47,8 +47,6 @@ class ChatController extends Controller {
 			$groupChatResult = self::$factory->getGroupChat($user['ID_USER'], $idGroup);
 			$messagesResult = $this->getChatMessage($user['ID_USER'], $groupChatResult[0]['ID_GROUP'], $groupChatResult[0]['IS_ADMIN']);
 
-			//dd($messagesResult);
-
 			return View('chats.chat')
 				->with('user', $user)
 				->with('chat', $groupChatResult[0])
