@@ -33,30 +33,32 @@
 				<div class="list-group">
 					@if(count($userChatList)>0)
 						@foreach ($userChatList as $userChat)
-						<a href="chat/{{$userChat['ID_GROUP']}}" class="list-group-item">
-							@if($userChat['ID_USER2']<=0)
-							<h4 class="list-group-item-heading">
-							{{$userChat['UNIVERSITY'][0]['NAME_THA']}}
-							<span class="label label-default label-badge">{{$userChat['BADGE']}}</span>
-							</h4>
-							<p class="list-group-item-text">{{$userChat['FACULTY'][0]['NAME_THA']}}</p>
+							@if($userChat['IS_ADMIN']==3)
+								<a href="chatWith/{{$userChat['USER2'][0]['ID_USER']}}" class="list-group-item">
+									<div class="row">
+										<div class="col-xs-1">
+											<img class="img-responsive img-circle avatar imgUsr" src="http://apps.jobtopgun.com/Mercury/photos/{{$userChat['USER2'][0]['ID_USER']}}.jpg" onerror='this.src="img/avatar.png"'>
+										</div>
+										<div class="col-xs-9">
+											<h4 class="list-group-item-heading">
+											{{$userChat['USER2'][0]['FIRST_NAME']}} {{$userChat['USER2'][0]['LAST_NAME']}}
+											</h4>
+											<p class="list-group-item-text">{{$userChat['USER2'][0]["POSITION"]}}</p>
+										</div>
+										<div class="col-xs-2">
+											<span class="label label-default label-badge">{{$userChat['BADGE']}}</span>
+										</div>
+									</div>
+								</a>
 							@else
-							<div class="row">
-								<div class="col-xs-1">
-									<img class="img-responsive img-circle avatar imgUsr" src="http://apps.jobtopgun.com/Mercury/photos/{{$userChat['USER2'][0]['ID_USER']}}.jpg" onerror='this.src="img/avatar.png"'>
-								</div>
-								<div class="col-xs-9">
+								<a href="chat/{{$userChat['ID_GROUP']}}" class="list-group-item">
 									<h4 class="list-group-item-heading">
-									{{$userChat['USER2'][0]['FIRST_NAME']}} {{$userChat['USER2'][0]['LAST_NAME']}}
-									</h4>
-									<p class="list-group-item-text">{{$userChat['USER2'][0]["POSITION"]}}</p>
-								</div>
-								<div class="col-xs-2">
+									{{$userChat['UNIVERSITY'][0]['NAME_THA']}}
 									<span class="label label-default label-badge">{{$userChat['BADGE']}}</span>
-								</div>
-							</div>
+									</h4>
+									<p class="list-group-item-text">{{$userChat['FACULTY'][0]['NAME_THA']}}</p>
+								</a>
 							@endif
-						</a>
 						@endforeach
 					@else
 						<a class="list-group-item text-center"><h3>ไม่พบข้อมูล</h3></a>

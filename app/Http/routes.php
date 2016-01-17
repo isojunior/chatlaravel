@@ -22,7 +22,9 @@ Route::get('api/getFaculty', 'SearchController@getFaculty');
 Route::post('login', 'UserController@processLogin');
 Route::post('register', 'UserController@processRegister');
 Route::group(['middleware' => 'guest'], function () {
-	Route::get('chats', 'ChatController@getChatView');
+	Route::get('chats', 'ChatController@getChatListView');
+	Route::get('chat/{idGroup}', 'ChatController@getChatView');
+	Route::get('chatWith/{idUser}', 'ChatController@getUserChatView');
 	Route::get('contacts', 'ContactController@getContactView');
 	Route::get('profile', 'UserController@getProfileView');
 	Route::get('profile/edit', 'UserController@editProfileView');

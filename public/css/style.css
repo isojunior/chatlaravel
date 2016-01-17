@@ -155,3 +155,7 @@ html, body {
 button .chat-group {
 	background-color: #ff1a1a;
 }
+
+.removeMargin{
+    margin: 0;
+}
