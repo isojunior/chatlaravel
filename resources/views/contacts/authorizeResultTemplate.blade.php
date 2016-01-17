@@ -1,8 +1,7 @@
 <div class="panel-group">
 	<div class="panel panel-primary">
 		<div class="panel-heading clearfix">
-			สมาชิกทั้งหมด  {{ count($highUser) + count($normalUser) + count($unAuthorize) + count($rejectUser)}} คน 
-			<button class="chat-group btn btn-danger btn-md pull-right">CHAT</button>	
+			สมาชิกทั้งหมด  {{ count($highUser) + count($normalUser) + count($unAuthorize) + count($rejectUser)}} คน 	
 		</div>
 	</div>
   	<div class="panel panel-default">

@@ -325,7 +325,7 @@
 		<div id="myModal" class="modal fade" role="dialog">
 		  <div class="modal-dialog">
 			<div class="modal-content">
-			  <div class="modal-header">
+			  <div class="modal-header panel">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 				<h4 class="modal-title universityName">
 				</h4>
@@ -346,7 +346,7 @@
 			= function(){
 				var groupList = $("#groupList .link"); // Groups
 				var adminList = $("#adminList .link"); // Administrator
-				var otherList = $("#unAuthorizeList, #rejectList, #memberList"); // Unauthorized, High User, Reject
+				var otherList = $("#unAuthorizeList, #rejectList, #memberList").find(".link"); // Unauthorized, High User, Reject
 				var modal = $("#modal-data");
 				memberAuthorization.handler(groupList, adminList, otherList, modal);
 			};
@@ -379,7 +379,7 @@
 					});
 				});
 				
-				adminList.click(function(e){
+				adminList.click(function(){
 					var idAdmin		= $(this).data("id"); 					// Get admin userid for 1-1 chat
 					var fullName	= $(this).find(".fullname").text();
 					var companyName = $(this).find(".company").text();
@@ -388,10 +388,9 @@
 					var imgSource 	= $(this).find('img').attr('src');
 					
 					var root		= $("#myModal #modal-data");
-					var container	= '<div class="row"><img class="img-responsive img-circle avatar imgUsr imgAdmin"><div class="col-xs-9"><h4 class="list-group-item-heading fullname"></h4><p class="list-group-item-heading company"></p><p class="list-group-item-heading email"></p><p class="list-group-item-heading telephone"></p><a class="btn btn-md btn-primary">CHAT</a></div></div>';
+					var container	= '<div class="row"><img class="img-responsive img-circle avatar imgUsr imgAdmin"><div class="col-xs-9 text-center info"><h4 class="list-group-item-heading fullname"></h4><p class="list-group-item-heading company"></p><p class="list-group-item-heading email"></p><p class="list-group-item-heading telephone"></p><a class="btn btn-md btn-info">CHAT</a></div></div>';
 					
 					$(".modal-dialog").css("width","23%");
-					$("#myModal .modal-title").text("Administrator");
 					root.empty(); 											// To clear previously content
 					root.append(container);
 					
@@ -416,7 +415,23 @@
 					var imgSource 		= $(this).find('img').attr('src');
 					
 					var root		= $("#myModal #modal-data");
-					var container	= '<div class="row"><img class="img-responsive img-circle avatar imgUsr imgAdmin"><div class="col-xs-9"><h4 class="list-group-item-heading fullname"></h4><p class="list-group-item-heading company"></p><p class="list-group-item-heading email"></p><p class="list-group-item-heading telephone"></p><a class="btn btn-md btn-primary">CHAT</a></div></div>';
+					var container	= '<div class="row"><img class="img-responsive img-circle avatar imgUsr imgAdmin"><div class="col-xs-9 text-center info"><h4 class="list-group-item-heading fullname"></h4><p class="list-group-item-heading position"></p><p class="list-group-item-heading email"></p><p class="list-group-item-heading telephone"></p><h4 class="list-group-item-heading">มหาวิทยาลัย</h4><p class="list-group-item-heading universityTh"></p><p class="list-group-item-heading universityEn"></p><h4 class="list-group-item-heading">คณะ</h4><p class="list-group-item-heading facultyTh"></p><p class="list-group-item-heading facultyEn"></p><a class="btn btn-md btn-info">CHAT</a></div></div>';
+				
+					root.empty(); 											// To clear previously content
+					root.append(container);
+					$(".universityTh, .universityEn, .facultyEn, .facultyTh").addClass('blue');
+					$(".modal-dialog").css("width","25%");
+					
+					root.find('.avatar').attr('src',imgSource);
+					root.find('.fullname').text(fullName);
+					root.find('.position').text(position);
+					root.find('.email').text("Email "+email);
+					root.find('.telephone').text("Tel. "+telephone);
+					root.find('.universityTh').text(universityTh);
+					root.find('.universityEn').text(universityEn);
+					root.find('.facultyTh').text(facultyTh);
+					root.find('.facultyEn').text(facultyEn);
+					root.find('a').attr('href','chatWith/'+idUser);
 				});
 				
 			};
