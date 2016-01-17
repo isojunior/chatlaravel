@@ -1,5 +1,8 @@
 @extends('app')
 @section('content')
+<input type="hidden" id="idUser" value="{{$user['ID_USER']}}"/>
+<input type="hidden" id="userFirstName" value="{{$user['FIRST_NAME']}}"/>
+<input type="hidden" id="idGroup" value="{{$chat['ID_GROUP']}}"/>
 <div class="row">
 	<div class="panel panel-primary">
 		<div class="panel-heading text-center">
@@ -44,21 +47,84 @@
 			</ul>
 		</div>
 		<div class="panel-footer">
+			<form id="send-message">
 			<div class="input-group">
-				<input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here...">
-				<span class="input-group-btn">
-					<button class="btn btn-warning btn-sm" id="btn-chat">Send</button>
-				</span>
+
+					<input id="message-input" type="text" class="form-control input-sm" placeholder="Type your message here..." />
+					<span class="input-group-btn">
+						<button class="btn btn-warning btn-sm">Send</button>
+					</span>
+
 			</div>
+			</form>
 		</div>
 </div>
 </div>
 @endsection
 @section('scripts')
 <link rel="stylesheet" type="text/css" href="{{ asset("css/chat.css") }}"/>
+<script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
 <script>
 	$(document).ready(function(){
 		$(".chat-panel-body").prop({ scrollTop: $(".chat-panel-body").prop("scrollHeight") });
+
+		var messageForm = $('#send-message');
+        var messageBox = $('#message-input');
+        var chat = $('ul.chat');
+        var idUser = $('#idUser').val();
+        var userFirstName = $('#userFirstName').val();
+        var idGroup =$('#idGroup').val();
+
+        // open a socket connection
+        var socket = new io.connect('http://localhost:8890', {
+            'reconnection': true,
+            'reconnectionDelay': 1000,
+            'reconnectionDelayMax' : 5000,
+            'reconnectionAttempts': 5
+        });
+
+        messageForm.on('submit', function (e) {
+            e.preventDefault();
+            if(messageBox.val()){
+            	socket.emit('chat.send.message',
+            		{
+            			messageText: messageBox.val(),
+            			idUser:idUser,
+            			userName:userFirstName,
+            			channel:idGroup
+            		});
+            	messageBox.val('');
+            }
+        });
+
+        // wait for a new message and append into each connection chat window
+        socket.on('chat.message', function (data) {
+            message = JSON.parse(data);
+            console.log(message);
+            //message.idUser =20;
+            if(message.channel==idGroup){
+
+            	var messageContainer =
+            		'<li class="'+(message.idUser==idUser?'right':'left')+' clearfix">'+
+					'<span class="chat-img '+(message.idUser==idUser?'pull-right':'pull-left')+'">'+
+					'	<img class="img-responsive img-circle avatar imgUsr chatimageProfile" src="http://apps.jobtopgun.com/Mercury/photos/'+message.idUser+'.jpg" onerror="this.src=\'img/avatar.png\'">'+
+					'</span>'+
+					'<div class="chat-body '+(message.idUser==idUser?'pull-right text-right':'pull-left text-left')+'">'+
+					'	<div class="messageHeader">'+
+					'		<strong class="primary-font">'+message.userName+'</strong>'+
+					'	</div>'+
+					'	<div class="talk-bubble tri-right round '+(message.idUser==idUser?'right-in':'left-in')+'">'+
+					'		<div class="talktext">'+message.messageText+'</div>'+
+					'	</div>'+
+					'	<div class="message-time">'+
+					'		<span class="glyphicon glyphicon-time"></span>Sometime'+
+					'	</div>'+
+					'</div>'+
+					'</li>';
+
+				chat.append(messageContainer);
+            }
+        });
 	});
 </script>
 @endsection
