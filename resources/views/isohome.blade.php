@@ -77,14 +77,8 @@
             var $messageBox = $('#message-input');
             var $chat = $('ul.chat');
             var $chatUsers = $('ul.chatUsers');
-            var $dd ="";
+            var $id_chat ="";// ---------********** ใส่เลขไอดี ห้อง **************---------------
 
-            if("<?php echo $user["ID_USER"]?>" ==525)
-            {
-                $dd =1;
-            }else{
-                $dd =2;
-            }
 
             // open a socket connection
             var socket = new io.connect('http://localhost:8890', {
@@ -98,12 +92,12 @@
             socket.on('connect', function (user) {
                 socket.emit('join', {id:"<?php echo $user["ID_USER"]?>",
                     name:"<?php echo $user["FIRST_NAME"]?>",
-                chatchannel:$dd});
+                chatchannel:$id_chat});
             });
 
             $messageForm.on('submit', function (e) {
                 e.preventDefault();
-                    socket.emit('chat.send.message', {msg: $messageBox.val(), nickname:"<?php echo $user["FIRST_NAME"]?>",channel:$dd});
+                    socket.emit('chat.send.message', {msg: $messageBox.val(), nickname:"<?php echo $user["FIRST_NAME"]?>",channel:$id_chat});
                     $messageBox.val('');
             });
             // get connected users and display to all conected
@@ -126,7 +120,7 @@
                 if(data.hasOwnProperty('system')) {
                     toastr["success"](data.msg);
                 } else {
-                    if($dd==data.channel)
+                    if($id_chat==data.channel)
                     {
                     $chat.append(
                             '<li class="left clearfix">' +
