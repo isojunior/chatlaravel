@@ -110,6 +110,14 @@ class ContactController extends Controller {
 			->with('normalUser', $authorizedList[2]['data'])
 			->with('rejectUser', $authorizedList[3]['data']);
 	}
+	
+	// not Complete
+	public function getGroupChatView($idGroupRequest = null) {
+		$idGroup = $idGroupRequest == null ? $_GET['data'] : $idGroupRequest;
+		$services = array("getAllMember", "getAllAdmin");
+		$groupChat = $this->getGroupChatList($services, $idGroup);
+		dd($groupChat);
+	}
 
 	public function processAuthorizeUser($authorizeStatus = null, $idUser = null) {
 		$admin = Session::get('user');
@@ -349,6 +357,20 @@ class ContactController extends Controller {
 		}
 		return $result;
 	}
+	
+	private function getGroupChatList($services, $groupId, $result = array()) {
+		foreach ($services as $s) {
+			array_push($result,
+				self::$factory->callWebservice([
+					'query' => [
+						'service' => $s,
+						'idGroup' => $groupId,
+					],
+				])
+			);
+		}
+		return $result;
+	}
 
 	private function getContactList($service, $result = array()) {
 		foreach ($service as $s) {
@@ -362,4 +384,5 @@ class ContactController extends Controller {
 		}
 		return $result;
 	}
+	
 }
