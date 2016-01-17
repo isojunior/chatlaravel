@@ -77,6 +77,14 @@
             var $messageBox = $('#message-input');
             var $chat = $('ul.chat');
             var $chatUsers = $('ul.chatUsers');
+            var $dd ="";
+
+            if("<?php echo $user["ID_USER"]?>" ==525)
+            {
+                $dd =1;
+            }else{
+                $dd =2;
+            }
 
             // open a socket connection
             var socket = new io.connect('http://localhost:8890', {
@@ -88,16 +96,16 @@
 
             // when user connect, store the user id and name
             socket.on('connect', function (user) {
-                socket.emit('join', {id:"<?php echo $user["ID_USER"]?>", name:"<?php echo $user["FIRST_NAME"]?>"});
+                socket.emit('join', {id:"<?php echo $user["ID_USER"]?>",
+                    name:"<?php echo $user["FIRST_NAME"]?>",
+                chatchannel:$dd});
             });
 
             $messageForm.on('submit', function (e) {
                 e.preventDefault();
-
-                socket.emit('chat.send.message', {msg: $messageBox.val(), nickname:"<?php echo $user["FIRST_NAME"]?>"});
-                $messageBox.val('');
+                    socket.emit('chat.send.message', {msg: $messageBox.val(), nickname:"<?php echo $user["FIRST_NAME"]?>"});
+                    $messageBox.val('');
             });
-
             // get connected users and display to all conected
             socket.on('chat.users', function (nicknames) {
                 var html = '';
