@@ -56,4 +56,9 @@
 @endsection
 @section('scripts')
 <link rel="stylesheet" type="text/css" href="{{ asset("css/chat.css") }}"/>
+<script>
+	$(document).ready(function(){
+		$(".chat-panel-body").prop({ scrollTop: $(".chat-panel-body").prop("scrollHeight") });
+	});
+</script>
 @endsection
