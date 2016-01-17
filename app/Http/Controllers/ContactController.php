@@ -144,16 +144,16 @@ class ContactController extends Controller {
 
 					return $this->getAuthorizedResult($userIdUniversity, $userIdFaculty);
 				} else {
-					Session::flash('alert-danger', 'Error occored, please contact administrator.[Error update authorize code]');
+					Session::flash('alert-danger', 'Error occurred, please contact administrator.[Error update authorize code]');
 					return "error1";
 				}
 
 			} else {
-				Session::flash('alert-danger', 'Error occored, please contact administrator.[Not found user]');
+				Session::flash('alert-danger', 'Error occurred, please contact administrator.[Not found user]');
 				return "error2";
 			}
 		} else {
-			Session::flash('alert-danger', 'Error occored, please contact administrator.[Error occored when accessing the process.]');
+			Session::flash('alert-danger', 'Error occurred, please contact administrator.[Error occurred when accessing the process.]');
 			return "error3";
 		}
 	}
@@ -188,11 +188,11 @@ class ContactController extends Controller {
 			if ($createGroupResult == 1) {
 				$primaryGroupChatResult = $this->getPrimaryGroupChat($idUniversity, $idFaculty, $idUser);
 				if ($primaryGroupChatResult == null) {
-					Session::flash('alert-danger', 'Error occored, please contact administrator.[Error occored when create group]');
+					Session::flash('alert-danger', 'Error occurred, please contact administrator.[Error occurred when create group]');
 					return "error4";
 				}
 			} else {
-				Session::flash('alert-danger', 'Error occored, please contact administrator.[Error occored when create group]');
+				Session::flash('alert-danger', 'Error occurred, please contact administrator.[Error occurred when create group]');
 				return "error5";
 			}
 		}
@@ -208,11 +208,11 @@ class ContactController extends Controller {
 			if ($createGroupResult == 1) {
 				$adminGroupChatResult = $this->getAdminGroupChat($idUniversity, $idFaculty, $idUser);
 				if ($adminGroupChatResult == null) {
-					Session::flash('alert-danger', 'Error occored, please contact administrator.[Error occored when create group]');
+					Session::flash('alert-danger', 'Error occurred, please contact administrator.[Error occurred when create group]');
 					return "error6";
 				}
 			} else {
-				Session::flash('alert-danger', 'Error occored, please contact administrator.[Error occored when create group]');
+				Session::flash('alert-danger', 'Error occurred, please contact administrator.[Error occurred when create group]');
 				return "error7";
 			}
 		}
@@ -225,7 +225,7 @@ class ContactController extends Controller {
 		if ($checkMemberInGroupChat == 0) {
 			$addmemberResult = $this->addMemberToGroup($idGroup, $idUser);
 			if ($addmemberResult != 1) {
-				Session::flash('alert-danger', 'Error occored, please contact administrator.[Can not add member to group]');
+				Session::flash('alert-danger', 'Error occurred, please contact administrator.[Can not add member to group]');
 				return "error8";
 			}
 		}

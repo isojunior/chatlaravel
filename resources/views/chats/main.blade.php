@@ -3,10 +3,19 @@
 @if( $user['AUTHORIZE'] =='0' && $user['USER_TYPE'] != '1')
 	<div class="row">
 		<div class="jumbotron">
-			<h2>สวัสดี, {{$user['FIRST_NAME']}} {{$user['LAST_NAME']}}</h2>
+			<h2>สวัสดี, {{$user['FIRST_NAME']}} {{$user['LAST_NAME']}} {{$user['ID_UNIVERSITY']}} {{$user['ID_FACULTY']}}</h2>
+			@if( $user['ID_UNIVERSITY'] == '-1' || $user['ID_FACULTY'] == '-1')
 		  	<p>แอพพลิเคชั่นนี้เป็นแอพพลิเคชั่นเฉพาะกลุ่มเพื่อสถาบันการศึกษาใช้ประโยชน์ในการแนะแนว
-และพัฒนานักศึกษา เพราะฉะนั้น จำเป็นต้องรอการยืนยันตัวตนจากแอดมินของสถาบันของท่าน</p>
+			      และพัฒนานักศึกษา เพราะฉะนั้น จำเป็นต้องรอการยืนยันตัวตนจากแอดมินของสถาบันของท่าน</p>
 		  	<p><a class="btn btn-primary btn-lg" href="setupUniversity" role="button">คลิกเพื่อเลือกมหาวิทยาลัย</a></p>
+			@else
+			<p>แอพพลิเคชั่นนี้เป็นแอพพลิเคชั่นเฉพาะกลุ่มเพื่อสถาบันการศึกษา ใช้ประโยชน์ในการแนะแนว และพัฒนานักศึกษา 
+			      เพราะฉะนั้น จำเป็นต้องรอการยืนยันตัวตนจากแอดมินของสถาบันของท่านแอดมินของท่านคือ<br>
+			   Print AuthorisedUser List   	
+		       <br>หากเกิน 2 วันทำการแล้วท่านยังไม่ได้รับการยืนยัน
+		    </p>
+		  	<p><a class="btn btn-primary btn-lg" href="setupUniversity" role="button">คลิกที่นี่</a></p>
+			@endif
 		</div>
 	</div>
 @else

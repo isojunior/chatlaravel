@@ -1,4 +1,10 @@
 <div class="panel-group">
+	<div class="panel panel-primary">
+		<div class="panel-heading clearfix">
+			สมาชิกทั้งหมด  {{ count($highUser) + count($normalUser) + count($unAuthorize) + count($rejectUser)}} คน 
+			<button class="chat-group btn btn-danger btn-md pull-right">CHAT</button>	
+		</div>
+	</div>
   	<div class="panel panel-default">
 		@if(isset($highUser))
 		<div class="panel-heading">
@@ -136,60 +142,3 @@
 		@endif
 	</div>
 </div>
-@section('scripts')
-<script>
-	$(document).ready(function(){
-
-		var manageButton = {};
-			manageButton.init
-			= function(){
-				var modal = $("#modal-data");
-				var acceptButton = $("button.accept");
-				var groupButton = $("button.group");
-				var rejectButton = $("button.reject");
-				manageButton.handler(acceptButton, modal);
-			};
-
-			manageButton.acceptBandler
-			= function(acceptButton, modal){
-				acceptButton.click(function(e){
-					var userID = $(this).data("attr");
-					$.ajax({
-						url: "authorizedUser/2/"+userID,
-						type: 'get',
-						data: { 'data': userID },
-						dataType: 'html',
-						success: function(result){
-							modal.html(result);
-						},
-						error: function(){
-							alert("Error");
-							return false;
-						}
-					});
-				});
-			};
-			
-			manageButton.rejectBandler
-			= function(acceptButton, modal){
-				acceptButton.click(function(e){
-					var userID = $(this).data("attr");
-					$.ajax({
-						url: "rejectUser/"+userID
-						type: 'get',
-						data: { 'data': userID },
-						dataType: 'html',
-						success: function(result){
-							modal.html(result);
-						},
-						error: function(){
-							alert("Error");
-							return false;
-						}
-					});
-				});
-			};
-			manageButton.init();
-	});
-</script>
-@endsection

@@ -147,3 +147,11 @@ html, body {
   width: auto !important;
   overflow-x: hidden !important;
 }
+
+#myModal .imgAdmin {
+	margin-bottom: 5%;
+}
+
+button .chat-group {
+	background-color: #ff1a1a;
+}

@@ -3,10 +3,20 @@
 @if( $user['AUTHORIZE'] =='0' && $user['USER_TYPE'] != '1')
 	<div class="row">
 		<div class="jumbotron">
-			<h2>สวัสดี, {{$user['FIRST_NAME']}} {{$user['LAST_NAME']}}</h2>
+			<h2>สวัสดี, {{$user['FIRST_NAME']}} {{$user['LAST_NAME']}} {{$user['ID_UNIVERSITY']}} {{$user['ID_FACULTY']}}</h2>
+			@if( $user['ID_UNIVERSITY'] == '-1' || $user['ID_FACULTY'] == '-1')
 		  	<p>แอพพลิเคชั่นนี้เป็นแอพพลิเคชั่นเฉพาะกลุ่มเพื่อสถาบันการศึกษาใช้ประโยชน์ในการแนะแนว
-และพัฒนานักศึกษา เพราะฉะนั้น จำเป็นต้องรอการยืนยันตัวตนจากแอดมินของสถาบันของท่าน</p>
+			      และพัฒนานักศึกษา เพราะฉะนั้น จำเป็นต้องรอการยืนยันตัวตนจากแอดมินของสถาบันของท่าน</p>
 		  	<p><a class="btn btn-primary btn-lg" href="setupUniversity" role="button">คลิกเพื่อเลือกมหาวิทยาลัย</a></p>
+			@else
+			<p>แอพพลิเคชั่นนี้เป็นแอพพลิเคชั่นเฉพาะกลุ่มเพื่อสถาบันการศึกษา ใช้ประโยชน์ในการแนะแนว และพัฒนานักศึกษา 
+			      เพราะฉะนั้น จำเป็นต้องรอการยืนยันตัวตนจากแอดมินของสถาบันของท่านแอดมินของท่านคือ<br>
+			   Print AuthorisedUser List   
+					
+		       <br>หากเกิน 2 วันทำการแล้วท่านยังไม่ได้รับการยืนยัน
+		    </p>
+		  	<p><a class="btn btn-primary btn-lg" href="setupUniversity" role="button">คลิกที่นี่</a></p>
+			@endif
 		</div>
 	</div>
 @else
@@ -48,16 +58,16 @@
 			  <ul class="list-group">
 				@foreach ($adminList as $admin)
 						@if ($user['ID_USER'] != $admin['ID_USER'])
-							<a href="#" class="list-group-item link">			<!-- Change href -->
+							<a href="#" class="list-group-item link" data-toggle="modal" data-target="#myModal" data-id="{{$admin['ID_USER']}}" data-telephone="{{$admin['TELEPHONE']}}" data-email="{{$admin['EMAIL']}}">
 						    	<div class="row">
 							    	<div class="col-xs-1">
 							    		<img class="img-responsive img-circle avatar imgUsr" src="http://apps.jobtopgun.com/Mercury/photos/{{ $admin['ID_USER'] }}.jpg" onerror='this.src="img/avatar.png"'>
 							    	</div>
 							    	<div class="col-xs-9">
-							    		<h4 class="list-group-item-heading">
+							    		<h4 class="list-group-item-heading fullname">
 								    		{{ $admin['FIRST_NAME'] }} {{ $admin['LAST_NAME'] }}
 								    	</h4>
-								    	<p class="list-group-item-text">Top Gun Co.,Ltd.</p>
+								    	<p class="list-group-item-text company">Top Gun Co.,Ltd.</p>
 							    	</div>
 						    	</div>
 						    </a>
@@ -67,25 +77,7 @@
 			</div>
 			@endif
 		  </div>
-		</div>
-
-		<!-- Modal -->
-		<div id="myModal" class="modal fade" role="dialog">
-		  <div class="modal-dialog">
-			<div class="modal-content">
-			  <div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title universityName">
-				</h4>
-				<p class="list-group-item-text facultyName"></p>
-			  </div>
-			  <div class="modal-body">
-				<p id="modal-data"></p>
-			  </div>
-			</div>
-		  </div>
-		</div>
-
+		</div
 		<!-- Container inside modal -->
 		<div class="memberContainer">
 			<div class="panel-group">
@@ -107,8 +99,7 @@
 			<div class="row">
 				<div class="jumbotron">
 					<h2>สวัสดี, {{$user['FIRST_NAME']}} {{$user['LAST_NAME']}}</h2>
-				  	<p>การอนุมัติเข้าร่วมกลุ่มของคุณมีความขัดข้อง กรุณาติดต่อแอดมินของสถาบันของท่าน แอดมินข
-องท่าน</p>
+				  	<p>การอนุมัติเข้าร่วมกลุ่มของคุณมีความขัดข้อง กรุณาติดต่อแอดมินของสถาบันของท่าน แอดมินของท่าน</p>
 				</div>
 			</div>
 			<div class="panel-group">
@@ -119,12 +110,13 @@
 							<h4 class="panel-title">
 					        	<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
 					        	Groups
+								<span class="label label-default label-badge-authorized">{{ count($memberAuthorizedList) }}</span></h4>
 					        </h4>
 						</a>
 					</div>
 					<div id="memberAuthorizedList" class="panel-collapse collapse">
 					  <ul class="list-group">
-					  	@if(count($unAuthorizeList)>0)
+					  	@if(count($memberAuthorizedList)>0)
 							@foreach ($memberAuthorizedList as $memberAuthorized)
 								<a class="list-group-item">
 									<h4 class="list-group-item-heading">
@@ -150,6 +142,7 @@
 							<h4 class="panel-title">
 					        	<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
 					        	คำร้องขอ
+								<span class="label label-default label-badge-authorized">{{ count($unAuthorizeList) }}</span></h4>
 					        </h4>
 						</a>
 					</div>
@@ -157,16 +150,19 @@
 					  <ul class="list-group">
 					  	@if(count($unAuthorizeList)>0)
 							@foreach ($unAuthorizeList as $unAuthorize)
-								<a href="#" class="list-group-item link"><!-- Change href -->
+								<a href="#" class="list-group-item link" data-toggle="modal" data-target="#myModal" 
+								        data-id="{{$unAuthorize['ID_USER']}}" data-telephone="{{$unAuthorize['TELEPHONE']}}" data-email="{{$unAuthorize['EMAIL']}}" 
+										data-university-th="{{ $unAuthorize['UNIVERSITY'][0]['NAME_THA'] }}" data-university-en="{{ $unAuthorize['UNIVERSITY'][0]['NAME_ENG'] }}"
+									    data-faculty-th="{{ $unAuthorize['FACULTY'][0]['NAME_THA'] }}" data-faculty-en="{{ $unAuthorize['FACULTY'][0]['NAME_ENG'] }}">
 							    	<div class="row">
 								    	<div class="col-xs-1">
 								    		<img class="img-responsive img-circle avatar imgUsr" src="http://apps.jobtopgun.com/Mercury/photos/{{ $unAuthorize['ID_USER'] }}.jpg" onerror='this.src="img/avatar.png"'>
 								    	</div>
 								    	<div class="col-xs-9">
-								    		<h4 class="list-group-item-heading">
+								    		<h4 class="list-group-item-heading fullname">
 									    		{{ $unAuthorize['FIRST_NAME'] }} {{ $unAuthorize['LAST_NAME'] }}
 									    	</h4>
-									    	<p class="list-group-item-text">{{ $unAuthorize['POSITION'] }}</p>
+									    	<p class="list-group-item-text position">{{ $unAuthorize['POSITION'] }}</p>
 								    	</div>
 							    	</div>
 							    </a>
@@ -184,6 +180,7 @@
 							<h4 class="panel-title">
 					        	<span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
 					        	Groups
+								<span class="label label-default label-badge-authorized">{{ count($adminGroupChatList) + count($primaryGroupChatList) }}</span></h4>
 					        </h4>
 						</a>
 					</div>
@@ -221,22 +218,23 @@
 							<h4 class="panel-title">
 					        	<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
 					        	Administrators
+								<span class="label label-default label-badge-authorized">{{ count($adminList) }}</span></h4>
 					        </h4>
 						</a>
 					</div>
 					<div id="adminList" class="panel-collapse collapse">
 					  <ul class="list-group">
 						@foreach ($adminList as $admin)
-							<a href="#" class="list-group-item link"><!-- Change href -->
+							<a href="#" class="list-group-item link" data-toggle="modal" data-target="#myModal" data-id="{{$admin['ID_USER']}}" data-telephone="{{$admin['TELEPHONE']}}" data-email="{{$admin['EMAIL']}}">
 						    	<div class="row">
 							    	<div class="col-xs-1">
 							    		<img class="img-responsive img-circle avatar imgUsr" src="http://apps.jobtopgun.com/Mercury/photos/{{ $admin['ID_USER'] }}.jpg" onerror='this.src="img/avatar.png"'>
 							    	</div>
 							    	<div class="col-xs-9">
-							    		<h4 class="list-group-item-heading">
+							    		<h4 class="list-group-item-heading fullname">
 								    		{{ $admin['FIRST_NAME'] }} {{ $admin['LAST_NAME'] }}
 								    	</h4>
-								    	<p class="list-group-item-text">Top Gun Co.,Ltd.</p>
+								    	<p class="list-group-item-text position">Top Gun Co.,Ltd.</p>
 							    	</div>
 						    	</div>
 						    </a>
@@ -250,6 +248,7 @@
 							<h4 class="panel-title">
 					        	<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 					        	Friend
+								<span class="label label-default label-badge-authorized">{{ count($memberList) }}</span></h4>
 					        </h4>
 						</a>
 					</div>
@@ -257,16 +256,19 @@
 					  <ul class="list-group">
 					  	@if(count($memberList)>0)
 							@foreach ($memberList as $member)
-								<a href="#" class="list-group-item link"><!-- Change href -->
+								<a class="list-group-item link" data-toggle="modal" data-target="#myModal" 
+								        data-id="{{$member['ID_USER']}}" data-telephone="{{$member['TELEPHONE']}}" data-email="{{$member['EMAIL']}}" 
+										data-university-th="{{ $member['UNIVERSITY'][0]['NAME_THA'] }}" data-university-en="{{ $member['UNIVERSITY'][0]['NAME_ENG'] }}"
+									    data-faculty-th="{{ $member['FACULTY'][0]['NAME_THA'] }}" data-faculty-en="{{ $member['FACULTY'][0]['NAME_ENG'] }}">
 							    	<div class="row">
 								    	<div class="col-xs-1">
 								    		<img class="img-responsive img-circle avatar imgUsr" src="http://apps.jobtopgun.com/Mercury/photos/{{ $member['ID_USER'] }}.jpg" onerror='this.src="img/avatar.png"'>
 								    	</div>
 								    	<div class="col-xs-9">
-								    		<h4 class="list-group-item-heading">
+								    		<h4 class="list-group-item-heading fullname">
 									    		{{ $member['FIRST_NAME'] }} {{ $member['LAST_NAME'] }}
 									    	</h4>
-									    	<p class="list-group-item-text">{{ $member['POSITION'] }}</p>
+									    	<p class="list-group-item-text position">{{ $member['POSITION'] }}</p>
 								    	</div>
 							    	</div>
 							    </a>
@@ -276,13 +278,14 @@
 						@endif
 					  </ul>
 					</div>
-				@endif
+				@endif 
 				@if(isset($rejectList))
 					<div class="panel-heading">
 						<a class="collapseLink" data-toggle="collapse" href="#rejectList">
 							<h4 class="panel-title">
 					        	<span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
 					        	ผู้ที่ถูกปฏิเสธเข้าร่วมกลุ่ม
+								<span class="label label-default label-badge-authorized">{{ count($rejectList) }}</span></h4>
 					        </h4>
 						</a>
 					</div>
@@ -290,16 +293,19 @@
 					  <ul class="list-group">
 					  	@if(count($rejectList)>0)
 							@foreach ($rejectList as $reject)
-								<a href="#" class="list-group-item link"><!-- Change href -->
+								<a href class="list-group-item link" data-toggle="modal" data-target="#myModal" 
+								        data-id="{{$reject['ID_USER']}}" data-telephone="{{$reject['TELEPHONE']}}" data-email="{{$reject['EMAIL']}}" 
+										data-university-th="{{ $reject['UNIVERSITY'][0]['NAME_THA'] }}" data-university-en="{{ $reject['UNIVERSITY'][0]['NAME_ENG'] }}"
+									    data-faculty-th="{{ $reject['FACULTY'][0]['NAME_THA'] }}" data-faculty-en="{{ $reject['FACULTY'][0]['NAME_ENG'] }}">
 							    	<div class="row">
 								    	<div class="col-xs-1">
 								    		<img class="img-responsive img-circle avatar imgUsr" src="http://apps.jobtopgun.com/Mercury/photos/{{ $reject['ID_USER'] }}.jpg" onerror='this.src="img/avatar.png"'>
 								    	</div>
 								    	<div class="col-xs-9">
-								    		<h4 class="list-group-item-heading">
+								    		<h4 class="list-group-item-heading fullname">
 									    		{{ $reject['FIRST_NAME'] }} {{ $reject['LAST_NAME'] }}
 									    	</h4>
-									    	<p class="list-group-item-text">{{ $reject['POSITION'] }}</p>
+									    	<p class="list-group-item-text position">{{ $reject['POSITION'] }}</p>
 								    	</div>
 							    	</div>
 							    </a>
@@ -315,6 +321,22 @@
 		@endif
 	@endif
 @endif
+<!-- Modal -->
+		<div id="myModal" class="modal fade" role="dialog">
+		  <div class="modal-dialog">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title universityName">
+				</h4>
+				<p class="list-group-item-text facultyName"></p>
+			  </div>
+			  <div class="modal-body">
+				<p id="modal-data"></p>
+			  </div>
+			</div>
+		  </div>
+		</div>
 @endsection
 @section('scripts')
 <script>
@@ -322,38 +344,81 @@
 		var memberAuthorization = {};
 		memberAuthorization.init
 			= function(){
-				var groupList = $("#groupList .link");
-				var adminList = $("#adminList .link");
+				var groupList = $("#groupList .link"); // Groups
+				var adminList = $("#adminList .link"); // Administrator
+				var otherList = $("#unAuthorizeList, #rejectList, #memberList"); // Unauthorized, High User, Reject
 				var modal = $("#modal-data");
-				memberAuthorization.handler(groupList, adminList, modal);
+				memberAuthorization.handler(groupList, adminList, otherList, modal);
 			};
 
 		memberAuthorization.handler
-			= function(groupList, adminList, modal){
+			= function(groupList, adminList, otherList, modal){
 				groupList.click(function(e){
 					var data = $(this).data("group");
 					var universityName = $(this).find(".universityName").text();
 					var facultyName = $(this).find(".facultyName").text();
 					$("#myModal .universityName").text(universityName);
 					$("#myModal .facultyName").text(facultyName);
+						
 					$.ajax({
 						url: "authorizedList",
 						type: 'get',
 						data: { 'data': data },
 						dataType: 'html',
 						beforeSend: function() {
-					        //modal.slideUp(300);
 					        modal.html("<img src='img/preload_horizontal.gif' class='img-responsive center-block'/>");
 					    },
 						success: function(result){
 							modal.html(result);
 							modal.slideDown(300);
+							initGroupChatButton();
 						},
 						error: function(){
 							return false;
 						}
 					});
 				});
+				
+				adminList.click(function(e){
+					var idAdmin		= $(this).data("id"); 					// Get admin userid for 1-1 chat
+					var fullName	= $(this).find(".fullname").text();
+					var companyName = $(this).find(".company").text();
+					var telephone	= $(this).data("telephone");
+					var email 		= $(this).data("email");
+					var imgSource 	= $(this).find('img').attr('src');
+					
+					var root		= $("#myModal #modal-data");
+					var container	= '<div class="row"><img class="img-responsive img-circle avatar imgUsr imgAdmin"><div class="col-xs-9"><h4 class="list-group-item-heading fullname"></h4><p class="list-group-item-heading company"></p><p class="list-group-item-heading email"></p><p class="list-group-item-heading telephone"></p><a class="btn btn-md btn-primary">CHAT</a></div></div>';
+					
+					$(".modal-dialog").css("width","23%");
+					$("#myModal .modal-title").text("Administrator");
+					root.empty(); 											// To clear previously content
+					root.append(container);
+					
+					root.find('.avatar').attr('src',imgSource);
+					root.find('.fullname').text(fullName);
+					root.find('.company').text(companyName);
+					root.find('.email').text("Email "+email);
+					root.find('.telephone').text("Tel. "+telephone);
+					root.find('a').attr('href','chatWith/'+idAdmin);
+				});
+				
+				otherList.click(function(){
+					var idUser			= $(this).data("id"); 					// Get admin userid for 1-1 chat
+					var fullName		= $(this).find(".fullname").text();
+					var position 		= $(this).find(".position").text();
+					var telephone		= $(this).data("telephone");
+					var email 			= $(this).data("email");
+					var universityTh	= $(this).data("university-th");
+					var universityEn	= $(this).data("university-en");
+					var facultyTh		= $(this).data("faculty-th");
+					var facultyEn		= $(this).data("faculty-en");
+					var imgSource 		= $(this).find('img').attr('src');
+					
+					var root		= $("#myModal #modal-data");
+					var container	= '<div class="row"><img class="img-responsive img-circle avatar imgUsr imgAdmin"><div class="col-xs-9"><h4 class="list-group-item-heading fullname"></h4><p class="list-group-item-heading company"></p><p class="list-group-item-heading email"></p><p class="list-group-item-heading telephone"></p><a class="btn btn-md btn-primary">CHAT</a></div></div>';
+				});
+				
 			};
 
 		memberAuthorization.init();
@@ -385,6 +450,12 @@
 			var url ="authorizedUser/3/"+idUser;
 			callAjaxAuthorized(url);
 		}
+	}
+	
+	function initGroupChatButton() {
+		$(".chat-group").click(function() {
+			 
+		});
 	}
 
 	function callAjaxAuthorized(url){
