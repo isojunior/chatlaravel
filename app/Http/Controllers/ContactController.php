@@ -44,43 +44,47 @@ class ContactController extends Controller {
 				$groupResult = null;
 				$memberResult = null;
 				$memberRejectedResult = null;
-				if ($user['AUTHORIZE'] == 1) {
-					$unAuthorizeResult = self::$factory->callWebservice([
+				$adminGroupChatResult = null;
+				$primaryGroupChatResult = null;
+				if ($user['AUTHORIZE'] > 0) {
+					if ($user['AUTHORIZE'] == 1) {
+						$unAuthorizeResult = self::$factory->callWebservice([
+							'query' => [
+								'service' => "getMemberUnAuthorized",
+								'idUniversity' => $user['ID_UNIVERSITY'],
+								'idFaculty' => $user['ID_FACULTY'],
+							],
+						]);
+
+						$memberRejectedResult = self::$factory->callWebservice([
+							'query' => [
+								'service' => "getMemberReject",
+								'idUniversity' => $user['ID_UNIVERSITY'],
+								'idFaculty' => $user['ID_FACULTY'],
+							],
+						]);
+
+					}
+					/** todo case group **/
+					$adminGroupChatResult = $this->addUserToAdminGroup($user['ID_USER'], $user['ID_UNIVERSITY'], $user['ID_FACULTY']);
+
+					$primaryGroupChatResult = $this->addUserToPrimaryGroup($user['ID_USER'], $user['ID_UNIVERSITY'], $user['ID_FACULTY']);
+
+					$allAdminResult = self::$factory->callWebservice([
 						'query' => [
-							'service' => "getMemberUnAuthorized",
+							'service' => "getAllAdmin",
+							'idUniversity' => $user['ID_UNIVERSITY'],
+						],
+					]);
+
+					$memberResult = self::$factory->callWebservice([
+						'query' => [
+							'service' => "getMember",
 							'idUniversity' => $user['ID_UNIVERSITY'],
 							'idFaculty' => $user['ID_FACULTY'],
 						],
 					]);
-
-					$memberRejectedResult = self::$factory->callWebservice([
-						'query' => [
-							'service' => "getMemberReject",
-							'idUniversity' => $user['ID_UNIVERSITY'],
-							'idFaculty' => $user['ID_FACULTY'],
-						],
-					]);
-
 				}
-				/** todo case group **/
-				$adminGroupChatResult = $this->addUserToAdminGroup($user['ID_USER'], $user['ID_UNIVERSITY'], $user['ID_FACULTY']);
-
-				$primaryGroupChatResult = $this->addUserToPrimaryGroup($user['ID_USER'], $user['ID_UNIVERSITY'], $user['ID_FACULTY']);
-
-				$allAdminResult = self::$factory->callWebservice([
-					'query' => [
-						'service' => "getAllAdmin",
-						'idUniversity' => $user['ID_UNIVERSITY'],
-					],
-				]);
-
-				$memberResult = self::$factory->callWebservice([
-					'query' => [
-						'service' => "getMember",
-						'idUniversity' => $user['ID_UNIVERSITY'],
-						'idFaculty' => $user['ID_FACULTY'],
-					],
-				]);
 
 				return View('contacts.main')
 					->with('unAuthorizeList', $unAuthorizeResult['data'])

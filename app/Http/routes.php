@@ -12,8 +12,8 @@
  */
 
 Route::get('socket', 'SocketController@index');
-Route::post('sendMessage', 'socketController@sendMessage');
-Route::get('writeMessage', 'socketController@writeMessage');
+Route::post('sendMessage', 'SocketController@sendMessage');
+Route::get('writeMessage', 'SocketController@writeMessage');
 Route::get('/', 'UserController@getLoginView');
 Route::get('login', 'UserController@getLoginView');
 Route::get('main', 'UserController@getLoginView');

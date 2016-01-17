@@ -71,6 +71,7 @@ class UserController extends Controller {
 			$universityList[$uni['ID_UNIVERSITY']] = [$uni['ID_UNIVERSITY'], $uni['NAME_THA']];
 		}
 
+		$facultyList = null;
 		if ($auth['ID_UNIVERSITY'] > 0) {
 			$faculty = self::$factory->callWebservice([
 				'query' => [
