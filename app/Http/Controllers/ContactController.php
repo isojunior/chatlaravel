@@ -184,7 +184,7 @@ class ContactController extends Controller {
 		$primaryGroupChatResult = $this->getPrimaryGroupChat($idUniversity, $idFaculty, $idUser);
 		if ($primaryGroupChatResult == null) {
 			//create group then get again
-			$createGroupResult = $this->createGroup($idUniversity, $idFaculty, $idUser, 1, -1, -1);
+			$createGroupResult = $this->createGroup($idUniversity, $idFaculty, $idUser, 2, -1, -1);
 			if ($createGroupResult == 1) {
 				$primaryGroupChatResult = $this->getPrimaryGroupChat($idUniversity, $idFaculty, $idUser);
 				if ($primaryGroupChatResult == null) {
