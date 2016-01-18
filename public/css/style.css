@@ -161,3 +161,6 @@ div.info {
 .removeMargin{
     margin: 0;
 }
+.showWhenLoad{
+    display: none;
+}
