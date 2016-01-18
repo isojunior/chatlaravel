@@ -133,5 +133,63 @@ class WebServiceClient {
 		]);
 		return $memberAuthorizedResult['data'];
 	}
+
+	public function removeMemberFromGroup($idGroup, $idUser) {
+		$addMemberToGroupResult = $this->callWebservice([
+			'query' => [
+				'service' => "removeMemberGroupChat",
+				'idGroup' => $idGroup,
+				'idUser' => $idUser,
+			],
+		]);
+		return $addMemberToGroupResult['data'][0]['result'];
+	}
+
+	public function getPrimaryGroupChat($idUniversity, $idFaculty, $idUser) {
+		$primaryGroupChatResult = $this->callWebservice([
+			'query' => [
+				'service' => "getPrimaryGroupChat",
+				'idUniversity' => $idUniversity,
+				'idFaculty' => $idFaculty,
+				'idUser' => $idUser,
+			],
+		]);
+		return $primaryGroupChatResult['data'];
+	}
+
+	public function getAdminGroupChat($idUniversity, $idFaculty, $idUser) {
+		$adminGroupChatResult = $this->callWebservice([
+			'query' => [
+				'service' => "getAdminGroupChat",
+				'idUniversity' => $idUniversity,
+				'idFaculty' => $idFaculty,
+				'idUser' => $idUser,
+			],
+		]);
+		return $adminGroupChatResult['data'];
+	}
+
+	public function authorizeUser($idUser, $authorizeStatus, $authorizeBy) {
+		$authorizeResult = $this->callWebservice([
+			'query' => [
+				'service' => "updateAuthorization",
+				'idUser' => $idUser,
+				'authorize' => $authorizeStatus,
+				'authorizeBy' => $authorizeBy,
+			],
+		]);
+		return $authorizeResult['data'][0]['result'];
+	}
+
+	public function sendPushResult($idUser, $action) {
+		$sendPushResult = $this->callWebservice([
+			'query' => [
+				'service' => "sendPushResult",
+				'idUser' => $idUser,
+				'action' => $action,
+			],
+		]);
+		return $sendPushResult['data'][0]['result'];
+	}
 }
 ?>
