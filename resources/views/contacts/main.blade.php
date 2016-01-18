@@ -331,7 +331,7 @@
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 				<h4 class="modal-title universityName">
 				</h4>
-				<p class="list-group-item-text facultyName"></p>
+				<p class="modal-subtitle list-group-item-text facultyName"></p>
 			  </div>
 			  <div class="modal-body">
 				<p id="modal-data"></p>
@@ -353,7 +353,13 @@
 				var modal = $("#modal-data");
 				memberAuthorization.handler(groupList, groupChatList, adminList, otherList, modal);
 			};
-
+			
+		memberAuthorization.clearContent
+			= function(content){
+				$("#myModal .modal-title, .modal-subtitle").empty(); // To clear modal header
+				$(content).empty();
+			};
+		
 		memberAuthorization.handler
 			= function(groupList, groupChatList, adminList, otherList, modal){
 				groupList.click(function(){
@@ -390,18 +396,16 @@
 					var email 		= $(this).data("email");
 					var imgSource 	= $(this).find('img').attr('src');
 
-					var root		= $("#myModal #modal-data");
 					var container	= '<div class="row"><img class="img-responsive img-circle avatar imgUsr imgAdmin"><div class="col-xs-9 text-center info"><h4 class="list-group-item-heading fullname"></h4><p class="list-group-item-heading company"></p><p class="list-group-item-heading email"></p><p class="list-group-item-heading telephone"></p><a class="btn btn-md btn-info">CHAT</a></div></div>';
 
-					root.empty(); 											// To clear previously content
-					root.append(container);
-
-					root.find('.avatar').attr('src',imgSource);
-					root.find('.fullname').text(fullName);
-					root.find('.company').text(companyName);
-					root.find('.email').text("Email. "+email);
-					root.find('.telephone').text("Tel. "+telephone);
-					root.find('a').attr('href','chatWith/'+idAdmin);
+					memberAuthorization.clearContent(modal);
+					
+					modal.append(container).find('.avatar').attr('src',imgSource);
+					modal.find('.fullname').text(fullName);
+					modal.find('.company').text(companyName);
+					modal.find('.email').text("Email. "+email);
+					modal.find('.telephone').text("Tel. "+telephone);
+					modal.find('a').attr('href','chatWith/'+idAdmin);
 				});
 
 				otherList.click(function(){
@@ -415,21 +419,20 @@
 					var facultyTh		= $(this).data("faculty-th");
 					var imgSource 		= $(this).find('img').attr('src');
 
-					var root		= $("#myModal #modal-data");
 					var container	= '<div class="row"><img class="img-responsive img-circle avatar imgUsr imgAdmin"><div class="col-xs-9 text-center info"><h4 class="list-group-item-heading fullname"></h4><p class="list-group-item-heading position"></p><p class="list-group-item-heading email"></p><p class="list-group-item-heading telephone"></p><h4 class="list-group-item-heading">มหาวิทยาลัย</h4><p class="list-group-item-heading universityTh"></p><p class="list-group-item-heading universityEn"></p><h4 class="list-group-item-heading">คณะ</h4><p class="list-group-item-heading facultyTh"></p><p class="list-group-item-heading"></p><a class="btn btn-md btn-info">CHAT</a></div></div>';
 
-					root.empty(); 											// To clear previously content
-					root.append(container);
+					memberAuthorization.clearContent(modal);
+					modal.append(container);
 					$(".universityTh, .universityEn, .facultyTh").addClass('blue');
 
-					root.find('.avatar').attr('src',imgSource);
-					root.find('.fullname').text(fullName);
-					root.find('.position').text(position);
-					root.find('.email').text("Email "+email);
-					root.find('.telephone').text("Tel. "+telephone);
-					root.find('.universityTh').text(universityTh);
-					root.find('.facultyTh').text(facultyTh);
-					root.find('a').attr('href','chatWith/'+idUser);
+					modal.find('.avatar').attr('src',imgSource);
+					modal.find('.fullname').text(fullName);
+					modal.find('.position').text(position);
+					modal.find('.email').text("Email "+email);
+					modal.find('.telephone').text("Tel. "+telephone);
+					modal.find('.universityTh').text(universityTh);
+					modal.find('.facultyTh').text(facultyTh);
+					modal.find('a').attr('href','chatWith/'+idUser);
 				});
 
 			};
