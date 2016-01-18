@@ -53,10 +53,22 @@
 							@else
 								<a href="chat/{{$userChat['ID_GROUP']}}" class="list-group-item">
 									<h4 class="list-group-item-heading">
-									{{$userChat['UNIVERSITY'][0]['NAME_THA']}}
-									<span class="label label-default label-badge">{{$userChat['BADGE']}}</span>
+									@if($userChat['IS_ADMIN']==1 && $user['USER_TYPE'] != '1')
+										บริษัท ท็อปกัน จำกัด
+									@else
+										{{$userChat['UNIVERSITY'][0]['NAME_THA']}}
+									@endif
+									<span class="label label-default label-badge">
+										{{$userChat['BADGE']}}
+									</span>
 									</h4>
-									<p class="list-group-item-text">{{$userChat['FACULTY'][0]['NAME_THA']}}</p>
+									<p class="list-group-item-text">
+										@if($userChat['IS_ADMIN']==1)
+											Top Gun Co.,Ltd.
+										@else
+											{{$userChat['FACULTY'][0]['NAME_THA']}}
+										@endif
+									</p>
 								</a>
 							@endif
 						@endforeach

@@ -1,9 +1,4 @@
 <div class="panel-group">
-	<div class="panel panel-primary">
-		<div class="panel-heading clearfix">
-			สมาชิกทั้งหมด  {{ count($highUser) + count($normalUser) + count($unAuthorize) + count($rejectUser)}} คน 	
-		</div>
-	</div>
   	<div class="panel panel-default">
 		@if(isset($highUser))
 		<div class="panel-heading">
@@ -83,7 +78,7 @@
 			<ul class="list-group">
 				@if(count($unAuthorize)>0)
 					@foreach ($unAuthorize as $unAuth)
-							<<li class="list-group-item link">
+							<li class="list-group-item link">
 						    	<div class="row">
 							    	<div class="col-xs-2">
 							    		<img class="img-responsive img-circle avatar imgUsr" src="http://apps.jobtopgun.com/Mercury/photos/{{ $unAuth['ID_USER'] }}.jpg" onerror='this.src="img/avatar.png"'>

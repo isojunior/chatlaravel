@@ -34,7 +34,7 @@ class ContactController extends Controller {
 						'idFaculty' => $user['ID_FACULTY'],
 					],
 				]);
-
+				//dd($user);
 				return View('contacts.main')
 					->with('user', $user)
 					->with('memberAuthorizedList', $memberAuthorizedResult);
@@ -113,7 +113,7 @@ class ContactController extends Controller {
 
 	public function processAuthorizeUser($authorizeStatus = null, $idUser = null) {
 		$admin = Session::get('user');
-		if ($admin['USER_TYPE'] == 1
+		if (($admin['USER_TYPE'] == 1 || $admin['AUTHORIZE'] = 1)
 			&& null != $authorizeStatus
 			&& ($authorizeStatus >= 0 && $authorizeStatus <= 3)) {
 			$userResult = $this->getUser($idUser);
@@ -141,8 +141,11 @@ class ContactController extends Controller {
 						$authorizeMessage = Constrants::REJECT;
 					}
 					$this->sendPushResult($idUser, $authorizeMessage);
-
-					return $this->getAuthorizedResult($userIdUniversity, $userIdFaculty);
+					if ($admin['USER_TYPE'] == 1) {
+						return $this->getAuthorizedResult($userIdUniversity, $userIdFaculty);
+					} else {
+						return redirect('contacts')->send();
+					}
 				} else {
 					Session::flash('alert-danger', 'Error occurred, please contact administrator.[Error update authorize code]');
 					return "error1";

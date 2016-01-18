@@ -23,19 +23,6 @@ io.on('connection', function (socket) {
     console.log("new client connected");
     var redisClient = Redis.createClient();
 
-    socket.on('join',function(user){
-        console.info('New client connected (id=' + user.id + ' (' + user.name + ') => socket=' + socket.id + ').'+ ' (' + user.chatchannel + ') ');
-        socket.userId   = user.id;
-        socket.nickname = user.name;
-        socket.channel = user.chatchannel;
-        users[user.id] = socket;
-        room = user.chatchannel;
-        nicknames[user.id] = {
-            'nickname': user.name,
-            'socketId': socket.id,
-        };
-    });
-
     socket.on('subscribe',function(msg)
     {
         console.log("Subscription request:"+msg.channel);
@@ -50,18 +37,16 @@ io.on('connection', function (socket) {
 
     updateNicknames();
 
-
     redis.subscribe(['chat.message', 'chat.private'], function (err, count) {
         console.log("TEST SERVER");
     });
 
     socket.on('chat.send.message', function (message) {
-        console.log('Receive message ' + message.msg + ' from user in channel chat.message');
-        //console.log("MEssage:"+io.sockets);
-
+        console.log('---Receive message from user in channel chat.message---');
+        console.log(message);
+        console.log('---End message detail---');
         io.sockets.emit('chat.message', JSON.stringify(message));
     });
-
 
     redisClient.subscribe('message');
 
