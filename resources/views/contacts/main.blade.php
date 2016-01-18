@@ -97,7 +97,7 @@
 		@else
 			@if($user['AUTHORIZE']==3)
 			<div class="row">
-				<div class="jumbotron">
+				<div class="jumbotron" style="margin-bottom:15px">
 					<h2>สวัสดี, {{$user['FIRST_NAME']}} {{$user['LAST_NAME']}}</h2>
 				  	<p>การอนุมัติเข้าร่วมกลุ่มของคุณมีความขัดข้อง กรุณาติดต่อแอดมินของสถาบันของท่าน แอดมินของท่าน</p>
 				</div>
@@ -114,7 +114,7 @@
 					        </h4>
 						</a>
 					</div>
-					<div id="memberAuthorizedList" class="panel-collapse collapse">
+					<div id="memberAuthorizedList" class="panel-collapse collapse in">
 					  <ul class="list-group">
 					  	@if(count($memberAuthorizedList)>0)
 							@foreach ($memberAuthorizedList as $memberAuthorized)
