@@ -150,13 +150,8 @@
 					  <ul class="list-group">
 					  	@if(count($unAuthorizeList)>0)
 							@foreach ($unAuthorizeList as $unAuthorize)
-<<<<<<< HEAD
-								<a href="#" class="list-group-item link" data-toggle="modal" data-target="#myModal" 
-								        date-role="unAuthorize" data-id="{{$unAuthorize['ID_USER']}}" data-telephone="{{$unAuthorize['TELEPHONE']}}" data-email="{{$unAuthorize['EMAIL']}}" 
-=======
 								<a class="list-group-item link"
 								        data-id="{{$unAuthorize['ID_USER']}}" data-telephone="{{$unAuthorize['TELEPHONE']}}" data-email="{{$unAuthorize['EMAIL']}}"
->>>>>>> origin/master
 										data-university-th="{{ $unAuthorize['UNIVERSITY'][0]['NAME_THA'] }}" data-university-en="{{ $unAuthorize['UNIVERSITY'][0]['NAME_ENG'] }}"
 									    data-faculty-th="{{ $unAuthorize['FACULTY'][0]['NAME_THA'] }}" data-faculty-en="{{ $unAuthorize['FACULTY'][0]['NAME_ENG'] }}">
 							    	<div class="row">
@@ -263,13 +258,8 @@
 					  <ul class="list-group">
 					  	@if(count($memberList)>0)
 							@foreach ($memberList as $member)
-<<<<<<< HEAD
-								<a class="list-group-item link" data-toggle="modal" data-target="#myModal" 
-								        date-role="highUser" data-id="{{$member['ID_USER']}}" data-telephone="{{$member['TELEPHONE']}}" data-email="{{$member['EMAIL']}}" 
-=======
 								<a class="list-group-item link" data-toggle="modal" data-target="#myModal"
 								        data-id="{{$member['ID_USER']}}" data-telephone="{{$member['TELEPHONE']}}" data-email="{{$member['EMAIL']}}"
->>>>>>> origin/master
 										data-university-th="{{ $member['UNIVERSITY'][0]['NAME_THA'] }}" data-university-en="{{ $member['UNIVERSITY'][0]['NAME_ENG'] }}"
 									    data-faculty-th="{{ $member['FACULTY'][0]['NAME_THA'] }}" data-faculty-en="{{ $member['FACULTY'][0]['NAME_ENG'] }}">
 							    	<div class="row">
@@ -305,13 +295,8 @@
 					  <ul class="list-group">
 					  	@if(count($rejectList)>0)
 							@foreach ($rejectList as $reject)
-<<<<<<< HEAD
-								<a class="list-group-item link" data-toggle="modal" data-target="#myModal" 
-								        date-role="reject" data-id="{{$reject['ID_USER']}}" data-telephone="{{$reject['TELEPHONE']}}" data-email="{{$reject['EMAIL']}}" 
-=======
 								<a href class="list-group-item link" data-toggle="modal" data-target="#myModal"
 								        data-id="{{$reject['ID_USER']}}" data-telephone="{{$reject['TELEPHONE']}}" data-email="{{$reject['EMAIL']}}"
->>>>>>> origin/master
 										data-university-th="{{ $reject['UNIVERSITY'][0]['NAME_THA'] }}" data-university-en="{{ $reject['UNIVERSITY'][0]['NAME_ENG'] }}"
 									    data-faculty-th="{{ $reject['FACULTY'][0]['NAME_THA'] }}" data-faculty-en="{{ $reject['FACULTY'][0]['NAME_ENG'] }}">
 							    	<div class="row">
@@ -396,33 +381,7 @@
 						}
 					});
 				});
-<<<<<<< HEAD
-				
-				// not complete
-				groupChatList.click(function(){
-					var idGroup = $(this).data('id');
-					$.ajax({
-						url: "contacts/"+idGroup,
-						type: 'get',
-						dataType: 'html',
-						beforeSend: function() {
-					        modal.html("<img src='img/preload_horizontal.gif' class='img-responsive center-block'/>");
-					    },
-						success: function(result){
-							alert("result "+result);
-							modal.html(result);
-							modal.slideDown(300);
-							//initGroupChatButton();
-						},
-						error: function(){
-							return false;
-						}
-					});
-				});
-				
-=======
 
->>>>>>> origin/master
 				adminList.click(function(){
 					var idAdmin		= $(this).data("id"); 					// Get admin userid for 1-1 chat
 					var fullName	= $(this).find(".fullname").text();
@@ -457,25 +416,12 @@
 					var imgSource 		= $(this).find('img').attr('src');
 
 					var root		= $("#myModal #modal-data");
-<<<<<<< HEAD
-					var container	= '<div class="row"><img class="img-responsive img-circle avatar imgUsr imgAdmin"><div class="col-xs-9 text-center info"><h4 class="list-group-item-heading fullname"></h4><p class="list-group-item-heading position"></p><p class="list-group-item-heading email"></p><p class="list-group-item-heading telephone"></p><h4 class="list-group-item-heading">มหาวิทยาลัย</h4><p class="list-group-item-heading universityTh"></p><p class="list-group-item-heading universityEn"></p><h4 class="list-group-item-heading">คณะ</h4><p class="list-group-item-heading facultyTh"></p><p class="list-group-item-heading facultyEn"></p></div></div>';
-				
-					root.empty(); 											// To clear previously content
-					root.append(container);
-					$(".universityTh, .universityEn, .facultyEn, .facultyTh").addClass('blue');
-					$(".modal-dialog").css("width","25%");
-					if(userRole == 'memberList'){
-						$("<a class='btn btn-md btn-info'>CHAT</a>").insertAfter('p.facultyEn');
-					}
-				
-=======
 					var container	= '<div class="row"><img class="img-responsive img-circle avatar imgUsr imgAdmin"><div class="col-xs-9 text-center info"><h4 class="list-group-item-heading fullname"></h4><p class="list-group-item-heading position"></p><p class="list-group-item-heading email"></p><p class="list-group-item-heading telephone"></p><h4 class="list-group-item-heading">มหาวิทยาลัย</h4><p class="list-group-item-heading universityTh"></p><p class="list-group-item-heading universityEn"></p><h4 class="list-group-item-heading">คณะ</h4><p class="list-group-item-heading facultyTh"></p><p class="list-group-item-heading"></p><a class="btn btn-md btn-info">CHAT</a></div></div>';
 
 					root.empty(); 											// To clear previously content
 					root.append(container);
 					$(".universityTh, .universityEn, .facultyTh").addClass('blue');
 
->>>>>>> origin/master
 					root.find('.avatar').attr('src',imgSource);
 					root.find('.fullname').text(fullName);
 					root.find('.position').text(position);
