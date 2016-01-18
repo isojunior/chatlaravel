@@ -34,10 +34,10 @@ class ContactController extends Controller {
 						'idFaculty' => $user['ID_FACULTY'],
 					],
 				]);
-				//dd($user);
+				//dd($memberAuthorizedResult);
 				return View('contacts.main')
 					->with('user', $user)
-					->with('memberAuthorizedList', $memberAuthorizedResult);
+					->with('memberAuthorizedList', $memberAuthorizedResult['data']);
 			} else {
 				$unAuthorizeResult = null;
 				$allAdminResult = null;
