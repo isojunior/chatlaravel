@@ -3,7 +3,7 @@
 @if( $user['AUTHORIZE'] =='0' && $user['USER_TYPE'] != '1')
 	<div class="row">
 		<div class="jumbotron">
-			<h2>สวัสดี, {{$user['FIRST_NAME']}} {{$user['LAST_NAME']}} {{$user['ID_UNIVERSITY']}} {{$user['ID_FACULTY']}}</h2>
+			<h2>สวัสดี, {{$user['FIRST_NAME']}} {{$user['LAST_NAME']}}</h2>
 			@if( $user['ID_UNIVERSITY'] == '-1' || $user['ID_FACULTY'] == '-1')
 		  	<p>แอพพลิเคชั่นนี้เป็นแอพพลิเคชั่นเฉพาะกลุ่มเพื่อสถาบันการศึกษาใช้ประโยชน์ในการแนะแนว
 			      และพัฒนานักศึกษา เพราะฉะนั้น จำเป็นต้องรอการยืนยันตัวตนจากแอดมินของสถาบันของท่าน</p>

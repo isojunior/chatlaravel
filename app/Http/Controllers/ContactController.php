@@ -104,7 +104,7 @@ class ContactController extends Controller {
 			->with('normalUser', $authorizedList[2]['data'])
 			->with('rejectUser', $authorizedList[3]['data']);
 	}
-	
+
 	// not Complete
 	public function getGroupChatView($idGroupRequest = null) {
 		$idGroup = $idGroupRequest == null ? $_GET['data'] : $idGroupRequest;
@@ -189,7 +189,7 @@ class ContactController extends Controller {
 		$primaryGroupChatResult = $this->getPrimaryGroupChat($idUniversity, $idFaculty, $idUser);
 		if ($primaryGroupChatResult == null) {
 			//create group then get again
-			$createGroupResult = $this->createGroup($idUniversity, $idFaculty, $idUser, 2, -1, -1);
+			$createGroupResult = $this->createGroup($idUniversity, $idFaculty, 2, -1, -1);
 			if ($createGroupResult == 1) {
 				$primaryGroupChatResult = $this->getPrimaryGroupChat($idUniversity, $idFaculty, $idUser);
 				if ($primaryGroupChatResult == null) {
@@ -209,7 +209,7 @@ class ContactController extends Controller {
 		$adminGroupChatResult = $this->getAdminGroupChat($idUniversity, $idFaculty, $idUser);
 		if ($adminGroupChatResult == null) {
 			//create group then get again
-			$createGroupResult = $this->createGroup($idUniversity, $idFaculty, $idUser, 1, -1, -1);
+			$createGroupResult = $this->createGroup($idUniversity, $idFaculty, 1, -1, -1);
 			if ($createGroupResult == 1) {
 				$adminGroupChatResult = $this->getAdminGroupChat($idUniversity, $idFaculty, $idUser);
 				if ($adminGroupChatResult == null) {
@@ -354,7 +354,7 @@ class ContactController extends Controller {
 		}
 		return $result;
 	}
-	
+
 	private function getGroupChatList($services, $groupId, $result = array()) {
 		foreach ($services as $s) {
 			array_push($result,
@@ -381,5 +381,5 @@ class ContactController extends Controller {
 		}
 		return $result;
 	}
-	
+
 }
