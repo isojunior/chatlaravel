@@ -122,5 +122,16 @@ class WebServiceClient {
 		]);
 		return $addMemberToGroupResult['data'][0]['result'];
 	}
+
+	public function getMemberAuthorized($idUniversity, $idFaculty) {
+		$memberAuthorizedResult = $this->callWebservice([
+			'query' => [
+				'service' => "getMemberAuthorized",
+				'idUniversity' => $idUniversity,
+				'idFaculty' => $idFaculty,
+			],
+		]);
+		return $memberAuthorizedResult['data'];
+	}
 }
 ?>

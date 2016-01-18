@@ -18,6 +18,44 @@
 			@endif
 		</div>
 	</div>
+@elseif( $user['AUTHORIZE'] =='3' )
+	<div class="row">
+		<div class="jumbotron" style="margin-bottom:15px">
+			<h2>สวัสดี, {{$user['FIRST_NAME']}} {{$user['LAST_NAME']}}</h2>
+		  	<p>การอนุมัติเข้าร่วมกลุ่มของคุณมีความขัดข้อง กรุณาติดต่อแอดมินของสถาบันของท่าน แอดมินของท่าน</p>
+		</div>
+	</div>
+	<div class="panel-group">
+	  <div class="panel panel-default">
+	  	@if(isset($memberAuthorizedList))
+			<div class="panel-heading">
+				<a class="collapseLink" data-toggle="collapse" href="#memberAuthorizedList">
+					<h4 class="panel-title">
+			        	<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+			        	Groups
+						<span class="label label-default label-badge-authorized">{{ count($memberAuthorizedList) }}</span></h4>
+			        </h4>
+				</a>
+			</div>
+			<div id="memberAuthorizedList" class="panel-collapse collapse in">
+			  <ul class="list-group">
+			  	@if(count($memberAuthorizedList)>0)
+					@foreach ($memberAuthorizedList as $memberAuthorized)
+						<a class="list-group-item">
+							<h4 class="list-group-item-heading">
+								{{ $memberAuthorized['FIRST_NAME'] }} {{ $memberAuthorized['LAST_NAME'] }}
+							</h4>
+							<p class="list-group-item-text">{{ $memberAuthorized['POSITION'] }}</p>
+						</a>
+					@endforeach
+				@else
+					<a class="list-group-item text-center"><h3>ไม่พบข้อมูล</h3></a>
+				@endif
+			  </ul>
+			</div>
+		@endif
+		</div>
+	</div>
 @else
 	<div class="panel-group">
 		<div class="panel panel-default">

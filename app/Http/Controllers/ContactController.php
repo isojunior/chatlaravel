@@ -27,17 +27,11 @@ class ContactController extends Controller {
 
 		} else {
 			if ($user['AUTHORIZE'] == 3) {
-				$memberAuthorizedResult = self::$factory->callWebservice([
-					'query' => [
-						'service' => "getMemberAuthorized",
-						'idUniversity' => $user['ID_UNIVERSITY'],
-						'idFaculty' => $user['ID_FACULTY'],
-					],
-				]);
-				//dd($memberAuthorizedResult);
+				$memberAuthorizedResult = self::$factory->getMemberAuthorized($user['ID_UNIVERSITY'], $user['ID_FACULTY']);
+
 				return View('contacts.main')
 					->with('user', $user)
-					->with('memberAuthorizedList', $memberAuthorizedResult['data']);
+					->with('memberAuthorizedList', $memberAuthorizedResult);
 			} else {
 				$unAuthorizeResult = null;
 				$allAdminResult = null;
