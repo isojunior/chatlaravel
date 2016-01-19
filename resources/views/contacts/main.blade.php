@@ -164,7 +164,7 @@
 					  <ul class="list-group">
 					  	@if(count($unAuthorizeList)>0)
 							@foreach ($unAuthorizeList as $unAuthorize)
-								<a class="list-group-item link"
+								<a href class="list-group-item link" data-toggle="modal" data-target="#myModal"
 								        data-id="{{$unAuthorize['ID_USER']}}" data-telephone="{{$unAuthorize['TELEPHONE']}}" data-email="{{$unAuthorize['EMAIL']}}"
 										data-university-th="{{ $unAuthorize['UNIVERSITY'][0]['NAME_THA'] }}" data-university-en="{{ $unAuthorize['UNIVERSITY'][0]['NAME_ENG'] }}"
 									    data-faculty-th="{{ $unAuthorize['FACULTY'][0]['NAME_THA'] }}" data-faculty-en="{{ $unAuthorize['FACULTY'][0]['NAME_ENG'] }}">
@@ -177,8 +177,8 @@
 									    		{{ $unAuthorize['FIRST_NAME'] }} {{ $unAuthorize['LAST_NAME'] }}
 									    	</h4>
 									    	<p class="list-group-item-text position">{{ $unAuthorize['POSITION'] }}</p>
-									    	<button onclick="window.location = 'authorizedUser/2/{{$unAuthorize["ID_USER"]}}'" class="btn btn-info btn-sm group">เพิ่มเข้ากลุ่ม</button>
-									    	<button onclick="window.location = 'authorizedUser/3/{{$unAuthorize["ID_USER"]}}'" class="btn btn-warning btn-sm reject">ปฏิเสธ</button>
+									    	<button onclick="window.location = 'authorizedUser/2/{{$unAuthorize["ID_USER"]}}'" class="btn btn-info btn-sm group no-modal">เพิ่มเข้ากลุ่ม</button>
+									    	<button onclick="window.location = 'authorizedUser/3/{{$unAuthorize["ID_USER"]}}'" class="btn btn-warning btn-sm reject no-modal">ปฏิเสธ</button>
 							    		</div>
 							    	</div>
 							    </a>
@@ -250,7 +250,7 @@
 							    		<h4 class="list-group-item-heading fullname">
 								    		{{ $admin['FIRST_NAME'] }} {{ $admin['LAST_NAME'] }}
 								    	</h4>
-								    	<p class="list-group-item-text position">Top Gun Co.,Ltd.</p>
+								    	<p class="list-group-item-text company">Top Gun Co.,Ltd.</p>
 							    	</div>
 						    	</div>
 						    </a>
@@ -272,7 +272,7 @@
 					  <ul class="list-group">
 					  	@if(count($memberList)>0)
 							@foreach ($memberList as $member)
-								<a class="list-group-item link" data-toggle="modal" data-target="#myModal"
+								<a href class="list-group-item link" data-toggle="modal" data-target="#myModal"
 								        data-id="{{$member['ID_USER']}}" data-telephone="{{$member['TELEPHONE']}}" data-email="{{$member['EMAIL']}}"
 										data-university-th="{{ $member['UNIVERSITY'][0]['NAME_THA'] }}" data-university-en="{{ $member['UNIVERSITY'][0]['NAME_ENG'] }}"
 									    data-faculty-th="{{ $member['FACULTY'][0]['NAME_THA'] }}" data-faculty-en="{{ $member['FACULTY'][0]['NAME_ENG'] }}">
@@ -373,6 +373,19 @@
 				$("#myModal .modal-title, .modal-subtitle").empty(); // To clear modal header
 				$(content).empty();
 			};
+			
+		memberAuthorization.addChatButton
+			= function(source, id, role){
+				if(role == 'memberList'){
+					$(source).find('div .info').append('<a href class="btn btn-md btn-info">CHAT</a>').attr('href','chatWith/'+id);
+				}
+			};
+		
+			$(".no-modal").click(function(e){ 
+				 e.stopPropagation();
+				 e.preventDefault();
+			});
+
 		
 		memberAuthorization.handler
 			= function(groupList, groupChatList, adminList, otherList, modal){
@@ -402,7 +415,7 @@
 					});
 				});
 
-				adminList.click(function(){
+				adminList.click(function(event){
 					var idAdmin		= $(this).data("id"); 					// Get admin userid for 1-1 chat
 					var fullName	= $(this).find(".fullname").text();
 					var companyName = $(this).find(".company").text();
@@ -420,9 +433,10 @@
 					modal.find('.email').text("Email. "+email);
 					modal.find('.telephone').text("Tel. "+telephone);
 					modal.find('a').attr('href','chatWith/'+idAdmin);
+					
 				});
 
-				otherList.click(function(){
+				otherList.click(function(event){
 					var idUser			= $(this).data("id"); 					// Get admin userid for 1-1 chat
 					var userRole		= $(this).parent().parent().attr('id'); // unAuthorizeList, memberList, rejectList
 					var fullName		= $(this).find(".fullname").text();
@@ -433,10 +447,11 @@
 					var facultyTh		= $(this).data("faculty-th");
 					var imgSource 		= $(this).find('img').attr('src');
 
-					var container	= '<div class="row"><img class="img-responsive img-circle avatar imgUsr imgAdmin"><div class="col-xs-9 text-center info"><h4 class="list-group-item-heading fullname"></h4><p class="list-group-item-heading position"></p><p class="list-group-item-heading email"></p><p class="list-group-item-heading telephone"></p><h4 class="list-group-item-heading">มหาวิทยาลัย</h4><p class="list-group-item-heading universityTh"></p><p class="list-group-item-heading universityEn"></p><h4 class="list-group-item-heading">คณะ</h4><p class="list-group-item-heading facultyTh"></p><p class="list-group-item-heading"></p><a class="btn btn-md btn-info">CHAT</a></div></div>';
+					var container	= '<div class="row"><img class="img-responsive img-circle avatar imgUsr imgAdmin"><div class="col-xs-9 text-center info"><h4 class="list-group-item-heading fullname"></h4><p class="list-group-item-heading position"></p><p class="list-group-item-heading email"></p><p class="list-group-item-heading telephone"></p><h4 class="list-group-item-heading">มหาวิทยาลัย</h4><p class="list-group-item-heading universityTh"></p><p class="list-group-item-heading universityEn"></p><h4 class="list-group-item-heading">คณะ</h4><p class="list-group-item-heading facultyTh"></p><p class="list-group-item-heading"></p></div></div>';
 
 					memberAuthorization.clearContent(modal);
 					modal.append(container);
+					memberAuthorization.addChatButton(modal, idUser, userRole);
 					$(".universityTh, .universityEn, .facultyTh").addClass('blue');
 
 					modal.find('.avatar').attr('src',imgSource);
@@ -447,6 +462,7 @@
 					modal.find('.universityTh').text(universityTh);
 					modal.find('.facultyTh').text(facultyTh);
 					modal.find('a').attr('href','chatWith/'+idUser);
+					
 				});
 
 			};
