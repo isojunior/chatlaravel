@@ -202,5 +202,21 @@ class WebServiceClient {
 		]);
 		return $sendnotification['data'][0]['result'];
 	}
+
+	public function addChatMessage($idUser,$idGroup,$chatType,$idSticker, $idStickerGroup,
+$message){
+		$addChatMessageResult = $this->callWebservice([
+			'query' => [
+				'service' => "addChatMessage",
+				'idUser' => $idUser,
+				'idGroup' => $idGroup,
+				'chatType' => $chatType,
+				'idStickerGroup' => $idStickerGroup,
+				'idSticker' => $idSticker,
+				'message' => $message,
+			],
+		]);
+		return $addChatMessageResult['data'];
+	}
 }
 ?>

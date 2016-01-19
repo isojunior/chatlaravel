@@ -1,8 +1,5 @@
 @extends('app')
 @section('content')
-<input type="hidden" id="idUser" value="{{$user['ID_USER']}}"/>
-<input type="hidden" id="userFirstName" value="{{$user['FIRST_NAME']}}"/>
-<input type="hidden" id="idGroup" value="{{$chat['ID_GROUP']}}"/>
 <div class="row">
 	<div class="panel panel-primary">
 		<div class="panel-heading text-center">
@@ -47,14 +44,16 @@
 			</ul>
 		</div>
 		<div class="panel-footer">
-			<form id="send-message">
+			<form id="sendMessage">
 			<div class="input-group">
-
-					<input id="message-input" type="text" class="form-control input-sm" placeholder="Type your message here..." />
-					<span class="input-group-btn">
-						<button class="btn btn-warning btn-sm">Send</button>
-					</span>
-
+				<input type="hidden" name="_token" value="{{ csrf_token() }}">
+				<input type="hidden" id="idUser" value="{{$user['ID_USER']}}"/>
+				<input type="hidden" id="userFirstName" value="{{$user['FIRST_NAME']}}"/>
+				<input type="hidden" id="idGroup" name="idGroup" value="{{$chat['ID_GROUP']}}"/>
+				<input id="message-input" name="message" type="text" class="form-control input-sm" placeholder="Type your message here..." />
+				<span class="input-group-btn">
+					<button class="btn btn-warning btn-sm">Send</button>
+				</span>
 			</div>
 			</form>
 		</div>
@@ -72,7 +71,7 @@
 	$(document).ready(function(){
 		$(".chat-panel-body").prop({ scrollTop: $(".chat-panel-body").prop("scrollHeight") });
 
-		var messageForm = $('#send-message');
+		var messageForm = $('#sendMessage');
         var messageBox = $('#message-input');
         var chat = $('ul.chat');
         var idUser = $('#idUser').val();
@@ -90,15 +89,47 @@
         messageForm.on('submit', function (e) {
             e.preventDefault();
             if(messageBox.val()){
-            	socket.emit('chat.send.message',
-            		{
-            			messageText: messageBox.val(),
-            			idUser:idUser,
-            			userName:userFirstName,
-            			channel:idGroup,
-            			time:date.today()+" "+date.timeNow()
-            		});
-            	messageBox.val('');
+            	$.ajax({
+            		type: "POST",
+					url: "chat/sendMessage",
+					data: $("#sendMessage").serialize(),
+					beforeSend: function(){
+						var messageContainer =
+		            		'<li class="right clearfix loadingMessage">'+
+							'<span class="chat-img pull-right">'+
+							'	<img class="img-responsive img-circle avatar imgUsr chatimageProfile" src="http://apps.jobtopgun.com/Mercury/photos/'+idUser+'.jpg" onerror="this.src=\'img/avatar.png\'">'+
+							'</span>'+
+							'<div class="chat-body pull-right text-right">'+
+							'	<div class="messageHeader">'+
+							'		<strong class="primary-font">'+userFirstName+'</strong>'+
+							'	</div>'+
+							'	<div class="talk-bubble tri-right round right-in">'+
+							'		<div class="talktext"><img src="img/loading.gif" class="img-responsive center-block"/></div>'+
+							'	</div>'+
+							'</div>'+
+							'</li>';
+						chat.append(messageContainer);
+						$(".chat-panel-body").animate({ scrollTop: $(".chat-panel-body").prop("scrollHeight") });
+					},
+					success: function(result){
+						$('.loadingMessage').remove();
+						if(result){
+							console.log(result);
+							socket.emit('chat.send.message',
+		            		{
+		            			messageText: messageBox.val(),
+		            			idUser:idUser,
+		            			userName:userFirstName,
+		            			channel:idGroup,
+		            			time:result[0].TIMESTRING
+		            		});
+		            		messageBox.val('');
+						}
+						else{
+							alert("การส่งข้อความเกิดความขัดข้อง");
+						}
+			    	}
+				});
             }
         });
 
@@ -107,7 +138,6 @@
             message = JSON.parse(data);
             console.log(message);
             if(message.channel==idGroup){
-            	console.log("inSide");
             	var messageContainer =
             		'<li class="'+(message.idUser==idUser?'right':'left')+' clearfix">'+
 					'<span class="chat-img '+(message.idUser==idUser?'pull-right':'pull-left')+'">'+
@@ -125,8 +155,8 @@
 					'	</div>'+
 					'</div>'+
 					'</li>';
-
 				chat.append(messageContainer);
+				$(".chat-panel-body").animate({ scrollTop: $(".chat-panel-body").prop("scrollHeight") });
             }
         });
 	});

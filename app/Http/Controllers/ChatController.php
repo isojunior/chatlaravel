@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Utils;
 use App\Http\WebserviceClient;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
 
 class ChatController extends Controller {
@@ -97,6 +100,22 @@ class ChatController extends Controller {
 				->with('messages', $messagesResult);
 		}
 		return redirect('chats')->send();
+	}
+
+	public function sendMessage(Request $request) {
+		$user = Session::get('user');
+		$idGroup = $request->input('idGroup');
+		$message = $request->input('message');
+		$chatType = 0;
+		$idSticker = -1;
+		$idStickerGroup = -1;
+		if ($idGroup > 0) {
+			$isUserInGroupChatResult = self::$factory->checkMemberInGroupChat($idGroup, $user['ID_USER']);
+			if ($isUserInGroupChatResult == 1) {
+				$addChatMessageResult = self::$factory->addChatMessage($user['ID_USER'], $idGroup, $chatType, $idSticker, $idStickerGroup, Utils::encodeParameter($message));
+				return Response::make($addChatMessageResult);
+			}
+		}
 	}
 
 	private function getChatMessage($idUser, $idGroup, $groupType) {
