@@ -24,10 +24,10 @@ class ContactController extends Controller {
 				->with('user', $user)
 				->with('groupList', $contacts[0]['data'])
 				->with('adminList', $contacts[1]['data']);
-
 		} else {
+			$memberAuthorizedResult = self::$factory->getMemberAuthorized($user['ID_UNIVERSITY'], $user['ID_FACULTY']);
 			if ($user['AUTHORIZE'] == 3) {
-				$memberAuthorizedResult = self::$factory->getMemberAuthorized($user['ID_UNIVERSITY'], $user['ID_FACULTY']);
+				//$memberAuthorizedResult = self::$factory->getMemberAuthorized($user['ID_UNIVERSITY'], $user['ID_FACULTY']);
 
 				return View('contacts.main')
 					->with('user', $user)
@@ -78,6 +78,7 @@ class ContactController extends Controller {
 							'idFaculty' => $user['ID_FACULTY'],
 						],
 					]);
+
 				}
 
 				return View('contacts.main')
@@ -87,7 +88,8 @@ class ContactController extends Controller {
 					->with('adminList', $allAdminResult['data'])
 					->with('memberList', $memberResult['data'])
 					->with('rejectList', $memberRejectedResult['data'])
-					->with('user', $user);
+					->with('user', $user)
+					->with('memberAuthorizedList', $memberAuthorizedResult);
 			}
 		}
 	}

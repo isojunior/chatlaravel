@@ -402,4 +402,20 @@ class UserController extends Controller {
 			return redirect('setupUniversity');
 		}
 	}
+	public function processSendNotification()
+	{
+		$auth = Session::get('user');
+		$sendNotification = self::$factory->callWebservice([
+			'query' => [
+				'service' => 'updateFaculty',
+				'idUniversity' => $auth['ID_UNIVERSITY'],
+				'idFaculty' => $auth['ID_FACULTY'],
+				'idUser' => $auth['ID_USER'],
+			],
+		]);
+		if($sendNotification["data"][0]["result"]==1){
+			Session::put('messageNotification','กรุณารอรับการติดต่อจาก Admin ของคุณ หรือทีมงาน JOBTOPGUN คะ');
+			return back();
+		}
+	}
 }

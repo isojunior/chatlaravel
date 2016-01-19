@@ -18,6 +18,7 @@ class ChatController extends Controller {
 		if ($user['AUTHORIZE'] != 3) {
 			$userChatServiceName = "getGroupChatForAdmin";
 			$userBadgeServiceName = "getUserBadge";
+			$userAdmin = 'getMemberAuthorized';
 			if ($user['USER_TYPE'] == 0) {
 				$userChatServiceName = "getGroupChatForUser";
 				$userBadgeServiceName = "getUserBadge";
@@ -36,10 +37,11 @@ class ChatController extends Controller {
 					'idUser' => $user['ID_USER'],
 				],
 			]);
-
+			$memberAuthorizedResult = self::$factory->getMemberAuthorized($user['ID_UNIVERSITY'], $user['ID_FACULTY']);
 			return View('chats.main')->with('user', $user)
 				->with('userChatList', $userChatResult["data"])
-				->with('userBadge', $userBadgeResult["data"]);
+				->with('userBadge', $userBadgeResult["data"])
+				->with('memberAuthorizedList', $memberAuthorizedResult);
 		} else {
 			$memberAuthorizedResult = self::$factory->getMemberAuthorized($user['ID_UNIVERSITY'], $user['ID_FACULTY']);
 

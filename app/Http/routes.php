@@ -30,6 +30,7 @@ Route::group(['middleware' => 'guest'], function () {
 	Route::get('profile', 'UserController@getProfileView');
 	Route::get('profile/edit', 'UserController@editProfileView');
 	Route::get('logout', 'UserController@processLogout');
+	Route::get('sendNotification','UserController@processSendNotification');
 	Route::get('setupUniversity', 'UserController@getSetupUniversityView');
 	Route::post('uploadProfileImage', 'UserController@uploadProfileImage');
 	Route::post('profile/edit', 'UserController@processEditProfile');
@@ -38,8 +39,3 @@ Route::group(['middleware' => 'guest'], function () {
 	Route::get('authorizedUser/{authorizeStatus}/{idUser}', 'ContactController@processAuthorizeUser');
 	Route::post('chat/sendMessage', 'ChatController@sendMessage');
 });
-Route::get('iso', function () {
-	$user = Session::get('user');
-	Return view("isohome")->with('user', $user);
-});
-Route::get('systemMessage', 'SocketController@systemMessage');

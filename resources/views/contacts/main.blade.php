@@ -9,13 +9,27 @@
 			      และพัฒนานักศึกษา เพราะฉะนั้น จำเป็นต้องรอการยืนยันตัวตนจากแอดมินของสถาบันของท่าน</p>
 		  	<p><a class="btn btn-primary btn-lg" href="setupUniversity" role="button">คลิกเพื่อเลือกมหาวิทยาลัย</a></p>
 			@else
-			<p>แอพพลิเคชั่นนี้เป็นแอพพลิเคชั่นเฉพาะกลุ่มเพื่อสถาบันการศึกษา ใช้ประโยชน์ในการแนะแนว และพัฒนานักศึกษา
-			      เพราะฉะนั้น จำเป็นต้องรอการยืนยันตัวตนจากแอดมินของสถาบันของท่านแอดมินของท่านคือ<br>
-			   Print AuthorisedUser List
-
-		       <br>หากเกิน 2 วันทำการแล้วท่านยังไม่ได้รับการยืนยัน
-		    </p>
-		  	<p><a class="btn btn-primary btn-lg" href="setupUniversity" role="button">คลิกที่นี่</a></p>
+				@if(Session::has('messageNotification'))
+					<p>{{ Session::get('messageNotification') }}</p>
+				@else
+					<p>แอพพลิเคชั่นนี้เป็นแอพพลิเคชั่นเฉพาะกลุ่มเพื่อสถาบันการศึกษา ใช้ประโยชน์ในการแนะแนว และพัฒนานักศึกษา
+						เพราะฉะนั้น จำเป็นต้องรอการยืนยันตัวตนจากแอดมินของสถาบันของท่านแอดมินของท่านคือ<br>
+						@if(isset($memberAuthorizedList))
+							@if(count($memberAuthorizedList)>0)
+								@foreach($memberAuthorizedList as $index=> $data)
+									<ol>
+										<li> คุณ  {{$data["FIRST_NAME"]}} {{$data["LAST_NAME"]}} <br></li>
+									</ol>
+								@endforeach
+							@else
+								ไม่พบ Admin
+							@endif
+						@endif
+						<br>หากเกิน 2 วันทำการแล้วท่านยังไม่ได้รับการยืนยัน
+					</p>
+					<p><a class="btn btn-primary btn-lg" href="sendNotification" role="button" name="confirm_send"
+						  onclick="return confirm('ต้องการที่จะสงคำร้องขอไปหาแอดมินของท่าน?')">คลิกที่นี่</a></p>
+				@endif
 			@endif
 		</div>
 	</div>
@@ -77,7 +91,7 @@
 				</div>
 				@endif
 			  </div>
-			</div
+			</div>
 			<!-- Container inside modal -->
 			<div class="memberContainer">
 				<div class="panel-group">

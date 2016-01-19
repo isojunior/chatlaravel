@@ -65,6 +65,9 @@
 <link rel="stylesheet" type="text/css" href="{{ asset("css/chat.css") }}"/>
 <script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
 <script>
+
+
+
 	var date = new Date();
 	$(document).ready(function(){
 		$(".chat-panel-body").prop({ scrollTop: $(".chat-panel-body").prop("scrollHeight") });

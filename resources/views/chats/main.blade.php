@@ -9,12 +9,28 @@
 			      และพัฒนานักศึกษา เพราะฉะนั้น จำเป็นต้องรอการยืนยันตัวตนจากแอดมินของสถาบันของท่าน</p>
 		  	<p><a class="btn btn-primary btn-lg" href="setupUniversity" role="button">คลิกเพื่อเลือกมหาวิทยาลัย</a></p>
 			@else
-			<p>แอพพลิเคชั่นนี้เป็นแอพพลิเคชั่นเฉพาะกลุ่มเพื่อสถาบันการศึกษา ใช้ประโยชน์ในการแนะแนว และพัฒนานักศึกษา
-			      เพราะฉะนั้น จำเป็นต้องรอการยืนยันตัวตนจากแอดมินของสถาบันของท่านแอดมินของท่านคือ<br>
-			   Print AuthorisedUser List
-		       <br>หากเกิน 2 วันทำการแล้วท่านยังไม่ได้รับการยืนยัน
-		    </p>
-		  	<p><a class="btn btn-primary btn-lg" href="setupUniversity" role="button">คลิกที่นี่</a></p>
+				@if(Session::has('messageNotification'))
+					<p>{{ Session::get('messageNotification') }}</p>
+				@else
+					<p>แอพพลิเคชั่นนี้เป็นแอพพลิเคชั่นเฉพาะกลุ่มเพื่อสถาบันการศึกษา ใช้ประโยชน์ในการแนะแนว และพัฒนานักศึกษา
+						เพราะฉะนั้น จำเป็นต้องรอการยืนยันตัวตนจากแอดมินของสถาบันของท่านแอดมินของท่านคือ<br>
+						{{--Print AuthorisedUser List--}}
+						@if(isset($memberAuthorizedList))
+							@if(count($memberAuthorizedList)>0)
+								@foreach($memberAuthorizedList as $index=> $data)
+									<ol>
+										<li> คุณ  {{$data["FIRST_NAME"]}} {{$data["LAST_NAME"]}} <br></li>
+									</ol>
+								@endforeach
+								@else
+								ไม่พบ Admin
+							@endif
+						@endif
+						<br>หากเกิน 2 วันทำการแล้วท่านยังไม่ได้รับการยืนยัน
+					</p>
+					<p><a class="btn btn-primary btn-lg" href="sendNotification" role="button" name="confirm_send"
+						  onclick="return confirm('ต้องการที่จะสงคำร้องขอไปหาแอดมินของท่าน?')">คลิกที่นี่</a></p>
+				@endif
 			@endif
 		</div>
 	</div>
@@ -117,5 +133,34 @@
 			</div>
 		</div>
 	</div>
+
+	<div id="dialog" title="Confirmation Required">
+		ต้องการยืนยันใช้หรือไม่
+	</div>
 @endif
+@endsection
+@section('scripts')
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#dialog").dialog({
+				autoOpen: false,
+				modal: true
+			});
+			$(".confirmLink").click(function(e) {
+				e.preventDefault();
+				var targetUrl = $(this).attr("href");
+				$("#dialog").dialog({
+					buttons : {
+						"Confirm" : function() {
+							window.location.href = targetUrl;
+						},
+						"Cancel" : function() {
+							$(this).dialog("close");
+						}
+					}
+				});
+				$("#dialog").dialog("open");
+			});
+		}); // end of $(document).ready
+	</script>
 @endsection
