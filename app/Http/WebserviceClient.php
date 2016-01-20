@@ -191,20 +191,20 @@ class WebServiceClient {
 		]);
 		return $sendPushResult['data'][0]['result'];
 	}
-	public function requestAccepted($idUser,$idUniversity,$idFacalty){
+	public function requestAccepted($idUser, $idUniversity, $idFacalty) {
 		$sendnotification = $this->callWebservice([
-			'query'=>[
-				'service' =>'requestAccepted',
-				'idUser'=>$idUser,
-				'idUniversity'=>$idUniversity,
-				'idFaculty'=>$idFacalty
+			'query' => [
+				'service' => 'requestAccepted',
+				'idUser' => $idUser,
+				'idUniversity' => $idUniversity,
+				'idFaculty' => $idFacalty,
 			],
 		]);
 		return $sendnotification['data'][0]['result'];
 	}
 
-	public function addChatMessage($idUser,$idGroup,$chatType,$idSticker, $idStickerGroup,
-$message){
+	public function addChatMessage($idUser, $idGroup, $chatType, $idSticker, $idStickerGroup,
+		$message) {
 		$addChatMessageResult = $this->callWebservice([
 			'query' => [
 				'service' => "addChatMessage",

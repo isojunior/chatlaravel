@@ -79,7 +79,7 @@
         var idGroup =$('#idGroup').val();
 
         // open a socket connection
-        var socket = new io.connect('http://localhost:8890', {
+        var socket = new io.connect('http://apps.jobtopgun.com:8890/', {
             'reconnection': true,
             'reconnectionDelay': 1000,
             'reconnectionDelayMax' : 5000,
