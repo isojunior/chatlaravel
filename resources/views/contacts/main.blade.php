@@ -204,18 +204,26 @@
 					  <ul class="list-group">
 					  	@if(isset($adminGroupChatList))
 							@foreach ($adminGroupChatList as $adminGroup)
-								<a class="list-group-item adminGroupChat link" data-id="{{$adminGroup['ID_GROUP']}}">
+								<a class="list-group-item adminGroupChat link" data-toggle="modal" data-target="#myModal" 
+								   data-role="adminGroup" data-id="{{$adminGroup['ID_GROUP']}}"
+								   data-universityId="{{$adminGroup['ID_UNIVERSITY']}}"
+								   data-facultyId="{{$adminGroup['ID_FACULTY']}}">
 									<h4 class="list-group-item-heading">
-										บริษัท ท็อปกัน จำกัด
+										<span class="companyNameTh">บริษัท ท็อปกัน จำกัด</span>
 										<span class="label label-default label-badge">{{$adminGroup['TOTAL']}}</span>
 									</h4>
-									<p class="list-group-item-text">Top Gun Co.,Ltd.</p>
+									<p class="list-group-item-text companyNameEn">Top Gun Co.,Ltd.</p>
 								</a>
 							@endforeach
 						@endIf
 						@if(isset($primaryGroupChatList))
 							@foreach ($primaryGroupChatList as $primaryGroup)
-								<a class="list-group-item primaryGroupChat link" data-id="{{$primaryGroup['ID_GROUP']}}">
+								<a class="list-group-item primaryGroupChat link" data-toggle="modal" data-target="#myModal" 
+								   data-role="primaryGroup" data-id="{{$primaryGroup['ID_GROUP']}}"
+								   data-university-name="{{$primaryGroup['UNIVERSITY'][0]['NAME_THA']}}"
+								   data-faculty-name="{{$primaryGroup['FACULTY'][0]['NAME_THA']}}"
+								   data-universityId="{{$primaryGroup['ID_UNIVERSITY']}}"
+								   data-facultyId="{{$primaryGroup['ID_FACULTY']}}">
 									<h4 class="list-group-item-heading">
 										{{$primaryGroup['UNIVERSITY'][0]['NAME_THA']}}
 										<span class="label label-default label-badge">{{$primaryGroup['TOTAL']}}</span>
@@ -386,6 +394,11 @@
 				 e.preventDefault();
 			});
 
+		memberAuthorization.setModalHeader
+			= function(universityName, facultyName){
+					$('.modal-title').text(universityName);
+					$('.modal-subtitle').text(facultyName);
+			};
 		
 		memberAuthorization.handler
 			= function(groupList, groupChatList, adminList, otherList, modal){
@@ -407,12 +420,51 @@
 						success: function(result){
 							modal.html(result);
 							modal.slideDown(300);
-							initGroupChatButton();
 						},
 						error: function(){
 							return false;
 						}
 					});
+				});
+				
+				groupChatList.click(function(event){
+					var id 				= $(this).data("id");
+					var role 			= $(this).data("role"); // adminGroup or primaryGroup
+					var universityId 	= $(this).data("universityid");
+					var facultyId 		= $(this).data("facultyid");	
+					var universityName  = "";
+					var facultyName		= "";
+					
+					if (role == 'primaryGroup') {
+						universityName 	= $(this).data("university-name");
+						facultyName 	= $(this).data("faculty-name");
+					} else {
+						universityName 	= $('.link .companyNameTh').text(); 
+						facultyName 	= $('.link .companyNameEn').text();
+					}
+					
+					$.ajax({
+						url: "groupChatList",
+						type: 'get',
+						data: { 'id': id, 
+							    'role': role ,
+								'universityId': universityId,
+								'facultyId': facultyId },
+						dataType: 'html',
+						beforeSend: function() {
+					        modal.html("<img src='img/preload_horizontal.gif' class='img-responsive center-block'/>");
+					    },
+						success: function(result){
+							modal.html(result);
+							modal.slideDown(300);
+							memberAuthorization.setModalHeader(universityName, facultyName);
+							initGroupChatButton(id);
+						},
+						error: function(){
+							return false;
+						}
+					});
+					
 				});
 
 				adminList.click(function(event){
@@ -498,8 +550,10 @@
 		}
 	}
 
-	function initGroupChatButton() {
-		$(".chat-group").click(function() {
+	function initGroupChatButton(id) {
+		$(".groupChat").click(function() {
+			window.location = "chat/" + id;
+			return false;
 		});
 	}
 

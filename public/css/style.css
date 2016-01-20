@@ -69,6 +69,11 @@
     font-size: 14px;
 }
 
+.label-badge-group-chat{;
+    font-size: 14px;
+	margin-left: 5px;
+}
+
 .mainName{
     font-size: 22px;
     font-weight: bold;

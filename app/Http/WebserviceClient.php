@@ -218,5 +218,27 @@ class WebServiceClient {
 		]);
 		return $addChatMessageResult['data'];
 	}
+	
+	public function getMember ($idUniversity, $idFaculty) {
+		$memberResult = $this->callWebservice([
+			'query' => [
+				'service' => "getMember",
+				'idUniversity' => $idUniversity,
+				'idFaculty' => $idFaculty,
+			],
+		]);
+		return $memberResult['data'];
+	}
+	
+	public function getAllAdmin ($idUniversity, $idFaculty) {
+		$adminResult = $this->callWebservice([
+			'query' => [
+				'service' => "getAllAdmin",
+				'idUniversity' => $idUniversity,
+				'idFaculty' => $idFaculty,
+			],
+		]);
+		return $adminResult['data'];
+	}
 }
 ?>

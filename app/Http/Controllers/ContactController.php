@@ -108,11 +108,30 @@ class ContactController extends Controller {
 	}
 
 	// not Complete
-	public function getGroupChatView($idGroupRequest = null) {
-		$idGroup = $idGroupRequest == null ? $_GET['data'] : $idGroupRequest;
-		$services = array("getAllMember", "getAllAdmin");
-		$groupChat = $this->getGroupChatList($services, $idGroup);
-		dd($groupChat);
+	public function getGroupChatView($idGroupRequest = null, $roleRequest = null, $idUniversityRequest = null, $idFacultyRequest = null) {
+		$idGroup = $idGroupRequest == null ? $_GET['id'] : $idGroupRequest;
+		$role = $roleRequest == null ? $_GET['role'] : $roleRequest;
+		$idUniversity = $idUniversityRequest == null ? $_GET['universityId'] : $idUniversityRequest;
+		$idFaculty = $idFacultyRequest == null ? $_GET['facultyId'] : $idFacultyRequest;
+		$result  = array();
+		
+		if ($role == 'adminGroup') {
+			$groupChat = self::$factory->getMember($idUniversity, $idFaculty);
+			$groupAdmin = self::$factory->getAllAdmin($idUniversity, $idFaculty);
+			array_push($result, $groupChat);
+			array_push($result, $groupAdmin);
+			$total = count($result[0])+count($result[1]);
+		} 
+		
+		if ($role == 'primaryGroup') {
+			$groupChat = self::$factory->getMember($idUniversity, $idFaculty);
+			array_push($result, $groupChat);
+			$total = count($result[0]);
+		}
+		
+		return View('contacts.groupChat')
+			->with('groupMembers',$result)
+			->with('total', $total);
 	}
 
 	public function processAuthorizeUser($authorizeStatus = null, $idUser = null) {

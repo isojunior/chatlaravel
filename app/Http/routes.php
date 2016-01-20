@@ -26,7 +26,7 @@ Route::group(['middleware' => 'guest'], function () {
 	Route::get('chat/{idGroup}', 'ChatController@getChatView');
 	Route::get('chatWith/{idUser}', 'ChatController@getUserChatView');
 	Route::get('contacts', 'ContactController@getContactView');
-	Route::get('contacts/{idGroup}', 'ContactController@getGroupChatView');
+	Route::get('groupChatList', 'ContactController@getGroupChatView');
 	Route::get('profile', 'UserController@getProfileView');
 	Route::get('profile/edit', 'UserController@editProfileView');
 	Route::get('logout', 'UserController@processLogout');
