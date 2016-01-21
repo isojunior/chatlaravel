@@ -22,11 +22,11 @@
 						@foreach ($messages as $message)
 							<li class="{{$message['ID_USER']==$user['ID_USER']?'right':'left'}} clearfix">
 								<span class="chat-img {{$message['ID_USER']==$user['ID_USER']?'pull-right':'pull-left'}}">
-									<img class="img-responsive img-circle avatar imgUsr chatimageProfile" src="http://apps.jobtopgun.com/Mercury/photos/{{$message['USER'][0]['ID_USER']}}.jpg" onerror='this.src="img/avatar.png"'>
+									<img class="img-responsive img-circle avatar imgUsr chatimageProfile" src="http://apps.jobtopgun.com/Mercury/photos/{{isset($message['USER'][0])?$message['USER'][0]['ID_USER']:-1}}.jpg" onerror='this.src="img/avatar.png"'>
 								</span>
 								<div class="chat-body {{$message['ID_USER']==$user['ID_USER']?'pull-right text-right':'pull-left text-left'}}">
 									<div class="messageHeader">
-										<strong class="primary-font">{{$message['USER'][0]['FIRST_NAME']}}</strong>
+										<strong class="primary-font">{{isset($message['USER'][0])?$message['USER'][0]['FIRST_NAME']:""}}</strong>
 									</div>
 									<div class="talk-bubble tri-right round {{$message['ID_USER']==$user['ID_USER']?'right-in':'left-in'}}">
 										<div class="talktext">
@@ -50,7 +50,7 @@
 				<input type="hidden" id="idUser" value="{{$user['ID_USER']}}"/>
 				<input type="hidden" id="userFirstName" value="{{$user['FIRST_NAME']}}"/>
 				<input type="hidden" id="idGroup" name="idGroup" value="{{$chat['ID_GROUP']}}"/>
-				<input id="message-input" name="message" type="text" class="form-control input-sm" placeholder="Type your message here..." />
+				<input id="message-input" name="message" type="text" class="form-control input-sm" placeholder="Type your message here..." autocomplete="off" />
 				<span class="input-group-btn">
 					<button class="btn btn-warning btn-sm">Send</button>
 				</span>
@@ -88,7 +88,7 @@
 
         messageForm.on('submit', function (e) {
             e.preventDefault();
-            if(messageBox.val()){
+            if($.trim(messageBox.val())){
             	$.ajax({
             		type: "POST",
 					url: "chat/sendMessage",
@@ -130,6 +130,9 @@
 						}
 			    	}
 				});
+            }
+            else{
+            	messageBox.val("");
             }
         });
 

@@ -1,14 +1,19 @@
+<div class="row">
+	<div class="col-xs-12 text-right">
+		<button class="btn btn-primary btn-md btn-block">CHAT</button>
+	</div>
+</div>
 <div class="panel-group">
   	<div class="panel panel-default">
 		@if(isset($groupMembers))
 		<div class="panel-heading">
 			<a class="collapseLink" data-toggle="collapse" href="#highUser">
-				<div class="row">
-				<h4 class="panel-title">สมาชิกทั้งหมด  <span class="label label-default label-badge-group-chat">{{ $total }}</span><button class="btn btn-danger btn-sm groupChat">CHAT</button></h4>
-				</div>
+				<h4 class="panel-title">สมาชิกทั้งหมด
+					<span class="label label-default label-badge-group-chat">{{ $total }}</span>
+				</h4>
 			</a>
 		</div>
-		<div id="highUser" class="panel-collapse collapse">
+		<div id="highUser" class="panel-collapse collapse in">
 		  <ul class="list-group">
 		  	@if(count($groupMembers)>0)
 				@foreach ($groupMembers as $members)

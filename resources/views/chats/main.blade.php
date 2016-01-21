@@ -49,7 +49,7 @@
 					<h4 class="panel-title">
 			        	<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
 			        	Groups
-						<span class="label label-default label-badge-authorized">{{ count($memberAuthorizedList) }}</span></h4>
+						<span class="label label-default label-badge-authorized">{{ count($memberAuthorizedList) }}</span>
 			        </h4>
 				</a>
 			</div>
@@ -100,7 +100,9 @@
 											<p class="list-group-item-text">{{($userChat['USER1'][0]['ID_USER']==$user['ID_USER']?$userChat['USER2'][0]['POSITION']:$userChat['USER1'][0]['POSITION'])}}</p>
 										</div>
 										<div class="col-xs-2">
+											@if($userChat['BADGE']!=0)
 											<span class="label label-default label-badge">{{$userChat['BADGE']}}</span>
+											@endif
 										</div>
 									</div>
 								</a>
@@ -112,9 +114,11 @@
 									@else
 										{{$userChat['UNIVERSITY'][0]['NAME_THA']}}
 									@endif
+									@if($userChat['BADGE']!=0)
 									<span class="label label-default label-badge">
 										{{$userChat['BADGE']}}
 									</span>
+									@endif
 									</h4>
 									<p class="list-group-item-text">
 										@if($userChat['IS_ADMIN']==1)

@@ -93,7 +93,7 @@ class ChatController extends Controller {
 
 			$messagesResult = $this->getChatMessage($user['ID_USER'], $userChatResult[0]['ID_GROUP'], $userChatResult[0]['IS_ADMIN']);
 
-			//dd($messagesResult);
+			//dd($userChatWith);
 			return View('chats.chat')->with('user', $user)
 				->with('userWith', $userChatWith)
 				->with('chat', $userChatResult[0])

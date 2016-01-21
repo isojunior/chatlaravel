@@ -177,7 +177,6 @@ class UserController extends Controller {
 				$extension = $profileImage->getClientOriginalExtension();
 				$fileNameFull = $auth["ID_USER"] . "." . $extension;
 				$fileMoved = $profileImage->move($destinationPath, $fileNameFull);
-				dd($fileMoved->getRealPath());
 				if (File::exists($fileMoved->getRealPath())) {
 					Session::flash('alert-success', 'Upload image success.');
 					return redirect('profile');
@@ -402,8 +401,7 @@ class UserController extends Controller {
 			return redirect('setupUniversity');
 		}
 	}
-	public function processSendNotification()
-	{
+	public function processSendNotification() {
 		$auth = Session::get('user');
 		$sendNotification = self::$factory->callWebservice([
 			'query' => [
@@ -413,8 +411,8 @@ class UserController extends Controller {
 				'idUser' => $auth['ID_USER'],
 			],
 		]);
-		if($sendNotification["data"][0]["result"]==1){
-			Session::put('messageNotification','กรุณารอรับการติดต่อจาก Admin ของคุณ หรือทีมงาน JOBTOPGUN คะ');
+		if ($sendNotification["data"][0]["result"] == 1) {
+			Session::put('messageNotification', 'กรุณารอรับการติดต่อจาก Admin ของคุณ หรือทีมงาน JOBTOPGUN คะ');
 			return back();
 		}
 	}
