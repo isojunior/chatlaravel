@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="col-xs-12 text-right">
-		<button class="btn btn-primary btn-md btn-block">CHAT</button>
+		<button class="btn btn-primary btn-md btn-block groupChat">CHAT</button>
 	</div>
 </div>
 <div class="panel-group">

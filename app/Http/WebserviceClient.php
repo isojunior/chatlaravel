@@ -218,8 +218,8 @@ class WebServiceClient {
 		]);
 		return $addChatMessageResult['data'];
 	}
-	
-	public function getMember ($idUniversity, $idFaculty) {
+
+	public function getMember($idUniversity, $idFaculty) {
 		$memberResult = $this->callWebservice([
 			'query' => [
 				'service' => "getMember",
@@ -229,8 +229,8 @@ class WebServiceClient {
 		]);
 		return $memberResult['data'];
 	}
-	
-	public function getAllAdmin ($idUniversity, $idFaculty) {
+
+	public function getAllAdmin($idUniversity, $idFaculty) {
 		$adminResult = $this->callWebservice([
 			'query' => [
 				'service' => "getAllAdmin",
@@ -239,6 +239,17 @@ class WebServiceClient {
 			],
 		]);
 		return $adminResult['data'];
+	}
+
+	public function processChatNotification($idGroup, $idChat) {
+		$processChatNotificationResult = $this->callWebservice([
+			'query' => [
+				'service' => "processChatNotification",
+				'idGroup' => $idGroup,
+				'idChat' => $idChat,
+			],
+		]);
+		return $processChatNotificationResult['data'];
 	}
 }
 ?>

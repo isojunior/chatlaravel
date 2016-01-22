@@ -7,7 +7,7 @@ class Constrants {
 	const NON_COLLABORATOR = "ผู้ที่ไม่เกี่ยวข้องงานแนะแนวพัฒนากิจการนักศึกษา";
 	const TOPGUN_COMPANY_NAME = "Top Gun Co.,Ltd.";
 	/** todo: change image profile path **/
-	const IMAGE_PROFILE_PATH = '/Mercury/photos/';
+	const IMAGE_PROFILE_PATH = '../../photos/';
 	const AUTHORIZE = "authorize";
 	const UNAUTHORIZE = "unauthorize";
 	const ACCEPT = "accept";

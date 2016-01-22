@@ -138,7 +138,7 @@
 		</div>
 	</div>
 
-	<div id="dialog" title="Confirmation Required">
+	<div id="dialog" title="Confirmation Required" class="hideElement">
 		ต้องการยืนยันใช้หรือไม่
 	</div>
 @endif

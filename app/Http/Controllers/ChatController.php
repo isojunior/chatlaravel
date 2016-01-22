@@ -113,6 +113,10 @@ class ChatController extends Controller {
 			$isUserInGroupChatResult = self::$factory->checkMemberInGroupChat($idGroup, $user['ID_USER']);
 			if ($isUserInGroupChatResult == 1) {
 				$addChatMessageResult = self::$factory->addChatMessage($user['ID_USER'], $idGroup, $chatType, $idSticker, $idStickerGroup, Utils::encodeParameter($message));
+
+				if (count($addChatMessageResult) > 0) {
+					$processNotification = self::$factory->processChatNotification($addChatMessageResult[0]['ID_GROUP'], $addChatMessageResult[0]['ID_CHAT']);
+				}
 				return Response::make($addChatMessageResult);
 			}
 		}

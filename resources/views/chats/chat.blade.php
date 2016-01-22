@@ -114,7 +114,6 @@
 					success: function(result){
 						$('.loadingMessage').remove();
 						if(result){
-							console.log(result);
 							socket.emit('chat.send.message',
 		            		{
 		            			messageText: messageBox.val(),
@@ -139,7 +138,6 @@
         // wait for a new message and append into each connection chat window
         socket.on('chat.message', function (data) {
             message = JSON.parse(data);
-            console.log(message);
             if(message.channel==idGroup){
             	var messageContainer =
             		'<li class="'+(message.idUser==idUser?'right':'left')+' clearfix">'+
