@@ -137,34 +137,5 @@
 			</div>
 		</div>
 	</div>
-
-	<div id="dialog" title="Confirmation Required" class="hideElement">
-		ต้องการยืนยันใช้หรือไม่
-	</div>
 @endif
-@endsection
-@section('scripts')
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$("#dialog").dialog({
-				autoOpen: false,
-				modal: true
-			});
-			$(".confirmLink").click(function(e) {
-				e.preventDefault();
-				var targetUrl = $(this).attr("href");
-				$("#dialog").dialog({
-					buttons : {
-						"Confirm" : function() {
-							window.location.href = targetUrl;
-						},
-						"Cancel" : function() {
-							$(this).dialog("close");
-						}
-					}
-				});
-				$("#dialog").dialog("open");
-			});
-		}); // end of $(document).ready
-	</script>
 @endsection
