@@ -30,7 +30,15 @@
 									</div>
 									<div class="talk-bubble tri-right round {{$message['ID_USER']==$user['ID_USER']?'right-in':'left-in'}}">
 										<div class="talktext">
-										{{ \App\Http\Utils::unicode_decode($message['MESSAGE']) }}
+											@if($message['CHAT_TYPE']==0)
+												{{ \App\Http\Utils::unicode_decode($message['MESSAGE']) }}
+											@elseif($message['CHAT_TYPE']==1)
+												<img alt="Sticker" class="img-responsive" src="http://apps.jobtopgun.com/Mercury/sticker/version{{$message['ID_STICKER_GROUP']}}/{{$message['ID_STICKER_GROUP']}}_{{$message['ID_STICKER']}}.png"/>
+											@elseif($message['CHAT_TYPE']==2)
+											<a class="messageImage">
+    											<img alt="Image" class="img-responsive" src="http://apps.jobtopgun.com/Mercury/medias/{{ \App\Http\Utils::unicode_decode($message['MESSAGE']) }}"/>
+											</a>
+											@endif
 										</div>
 									</div>
 									<div class="message-time">
@@ -59,16 +67,29 @@
 		</div>
 </div>
 </div>
+
+<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" data-dismiss="modal">
+    <div class="modal-content"  >
+      <div class="modal-body">
+      	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <img src="" class="imagepreview" style="width: 100%;" >
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 @section('scripts')
 <link rel="stylesheet" type="text/css" href="{{ asset("css/chat.css") }}"/>
 <script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
 <script>
-
-
-
 	var date = new Date();
 	$(document).ready(function(){
+		$('.messageImage').on('click', function() {
+			$('.imagepreview').attr('src', $(this).find('img').attr('src'));
+			$('#imagemodal').modal('show');
+		});
+
 		$(".chat-panel-body").prop({ scrollTop: $(".chat-panel-body").prop("scrollHeight") });
 
 		var messageForm = $('#sendMessage');
@@ -116,11 +137,14 @@
 						if(result){
 							socket.emit('chat.send.message',
 		            		{
-		            			messageText: messageBox.val(),
-		            			idUser:idUser,
-		            			userName:userFirstName,
-		            			channel:idGroup,
-		            			time:result[0].TIMESTRING
+		            			messageType: result[0].CHAT_TYPE,
+		            			stickerGroup: result[0].ID_STICKER_GROUP,
+		            			stickerID: result[0].ID_STICKER,
+		            			messageText: result[0].MESSAGE,
+		            			idUser: result[0].ID_USER,
+		            			userName: userFirstName,
+		            			channel: result[0].ID_GROUP,
+		            			time: result[0].TIMESTRING
 		            		});
 		            		messageBox.val('');
 						}
@@ -139,6 +163,13 @@
         socket.on('chat.message', function (data) {
             message = JSON.parse(data);
             if(message.channel==idGroup){
+            	if(message.messageType==1){
+            		message	= "http://apps.jobtopgun.com/Mercury/sticker/version"+message.stickerGroup+"/"+message.stickerGroup+"_"+message.stickerID+".png";
+            	}
+            	else{
+            		message = message.messageText;
+            	}
+
             	var messageContainer =
             		'<li class="'+(message.idUser==idUser?'right':'left')+' clearfix">'+
 					'<span class="chat-img '+(message.idUser==idUser?'pull-right':'pull-left')+'">'+

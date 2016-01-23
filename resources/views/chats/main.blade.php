@@ -14,7 +14,6 @@
 				@else
 					<p>แอพพลิเคชั่นนี้เป็นแอพพลิเคชั่นเฉพาะกลุ่มเพื่อสถาบันการศึกษา ใช้ประโยชน์ในการแนะแนว และพัฒนานักศึกษา
 						เพราะฉะนั้น จำเป็นต้องรอการยืนยันตัวตนจากแอดมินของสถาบันของท่านแอดมินของท่านคือ<br>
-						{{--Print AuthorisedUser List--}}
 						@if(isset($memberAuthorizedList))
 							@if(count($memberAuthorizedList)>0)
 								@foreach($memberAuthorizedList as $index=> $data)

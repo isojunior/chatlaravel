@@ -26,12 +26,9 @@ io.on('connection', function (socket) {
     socket.on('subscribe',function(msg)
     {
         console.log("Subscription request:"+msg.channel);
-       // redis.punsubscribe("*");
-        //redis.subscribe(msg.channel);
     });
 
     function updateNicknames() {
-        // send connected users to all sockets to display in nickname list
         io.sockets.emit('chat.users', nicknames);
     }
 

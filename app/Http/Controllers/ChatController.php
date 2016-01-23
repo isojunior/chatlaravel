@@ -93,7 +93,6 @@ class ChatController extends Controller {
 
 			$messagesResult = $this->getChatMessage($user['ID_USER'], $userChatResult[0]['ID_GROUP'], $userChatResult[0]['IS_ADMIN']);
 
-			//dd($userChatWith);
 			return View('chats.chat')->with('user', $user)
 				->with('userWith', $userChatWith)
 				->with('chat', $userChatResult[0])
@@ -113,7 +112,7 @@ class ChatController extends Controller {
 			$isUserInGroupChatResult = self::$factory->checkMemberInGroupChat($idGroup, $user['ID_USER']);
 			if ($isUserInGroupChatResult == 1) {
 				$addChatMessageResult = self::$factory->addChatMessage($user['ID_USER'], $idGroup, $chatType, $idSticker, $idStickerGroup, Utils::encodeParameter($message));
-
+				dd($addChatMessageResult);
 				if (count($addChatMessageResult) > 0) {
 					$processNotification = self::$factory->processChatNotification($addChatMessageResult[0]['ID_GROUP'], $addChatMessageResult[0]['ID_CHAT']);
 				}
